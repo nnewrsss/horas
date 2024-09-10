@@ -1,5 +1,3 @@
-# Horas_Website
-
 # Horas: Timeless Elegance in Every Stitch
 
 # Introduction
