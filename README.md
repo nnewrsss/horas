@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+# Horas: Timeless Elegance in Every Stitch
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Introduction
 
-## Available Scripts
+Welcome to Horas, where timeless British elegance meets the subtle allure of old money luxury. Our brand, inspired by the concept of “Horas” — time that transcends eras — presents refined, yet effortlessly sophisticated clothing for those who appreciate true quality. At Horas, each piece is designed to exude casual luxury while preserving an air of sophistication, allowing you to embody classic style, no matter the occasion.
 
-In the project directory, you can run:
+# Our Philosophy
 
-### `npm start`
+At Horas, we believe in crafting garments that resonate with the soul of British tradition, while maintaining an understated opulence. Our collections are made for those who cherish the charm of Old Money aesthetics—classic, enduring, and inherently luxurious. We focus on subtle elegance: the kind of luxury that doesn’t need to shout, but is felt in every stitch, fabric, and detail.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Why “Horas”?
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+“Horas” symbolizes time, a concept that mirrors our mission to create clothing that remains stylish through the years. Our pieces are designed to be wardrobe staples, versatile enough to evolve with changing fashion trends while maintaining their luxurious appeal. Horas garments seamlessly blend into the modern world, yet carry the legacy of British heritage.
 
-### `npm test`
+# The Horas Experience
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Our designs are a celebration of life’s understated moments, from casual daywear to refined evening looks. Though perfect for daily wear, each piece in the Horas collection is meticulously crafted using premium materials, ensuring an indulgent, long-lasting experience that feels like a second skin.
 
-### `npm run build`
+# Key Features:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+	•	British Influence: Drawing from traditional British tailoring, Horas designs reflect an unparalleled craftsmanship known for precision and elegance.
+	•	Timeless Silhouettes: Our pieces are inspired by classic cuts and designs, allowing you to look effortlessly chic, no matter the season.
+	•	Luxurious Fabrics: Only the finest fabrics make it into our collections. We use handpicked materials such as fine wool, cashmere, and premium cotton, ensuring comfort and long-lasting durability.
+	•	Attention to Detail: From hand-sewn buttons to custom linings, we pay attention to the finer details, making sure every piece is unique and up to Horas standards.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# The Collection
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Whether it’s an impeccably tailored blazer or a refined knit sweater, our collection offers versatility while keeping the essence of British sartorial heritage. Each piece embodies the understated, yet undeniable luxury that defines old money fashion
