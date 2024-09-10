@@ -4,9 +4,13 @@
 
 Welcome to Horas, where timeless British elegance meets the subtle allure of old money luxury. Our brand, inspired by the concept of “Horas” — time that transcends eras — presents refined, yet effortlessly sophisticated clothing for those who appreciate true quality. At Horas, each piece is designed to exude casual luxury while preserving an air of sophistication, allowing you to embody classic style, no matter the occasion.
 
+<div align="center">
+<img width="795" alt="Screenshot 2567-09-10 at 14 38 24" src="https://github.com/user-attachments/assets/8716ed3b-d703-46da-a626-07465e5228c5">
+</div>
+
 # Our Philosophy
 
-At Horas, we believe in crafting garments that resonate with the soul of British tradition, while maintaining an understated opulence. Our collections are made for those who cherish the charm of Old Money aesthetics—classic, enduring, and inherently luxurious. We focus on subtle elegance: the kind of luxury that doesn’t need to shout, but is felt in every stitch, fabric, and detail.
+At Horas, we believe in crafting garments that resonate with the soul of British tradition, while maintaining an understated opulence. Our collections are made for those who cherish the charm of Old Money aesthetics—classic, enduring, and inherently luxurious. We focus on subtle elegance: the kind of luxury that doesn’t need to shout, but is felt in every stitch, fabric, and detail..
 
 # Why “Horas”?
 
