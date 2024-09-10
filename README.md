@@ -10,7 +10,7 @@ Welcome to Horas, where timeless British elegance meets the subtle allure of old
 
 # Our Philosophy
 
-At Horas, we believe in crafting garments that resonate with the soul of British tradition, while maintaining an understated opulence. Our collections are made for those who cherish the charm of Old Money aesthetics—classic, enduring, and inherently luxurious. We focus on subtle elegance: the kind of luxury that doesn’t need to shout, but is felt in every stitch, fabric, and detail.
+At Horas, we believe in crafting garments that resonate with the soul of British tradition, while maintaining an understated opulence. Our collections are made for those who cherish the charm of Old Money aesthetics—classic, enduring, and inherently luxurious. We focus on subtle elegance: the kind of luxury that doesn’t need to shout, but is felt in every stitch, fabric, and detail..
 
 # Why “Horas”?
 
