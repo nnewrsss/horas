@@ -27,4 +27,4 @@ Our designs are a celebration of life’s understated moments, from casual daywe
 
 # The Collection
 
-Whether it’s an impeccably tailored blazer or a refined knit sweater, our collection offers versatility while keeping the essence of British sartorial heritage. Each piece embodies the understated, yet undeniable luxury that defines old money fashion.
+Whether it’s an impeccably tailored blazer or a refined knit sweater, our collection offers versatility while keeping the essence of British sartorial heritage. Each piece embodies the understated, yet undeniable luxury that defines old money fashion
