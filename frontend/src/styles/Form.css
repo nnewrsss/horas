@@ -1,0 +1,99 @@
+/* ตั้งค่าสไตล์พื้นฐานสำหรับฟอร์ม */
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* หัวข้อของฟอร์ม */
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* ตั้งค่าสำหรับ input field */
+.form-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* ปุ่ม */
+.form-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+    background-color: #0056b3;
+}
+
+.form-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* เพิ่มสไตล์สำหรับการแสดงข้อความขณะโหลด */
+.form-button:disabled::after {
+    content: " Please wait...";
+    font-style: italic;
+}
+
+/* สำหรับ input ที่ไม่ถูกต้อง */
+.form-input.error {
+    border-color: #e74c3c;
+}
+
+.form-input.error:focus {
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
+
+/* ข้อความแจ้งเตือนเมื่อมีข้อผิดพลาด */
+.form-error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ขนาดหน้าจอขนาดเล็ก */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .form-button {
+        font-size: 14px;
+    }
+
+    .form-input {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
