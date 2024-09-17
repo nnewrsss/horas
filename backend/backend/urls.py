@@ -17,17 +17,19 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include  # อย่าลืม import include
-from myapp.views import CreateUserView
+from myapp.views import CreateUserAPIView
+
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("myapp/user/register/", CreateUserView.as_view(), name='register'),  # as_view() ถูกต้อง
+    path("myapp/user/register/", CreateUserAPIView.as_view(), name='user-register'),
     path("myapp/token/", TokenObtainPairView.as_view(), name="get_token"),
     path("myapp/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
-    path("myapp-auth/", include("rest_framework.urls")),  # แก้จาก rest_framwork เป็น rest_framework
-    path("myapp/",include("myapp.urls")),
+    path("myapp-auth/", include("rest_framework.urls")),
+    path("myapp/", include("myapp.urls")),
 ]
+
 
 
 

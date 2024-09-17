@@ -5,6 +5,7 @@ import Register from "./pages/Register"
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
+import Support from "./pages/support"
 
 
 function Logout() {
@@ -30,8 +31,10 @@ function App() {
       }
       />
       <Route path="/login" element={<Login/>}/>
+      <Route path="/home" element={<Home />} />
       <Route path="/logout" element={<Logout/>} />
       <Route path="/register" element={<RegisterAndLogout/>} />
+      <Route path="/support" element={<Support/>} />
       <Route path="*" element={<NotFound/>}></Route>
     </Routes>
     </BrowserRouter>

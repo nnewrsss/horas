@@ -1,100 +1,70 @@
 /* Home.css */
 
-/* General container styling */
-
-
-.container {
-    width: 90%;
-    max-width: 800px;
+.home-container {
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
 }
 
-h2 {
-    color: #333;
+.home-container h1 {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    color: #333;
 }
 
-/* Notes list styling */
-.notes-list {
+.product-list {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.note {
-    background-color: #fafafa;
-    padding: 15px;
+.product-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s ease;
+    width: 250px;
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+    transition: box-shadow 0.3s;
 }
 
-.note:hover {
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+.product-item:hover {
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-.note-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.note-content {
-    font-size: 16px;
+.product-item h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
     color: #555;
 }
 
-/* Form styling */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 30px;
+.product-item p {
+    font-size: 1em;
+    color: #777;
+    margin-bottom: 15px;
 }
 
-label {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px;
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
 }
 
-input[type="text"], textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
+.product-item .price {
+    font-size: 1.2em;
+    color: #e67e22;
+    font-weight: bold;
 }
 
-textarea {
-    height: 100px;
-    resize: vertical;
-}
+@media (max-width: 768px) {
+    .product-list {
+        flex-direction: column;
+        align-items: center;
+    }
 
-/* Button styling */
-input[type="submit"] {
-    padding: 10px;
-    font-size: 16px;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-/* Add some spacing between form elements and notes */
-.form-section {
-    margin-top: 40px;
+    .product-item {
+        width: 80%;
+    }
 }
