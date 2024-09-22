@@ -1,28 +1,24 @@
 /* src/styles/Navbar.css */
 
 .navbar {
-    display: flex;
+    /* width: 100%; */
     align-items: center;
     justify-content: space-between;
-    background-color: #000; /* พื้นหลังสีดำ */
+    background-color: #000000ca; /* พื้นหลังสีดำ */
     padding: 10px 20px;
     color: #fff; /* ตัวอักษรสีขาว */
-    position: relative;
+    position: fixed;
+    backdrop-filter: blur(25px);
+    display: inline-flex;
+    padding-inline: 50px;
   }
   
-  .navbar-left,
-  .navbar-center,
-  .navbar-right {
-    display: flex;
-    align-items: center;
-  }
   
   .navbar-logo {
     font-size: 1.5em;
     font-weight: bold;
     color: #fff;
     text-decoration: none;
-    margin-right: 20px;
   }
   
   .navbar-center {
@@ -30,6 +26,11 @@
     justify-content: center;
   }
   
+  .navbar-right
+  {
+      display: inline-flex;
+  }
+
   .navbar-link {
     color: #fff;
     text-decoration: none;
