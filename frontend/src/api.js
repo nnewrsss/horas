@@ -61,7 +61,15 @@
 
 
 
-
+// รอ 3 วินาทีแล้วค่อยซ่อน welcome overlay
+window.addEventListener('load', function () {
+  setTimeout(function () {
+      const overlay = document.getElementById('welcomeOverlay');
+      overlay.style.transition = 'opacity 1s';
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.style.display = 'none', 1000); // ซ่อน overlay หลังจากที่ fade out เสร็จ
+  }, 2500); // 3000ms = 3 วินาที
+});
 
 
 
