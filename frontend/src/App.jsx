@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Support from "./pages/support"
 import AboutUs from "./pages/AboutUs"
+import Shop from "./pages/shop"
 
 
 function Logout() {
@@ -40,6 +41,7 @@ function App() {
       <Route path="/support" element={<Support/>} />
       <Route path="*" element={<NotFound/>}></Route>
       <Route path="/Aboutus" element={<AboutUs/>}></Route>
+      <Route path="/Shop" element={<Shop/>}></Route>
     </Routes>
     </BrowserRouter>
   )

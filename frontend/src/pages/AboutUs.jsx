@@ -4,11 +4,6 @@ import { useParams } from 'react-router-dom';
 import api from '../api';
 import Navbar from '../components/Navbar';
 import '../styles/AboutUs.css';
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> new
 
 function AboutUs() {
   const { categoryName } = useParams();
@@ -27,15 +22,6 @@ function AboutUs() {
 
   return (
     <html>
-<<<<<<< HEAD
-        <head>
-
-        </head>
-        <body>
-            
-
-        </body>
-=======
       <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"></link>
       <head>
 
@@ -60,7 +46,6 @@ function AboutUs() {
           </div>
         </div>
       </body>
->>>>>>> new
     </html>
   );
 }
