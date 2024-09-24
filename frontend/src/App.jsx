@@ -7,6 +7,7 @@ import Homes from "./pages/Homes"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Support from "./pages/support"
+import AboutUs from "./pages/AboutUs"
 
 
 function Logout() {
@@ -38,6 +39,7 @@ function App() {
       <Route path="/register" element={<RegisterAndLogout/>} />
       <Route path="/support" element={<Support/>} />
       <Route path="*" element={<NotFound/>}></Route>
+      <Route path="/Aboutus" element={<AboutUs/>}></Route>
     </Routes>
     </BrowserRouter>
   )

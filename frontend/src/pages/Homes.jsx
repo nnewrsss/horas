@@ -24,25 +24,31 @@ function Homes() {
     }, []);
 
     return (
-        <div>
+        <html>
+            <head>
+                <title>Horas™ Website</title>
+            </head>
+            <body>
+                    <div class="welcome-overlay" id="welcomeOverlay">
+                        <div class="welcome-text">Welcome to our website</div> <hr />
+                        {/* <div class="welcome-detail">Horas 2024 Company</div> */}
+                    </div>
 
-            <div class="welcome-overlay" id="welcomeOverlay">
-                <div class="welcome-text">Welcome to our website</div>
-            </div>
+                    <div className='hero-section'>
+                        <img src='src/images/logo-white_horas.png' alt='' className='white-logo' />
+                        <div className='heroshadow'></div>
+                        <img src="/src/images/hero-section.png" alt="" className='hero-img' />
+                    </div>
 
-            <div className='hero-section'>
-                <img src='src/images/logo-white_horas.png' alt='' className='white-logo' />
-                <div className='heroshadow'></div>
-                <img src="/src/images/hero-section.png" alt="" className='hero-img' />
-            </div>
+                    <div className='main-section'>
+                        <div class="gallery-container">
+                            <img src="" alt="" />
 
-            <div className='main-section'>
-                <div class="gallery-container">
-                    <img src="" alt="" />
-                    
-                </div>
-            </div>
-        </div>
+                        </div>
+                    </div>
+            </body>
+        </html>
+
     );
 }
 

@@ -2,6 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
 
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* เพื่อให้ padding และ border ถูกรวมกับขนาดขององค์ประกอบ */
+}
 
 .body
 {
@@ -33,6 +38,17 @@
     text-align: center;
 }
 
+.welcome-detail {
+    color:white;
+    font-size: 1rem;
+    font-family: 'Cinzel', serif;
+    animation: fadeOut 3s forwards;
+    text-align: center;
+    opacity: 50;
+
+
+}
+
 
 /* Animation ให้จางหายไป */
 @keyframes fadeOut {
@@ -44,6 +60,7 @@
     }
 }
 
+
 .hero-section {
     width: 100%;
     height: 100vh;
@@ -51,11 +68,12 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
 .hero-img {
-    width: 100%;
-    height: 100%;
+    width: 100vw; /* ใช้ 100vw เพื่อให้ภาพเต็มหน้าจอ */
+    height: 100vh;
     object-fit: cover;
     position: relative;
 }
