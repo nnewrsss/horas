@@ -1,10 +1,12 @@
 body {
     margin: 0;
     padding: 0;
+    box-sizing: border-box; /* เพื่อให้ padding และ border ถูกรวมกับขนาดขององค์ประกอบ */
 
 }
 
 .container {
+
     display: flex;
     height: 100vh; /* ความสูงเต็มหน้าจอ */
 }
@@ -12,7 +14,7 @@ body {
 .left-container, .right-container {
     flex: 1; /* ทำให้ทั้งสอง container มีขนาดเท่ากัน */
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     padding: 20px; /* เพิ่ม padding ให้แต่ละ container */
 }
@@ -25,6 +27,13 @@ body {
 
     flex-direction: column;
     text-align: left;
+}
+
+.aboutus
+{
+    margin-top: 100px;
+    width: 750px;
+    padding-bottom: 50px;
 }
 
 h1 {

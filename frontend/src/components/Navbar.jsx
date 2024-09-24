@@ -5,6 +5,7 @@ import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import '../styles/Navbar.css';
 
 function Navbar({ username }) {
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"></link>
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,8 +16,8 @@ function Navbar({ username }) {
   };
 
   return (
+    
     <nav className="navbar">
-
       <div className="navbar-left">
         <Link to="/home" className="navbar-logo">
           HR

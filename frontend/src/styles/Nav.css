@@ -1,9 +1,133 @@
-body
-{
+body {
+    height: 100vh;
     width: 100%;
-    height: 300px;
-    padding: 20px;
-    background-color: black;
-    position:fixed;
-    z-index: 1;
-}
+    margin: 0;
+  }
+  
+  /* สไตล์พื้นฐานของ navbar */
+  .nav {
+    height: 54px;
+    width: 100%;
+    background: #00000095;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(7px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    font-family: 'Playfair Display', serif;
+    transition: background 0.3s ease;
+  }
+  
+  .hr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: -130px;
+  }
+  
+  .hr-lo {
+    object-fit: cover;
+    width: 30px;
+    transition: width 0.2s ease-in-out;
+  }
+  
+  .hr-lo:hover {
+    width: 40px;
+  }
+  
+  .left, .right {
+    display: flex;
+    gap: 70px;
+  }
+  
+  .left {
+    margin-left: 0;
+    gap: 80px;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .right {
+    margin-right: 20px;
+  }
+  
+  /* สไตล์สำหรับลิงก์ */
+  a {
+    color: white;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: #aaa;
+  }
+  
+  /* ปุ่ม logout */
+  .logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .logout-btn:hover {
+    color: #aaa;
+  }
+  
+  /* เปลี่ยนพื้นหลังของ nav เมื่อ hover ที่ .left a */
+  .left a {
+    padding: 5px 10px;
+  }
+  
+  .nav.hovered {
+    background: #191919 !important;
+  }
+  
+  /* Sliding Container */
+  .sliding-container {
+    position: fixed;
+    top: 54px; /* ความสูงของ navbar */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 54px); /* ความสูงที่เหลือของหน้าจอ */
+    display: flex;
+    flex-direction: column;
+    pointer-events: none; /* ปิดการโต้ตอบเมื่อไม่ active */
+    z-index: 999;
+  }
+  
+  .sliding-container.active {
+    pointer-events: auto; /* เปิดการโต้ตอบเมื่อ active */
+  }
+  
+  .sliding-block {
+    background-color: #191919;
+    overflow: hidden;
+    height: 0;
+    transition: height 0.3s ease;
+  }
+  
+  .sliding-container.active .sliding-block {
+    height: 300px; /* ความสูงที่ต้องการเมื่อยืดลงมา */
+  }
+  
+  .backdrop {
+    flex-grow: 1; /* ใช้พื้นที่ที่เหลือ */
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+  
+  .sliding-container.active .backdrop {
+    opacity: 1;
+  }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 import { ACCESS_TOKEN } from '../constants';
-import Navbar from '../components/Navbar';
+import Nav from '../components/Nav.jsx';
 import '../styles/Homes.css';
 
 function Homes() {
@@ -29,6 +29,7 @@ function Homes() {
                 <title>Horas™ Website</title>
             </head>
             <body>
+                    <Nav/>
                     <div class="welcome-overlay" id="welcomeOverlay">
                         <div class="welcome-text">Welcome to our website</div> <hr />
                         {/* <div class="welcome-detail">Horas 2024 Company</div> */}
