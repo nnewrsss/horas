@@ -12,7 +12,7 @@ import AboutUs from "./pages/AboutUs"
 
 function Logout() {
   localStorage.clear()
-  return <Navigate to="/login"/>
+  return <Navigate to="/homes"/>
 }
 
 function RegisterAndLogout() {
