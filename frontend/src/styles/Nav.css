@@ -2,10 +2,10 @@ body {
     height: 100vh;
     width: 100%;
     margin: 0;
-  }
-  
-  /* สไตล์พื้นฐานของ navbar */
-  .nav {
+}
+
+/* สไตล์พื้นฐานของ navbar */
+.nav {
     height: 54px;
     width: 100%;
     background: #00000095;
@@ -17,83 +17,83 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
     transition: background 0.3s ease;
-  }
-  
-  .hr {
+}
+
+.hr {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-right: -130px;
-  }
-  
-  .hr-lo {
+}
+
+.hr-lo {
     object-fit: cover;
     width: 30px;
     transition: width 0.2s ease-in-out;
-  }
-  
-  .hr-lo:hover {
+}
+
+.hr-lo:hover {
     width: 40px;
-  }
-  
-  .left, .right {
+}
+
+.left, .right {
     display: flex;
     gap: 70px;
-  }
-  
-  .left {
+}
+
+.left {
     margin-left: 0;
     gap: 80px;
     align-items: center;
     height: 100%;
-  }
-  
-  .right {
+}
+
+.right {
     margin-right: 20px;
-  }
-  
-  /* สไตล์สำหรับลิงก์ */
-  a {
+}
+
+/* สไตล์สำหรับลิงก์ */
+a {
     color: white;
     text-decoration: none;
-    font-family: 'Cinzel', serif;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
     font-size: 16px;
     transition: color 0.3s ease;
-  }
-  
-  a:hover {
+}
+
+a:hover {
     color: #aaa;
-  }
-  
-  /* ปุ่ม logout */
-  .logout-btn {
+}
+
+/* ปุ่ม logout */
+.logout-btn {
     background: none;
     border: none;
     color: white;
-    font-family: 'Cinzel', serif;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
     font-size: 16px;
     cursor: pointer;
     padding: 0 10px;
     transition: color 0.3s ease;
-  }
-  
-  .logout-btn:hover {
+}
+
+.logout-btn:hover {
     color: #aaa;
-  }
-  
-  /* เปลี่ยนพื้นหลังของ nav เมื่อ hover ที่ .left a */
-  .left a {
+}
+
+/* เปลี่ยนพื้นหลังของ nav เมื่อ hover ที่ .left a */
+.left a {
     padding: 5px 10px;
-  }
-  
-  .nav.hovered {
+}
+
+.nav.hovered {
     background: #191919 !important;
-  }
-  
-  /* Sliding Container */
-  .sliding-container {
+}
+
+/* Sliding Container */
+.sliding-container {
     position: fixed;
     top: 54px; /* ความสูงของ navbar */
     left: 0;
@@ -103,31 +103,67 @@ body {
     flex-direction: column;
     pointer-events: none; /* ปิดการโต้ตอบเมื่อไม่ active */
     z-index: 999;
-  }
-  
-  .sliding-container.active {
+}
+
+.sliding-container.active {
     pointer-events: auto; /* เปิดการโต้ตอบเมื่อ active */
-  }
-  
-  .sliding-block {
+}
+
+.sliding-block {
     background-color: #191919;
     overflow: hidden;
     height: 0;
     transition: height 0.3s ease;
-  }
-  
-  .sliding-container.active .sliding-block {
+}
+
+.sliding-container.active .sliding-block {
     height: 300px; /* ความสูงที่ต้องการเมื่อยืดลงมา */
-  }
-  
-  .backdrop {
+}
+
+.backdrop {
     flex-grow: 1; /* ใช้พื้นที่ที่เหลือ */
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: opacity 0.3s ease;
     backdrop-filter: blur(10px);
-  }
-  
-  .sliding-container.active .backdrop {
+}
+
+.sliding-container.active .backdrop {
     opacity: 1;
-  }
+}
+
+.sliding-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    color: white;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.column h1 {
+    font-size: 24px;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
+}
+
+.column ul {
+    list-style-type: none;
+    padding: 0;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
+}
+
+.column li {
+    font-size: 18px;
+    padding: 5px 0;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
+}
+
+.column li:hover {
+    color: #aaa;
+    cursor: pointer;
+}

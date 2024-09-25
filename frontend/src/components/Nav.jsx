@@ -5,10 +5,62 @@ import '../styles/Nav.css';
 
 function Nav({ username }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [content, setContent] = useState(''); // state สำหรับเก็บข้อมูล sliding block
   const navigate = useNavigate();
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (menu) => {
     setIsHovered(true);
+    if (menu === 'men') {
+      setContent(
+        `<div class="sliding-content">
+           <div class="column">
+             <h1>CLOTHES</h1>
+             <ul>
+               <li>Shirt</li>
+               <li>Polo</li>
+               <li>Cardigan & Sweater</li>
+               <li>Jacket</li>
+               <li>Pants</li>
+             </ul>
+           </div>
+           <div class="column">
+             <h1>BAGS</h1>
+             <ul>
+               <li>Cross body bag</li>
+               <li>Bag Packing</li>
+               <li>Business Bag</li>
+               <li>Leather Bag</li>
+               <li>Small Bag</li>
+             </ul>
+           </div>
+         </div>`
+      );
+    } else if (menu === 'female') {
+      setContent(
+        `<div class="sliding-content">
+           <div class="column">
+             <h1>CLOTHES</h1>
+             <ul>
+               <li>Dress</li>
+               <li>Blouse</li>
+               <li>Skirt</li>
+               <li>Jacket</li>
+               <li>Pants</li>
+             </ul>
+           </div>
+           <div class="column">
+             <h1>ACCESSORIES</h1>
+             <ul>
+               <li>Handbags</li>
+               <li>Jewelry</li>
+               <li>Scarves</li>
+               <li>Sunglasses</li>
+               <li>Watches</li>
+             </ul>
+           </div>
+         </div>`
+      );
+    }
   };
 
   const handleMouseLeave = (event) => {
@@ -38,11 +90,10 @@ function Nav({ username }) {
         </div>
         <div
           className='left'
-          onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <Link to="/men">MEN</Link>
-          <Link to="/female">FEMALE</Link>
+          <Link to="/men" onMouseEnter={() => handleMouseEnter('men')}>MEN</Link>
+          <Link to="/female" onMouseEnter={() => handleMouseEnter('female')}>FEMALE</Link>
           <Link to="/kids">KID</Link>
         </div>
         <div className='right'>
@@ -70,10 +121,8 @@ function Nav({ username }) {
           className="sliding-block"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-        >
-          {/* เนื้อหาภายใน sliding block */}
-          <p>เนื้อหาภายใน sliding block</p>
-        </div>
+          dangerouslySetInnerHTML={{ __html: content }} // แสดงข้อมูลที่เปลี่ยนได้ใน sliding block
+        ></div>
         <div
           className="backdrop"
           onMouseEnter={handleBackdropMouseEnter}
