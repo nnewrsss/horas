@@ -31,7 +31,7 @@ function Homes() {
             <body>
                     <Nav/>
                     <div class="welcome-overlay" id="welcomeOverlay">
-                        <div class="welcome-text">Welcome to our website</div> <hr />
+                        <div class="welcome-text">Welcome to our website</div> 
                         {/* <div class="welcome-detail">Horas 2024 Company</div> */}
                     </div>
 

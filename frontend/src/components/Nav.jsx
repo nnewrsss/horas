@@ -11,7 +11,7 @@ function Nav({ username }) {
 
   const handleMouseEnter = (menu) => {
     setIsHovered(true);
-    if (menu === 'men') {
+    if (menu === 'male') {
       setContent(
         `<div class="sliding-content">
            <div class="column">
@@ -93,7 +93,7 @@ function Nav({ username }) {
           className='left'
           onMouseLeave={handleMouseLeave}
         >
-          <Link to="/men" onMouseEnter={() => handleMouseEnter('men')}>MEN</Link>
+          <Link to="/male" onMouseEnter={() => handleMouseEnter('male')}>MALE</Link>
           <Link to="/female" onMouseEnter={() => handleMouseEnter('female')}>FEMALE</Link>
           <Link to="/kids">KID</Link>
         </div>

@@ -1,3 +1,5 @@
+/* Nav.css */
+
 body {
     height: 100vh;
     width: 100%;
@@ -113,13 +115,86 @@ a:hover {
     background-color: #191919;
     overflow: hidden;
     height: 0;
-    transition: height 0.3s ease;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
 .sliding-container.active .sliding-block {
-    height: 300px; /* ความสูงที่ต้องการเมื่อยืดลงมา */
+    height: 300px; /* ความสูงที่ต้องการเมื่อเปิด */
+    opacity: 1;
+    transform: translateY(0);
 }
 
+/* แอนิเมชันสำหรับเนื้อหาใน sliding */
+.sliding-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    color: white;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.h1
+{
+    font-size: 21px;
+}
+
+/* เอฟเฟกต์การขยายตัวเมื่อ hover บนรายการ */
+.column li {
+    font-size: 18px;
+    padding: 5px 0;
+    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
+    transition: transform 0.2s ease, color 0.3s ease;
+    list-style: none; /* ลบ bullet points */
+}
+
+.column li:hover {
+    color: #aaa;
+    cursor: pointer;
+    transform: scale(1.1); /* ขยายขนาดเมื่อ hover */
+}
+
+/* ลบ bullet points จาก ul */
+.column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* แอนิเมชันเพิ่มเติมสำหรับคอลัมน์ */
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Backdrop */
 .backdrop {
     flex-grow: 1; /* ใช้พื้นที่ที่เหลือ */
     background: rgba(0, 0, 0, 0.5);
@@ -130,42 +205,6 @@ a:hover {
 
 .sliding-container.active .backdrop {
     opacity: 1;
-}
-
-.sliding-content {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    color: white;
-    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
-}
-
-.column {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.column h1 {
-    font-size: 24px;
-    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
-}
-
-.column ul {
-    list-style-type: none;
-    padding: 0;
-    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
-}
-
-.column li {
-    font-size: 18px;
-    padding: 5px 0;
-    font-family: 'Cinzel', serif; /* เปลี่ยนเป็นฟอนต์ Cinzel */
-}
-
-.column li:hover {
-    color: #aaa;
-    cursor: pointer;
 }
 
 /* สไตล์สำหรับ User Menu */
