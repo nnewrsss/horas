@@ -6,6 +6,7 @@ import '../styles/Nav.css';
 function Nav({ username }) {
   const [isHovered, setIsHovered] = useState(false);
   const [content, setContent] = useState(''); // state สำหรับเก็บข้อมูล sliding block
+  const [userMenuOpen, setUserMenuOpen] = useState(false); // State สำหรับเมนูผู้ใช้
   const navigate = useNavigate();
 
   const handleMouseEnter = (menu) => {
@@ -103,11 +104,31 @@ function Nav({ username }) {
           <Link to="/cart">
             <FaShoppingCart size={20} />
           </Link>
-          <Link to={username ? "/profile" : "/login"}>
-            <FaUser size={20} />
-          </Link>
-          {username && (
-            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          {username ? (
+            <div
+              className="user-menu-container"
+              onMouseEnter={() => setUserMenuOpen(true)}
+              onMouseLeave={() => setUserMenuOpen(false)}
+            >
+              <div className="user-info-box">
+                <FaUser size={20} />
+                <div className="user-text">
+                  <span className="hello-text">Hello</span>
+                  <span className="username">{username}</span>
+                </div>
+              </div>
+              {userMenuOpen && (
+                <div className="user-menu-dropdown">
+                  <Link to="/settings">Settings</Link>
+                  <Link to="/delivery-status">Delivery Status</Link>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login">
+              <FaUser size={20} />
+            </Link>
           )}
         </div>
       </nav>
