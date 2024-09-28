@@ -11,11 +11,11 @@ function Nav({ username }) {
 
   const handleMouseEnter = (menu) => {
     setIsHovered(true);
-    if (menu === 'male') {
+    if (menu === 'men') {
       setContent(
         `<div class="sliding-content">
            <div class="column">
-             <h1>CLOTHES</h1>
+             <h1><span>CLOTHES</span></h1>
              <ul>
                <li>Shirt</li>
                <li>Polo</li>
@@ -25,7 +25,7 @@ function Nav({ username }) {
              </ul>
            </div>
            <div class="column">
-             <h1>BAGS</h1>
+             <h1><span>BAGS</span></h1>
              <ul>
                <li>Cross body bag</li>
                <li>Bag Packing</li>
@@ -34,13 +34,19 @@ function Nav({ username }) {
                <li>Small Bag</li>
              </ul>
            </div>
+           <div class="column images-column">
+             <div class="images-wrapper">
+               <img src="src/images/navbar/female-1.jpg" alt="Image 1">
+               <img src="src/images/navbar/female-1.jpg"" alt="Image 2">
+             </div>
+           </div>
          </div>`
       );
     } else if (menu === 'female') {
       setContent(
         `<div class="sliding-content">
            <div class="column">
-             <h1>CLOTHES</h1>
+             <h1><span>CLOTHES</span></h1>
              <ul>
                <li>Dress</li>
                <li>Blouse</li>
@@ -50,14 +56,20 @@ function Nav({ username }) {
              </ul>
            </div>
            <div class="column">
-             <h1>ACCESSORIES</h1>
+             <h1><span>BAGS</span></h1>
              <ul>
-               <li>Handbags</li>
-               <li>Jewelry</li>
-               <li>Scarves</li>
-               <li>Sunglasses</li>
-               <li>Watches</li>
+               <li>Tote Bag</li>
+               <li>Crossbody Bag</li>
+               <li>Clutch</li>
+               <li>Shoulder Bag</li>
+               <li>Backpack</li>
              </ul>
+           </div>
+           <div class="column images-column">
+             <div class="images-wrapper">
+               <img src="path/to/your/image3.jpg" alt="Image 3">
+               <img src="path/to/your/image4.jpg" alt="Image 4">
+             </div>
            </div>
          </div>`
       );
@@ -86,16 +98,15 @@ function Nav({ username }) {
       <nav className={`nav ${isHovered ? 'hovered' : ''}`}>
         <div className='hr'>
           <Link to="/">
-            <img src="src/images/logo-white_hr.png" alt="Logo" className="hr-lo" />
+            <img src="src/images/navbar/logo-white_hr.png" alt="Logo" className="hr-lo" />
           </Link>
         </div>
         <div
           className='left'
           onMouseLeave={handleMouseLeave}
         >
-          <Link to="/male" onMouseEnter={() => handleMouseEnter('male')}>MALE</Link>
+          <Link to="/men" onMouseEnter={() => handleMouseEnter('men')}>MEN</Link>
           <Link to="/female" onMouseEnter={() => handleMouseEnter('female')}>FEMALE</Link>
-          <Link to="/kids">KID</Link>
         </div>
         <div className='right'>
           <Link to="/">Home</Link>
