@@ -38,35 +38,33 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
 # # Serializer สำหรับสินค้า (Product)
+
+
 # class ProductSerializer(serializers.ModelSerializer):
-#     # category_name = serializers.CharField(source='category.name', read_only=True)
 #     parent_category_name = serializers.CharField(source='parent_category.name', read_only=True)
 #     sub_category_name = serializers.CharField(source='sub_category.name', read_only=True)
 #     child_category_name = serializers.CharField(source='child_category.name', read_only=True)
+
+    
 #     images = ProductImageSerializer(many=True, read_only=True)
 #     images_upload = serializers.ListField(
 #         child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
 #         write_only=True,
 #         required=False
 #     )
-#     sizes = serializers.PrimaryKeyRelatedField(
-#         many=True,
-#         queryset=Size.objects.all(),
-#         required=False,  # ทำให้ sizes เป็น optional
-#         allow_null=True
-#     )
+#     # sizes = serializers.PrimaryKeyRelatedField(
+#     #     many=True,
+#     #     queryset=Size.objects.all(),
+#     #     required=False,
+#     #     allow_null=True
+#     # )
 
 #     class Meta:
 #         model = Product
-#         # fields = [
-#         #     'id', 'name', 'description', 'materials',
-#         #     'category','category_id' ,'category_name', 'created_at',
-#         #     'price', 'stock', 'sizes',
-#         #     'images', 'images_upload'
-#         # ]
-#         fields = ['id', 'name', 'description', 'materials', 'parent_category','parent_category_id', 'sub_category',
-#                    'sub_category_id','child_category','child_category_id', 'price', 'stock', 'sizes', 'created_at',
-#                     'images', 'images_upload']
+#         fields = ['id', 'name', 'description', 'materials', 'parent_category', 'parent_category_id', 'parent_category_name',
+#                   'sub_category', 'sub_category_id', 'sub_category_name', 
+#                   'child_category', 'child_category_id', 'child_category_name', 
+#                   'price', 'stock', 'created_at', 'images', 'images_upload']
 #         extra_kwargs = {
 #             'category': {'write_only': True},
 #         }
@@ -77,11 +75,9 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 #         product = Product.objects.create(**validated_data)
 
-#         # เชื่อมโยงขนาดกับสินค้า ถ้ามี
 #         if sizes:
 #             product.sizes.set(sizes)
 
-#         # สร้าง ProductImages
 #         for image in images_data:
 #             ProductImage.objects.create(product=product, image=image)
 
@@ -98,7 +94,6 @@ class ProductImageSerializer(serializers.ModelSerializer):
 #         if sizes:
 #             instance.sizes.set(sizes)
 
-#         # สร้าง ProductImages
 #         for image in images_data:
 #             ProductImage.objects.create(product=instance, image=image)
 
@@ -110,26 +105,21 @@ class ProductSerializer(serializers.ModelSerializer):
     sub_category_name = serializers.CharField(source='sub_category.name', read_only=True)
     child_category_name = serializers.CharField(source='child_category.name', read_only=True)
 
-    
     images = ProductImageSerializer(many=True, read_only=True)
     images_upload = serializers.ListField(
         child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
         write_only=True,
         required=False
     )
-    # sizes = serializers.PrimaryKeyRelatedField(
-    #     many=True,
-    #     queryset=Size.objects.all(),
-    #     required=False,
-    #     allow_null=True
-    # )
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'materials', 'parent_category', 'parent_category_id', 'parent_category_name',
-                  'sub_category', 'sub_category_id', 'sub_category_name', 
-                  'child_category', 'child_category_id', 'child_category_name', 
-                  'price', 'stock', 'created_at', 'images', 'images_upload']
+        fields = [
+            'id', 'name', 'description', 'materials', 'parent_category', 'parent_category_id', 
+            'parent_category_name', 'sub_category', 'sub_category_id', 'sub_category_name', 
+            'child_category', 'child_category_id', 'child_category_name', 
+            'price', 'stock', 'created_at', 'images', 'images_upload'
+        ]
         extra_kwargs = {
             'category': {'write_only': True},
         }
@@ -163,6 +153,7 @@ class ProductSerializer(serializers.ModelSerializer):
             ProductImage.objects.create(product=instance, image=image)
 
         return instance
+
 
 # Serializer สำหรับรายการสินค้าในตะกร้า (CartItem)
 class CartItemSerializer(serializers.ModelSerializer):
@@ -242,3 +233,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'parent', 'parent_name', 'subcategories']
+
+
+class ProductImageUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['product', 'image']

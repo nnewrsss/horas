@@ -88,3 +88,74 @@ select:disabled {
     background-color: #eee;
     cursor: not-allowed;
 }
+
+
+
+/* ProductEdit.css */
+
+.product-edit-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.product-edit-form h1,
+.product-edit-form h2 {
+    text-align: center;
+}
+
+.existing-images,
+.new-images {
+    margin-bottom: 20px;
+}
+
+.existing-image,
+.new-image-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.existing-image img,
+.new-image-item img {
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.image-actions button,
+.image-actions label {
+    margin-right: 5px;
+}
+
+.image-actions label {
+    display: inline-block;
+}
+
+.new-image-preview {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.new-image-item {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.save-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}

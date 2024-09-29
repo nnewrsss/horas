@@ -15,7 +15,7 @@ from .serializers import (
     CategorySerializer, ProductSerializer, SizeSerializer,
     CartSerializer, CartItemSerializer, OrderSerializer, OrderItemSerializer,
     PaymentSerializer, UserProfileSerializer, ProductImageSerializer,
-    ReviewSerializer, CouponSerializer, UserSerializer
+    ReviewSerializer, CouponSerializer, UserSerializer,ProductImageUploadSerializer
 )
 from django.contrib.auth.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -351,6 +351,8 @@ def category_list(request):
 
 
 
+
+# View สำหรับการอัปเดตรูปภาพสินค้า
 class ProductImageUpdateView(APIView):
     def put(self, request, image_id):
         try:
@@ -363,3 +365,20 @@ class ProductImageUpdateView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# View สำหรับการอัปโหลดรูปภาพสินค้า
+class ProductImageUploadView(APIView):
+    def post(self, request, format=None):
+        serializer = ProductImageUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+# View สำหรับลบรูปภาพสินค้า
+class ProductImageDeleteView(generics.DestroyAPIView):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
+    permission_classes = [IsAdminUser]  # ปรับตามความต้องการของคุณ
