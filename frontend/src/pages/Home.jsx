@@ -4,7 +4,6 @@ import { ACCESS_TOKEN } from '../constants';
 import Navbar from '../components/Navbar';
 import '../styles/Home.css';
 
-
 function Home() {
   const [products, setProducts] = useState([]);
   const username = localStorage.getItem('username'); // Assuming you stored the username

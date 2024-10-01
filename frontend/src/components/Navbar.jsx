@@ -16,7 +16,6 @@ function Navbar({ username }) {
 
   return (
     <nav className="navbar">
-
       <div className="navbar-left">
         <Link to="/home" className="navbar-logo">
           HR

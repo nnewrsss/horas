@@ -1,64 +1,3 @@
-// import axios from "axios"
-// import { ACCESS_TOKEN } from "./constants"
-
-// const api = axios.create({
-//     baseURL: import.meta.env.VITE_API_URL
-// })
-
-// // api.interceptors.request.use(
-// //     (config) => {
-// //         const token = localStorage.getItem(ACCESS_TOKEN);
-// //         if(token){
-// //             config.headers.Authorization = `Bearer ${token}` 
-// //         }
-// //         return config
-// //     },
-// //     (error) => {
-// //         return Promise.reject(error)
-// //     }
-// // )
-
-
-
-
-
-// // ... ส่วนของการ import และ request interceptor ...
-
-// // Response interceptor
-// api.interceptors.response.use(
-//     (response) => {
-//         return response;
-//     },
-//     async (error) => {
-//         const originalRequest = error.config;
-//         if (error.response.status === 401 && !originalRequest._retry) {
-//             originalRequest._retry = true;
-//             const refreshToken = localStorage.getItem("refresh");
-//             if (refreshToken) {
-//                 try {
-//                     const res = await axios.post("/myapp/token/refresh/", {
-//                         refresh: refreshToken,
-//                     });
-//                     localStorage.setItem("access", res.data.access);
-//                     api.defaults.headers.common["Authorization"] = `Bearer ${res.data.access}`;
-//                     return api(originalRequest);
-//                 } catch (err) {
-//                     console.error(err);
-//                     // ถ้ารีเฟรชไม่สำเร็จ ให้พาผู้ใช้ไปยังหน้าล็อกอิน
-//                     window.location.href = "/login";
-//                 }
-//             } else {
-//                 window.location.href = "/login";
-//             }
-//         }
-//         return Promise.reject(error);
-//     }
-// );
-
-
-// export default api
-
-
 
 
 // รอ 3 วินาทีแล้วค่อยซ่อน welcome overlay
@@ -75,24 +14,89 @@ window.addEventListener('load', function () {
 
 
 
+// import axios from "axios";
+// import { ACCESS_TOKEN } from "./constants"; // ดึงชื่อ constant สำหรับ token
 
-// api.js
+// // สร้างอินสแตนซ์ของ axios ที่มี baseURL
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_URL, // ดึง URL ของ API จาก environment variables
+// });
+
+// // ใช้ interceptors เพื่อตรวจสอบ token ก่อนส่ง request
+// api.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem(ACCESS_TOKEN); // ดึง token จาก LocalStorage
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`; // ถ้ามี token ให้ใส่ใน Authorization header
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     // ถ้ามีข้อผิดพลาดในการตั้งค่า request ให้ส่งข้อผิดพลาดออกไป
+//     return Promise.reject(error);
+//   }
+// );
+
+// export default api;
+
+
+
 import axios from "axios";
-import { ACCESS_TOKEN } from "./constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants"; // ดึงโทเคนจาก constants
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API_URL, // ใช้ environment variables สำหรับ API URL
 });
 
+// Interceptor สำหรับการแนบโทเคนในคำขอ
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
+    const token = localStorage.getItem(ACCESS_TOKEN); // ดึง access token จาก LocalStorage
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`; // ใส่ access token ใน Authorization header
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Interceptor สำหรับการจัดการเมื่อ access token หมดอายุ
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // ตรวจสอบว่าโทเคนหมดอายุหรือไม่
+    if (error.response.status === 401 && error.response.data.code === "token_not_valid" && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+
+      if (refreshToken) {
+        try {
+          // ส่งคำขอเพื่อขอโทเคนใหม่
+          const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/token/refresh/`, {
+            refresh: refreshToken,
+          });
+
+          // เก็บ access token ใหม่ใน LocalStorage
+          localStorage.setItem(ACCESS_TOKEN, response.data.access);
+
+          // ตั้งค่า access token ใหม่ใน header ของคำขอ
+          api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+
+          // ส่งคำขอใหม่อีกครั้ง
+          return api(originalRequest);
+        } catch (refreshError) {
+          // หาก refresh token หมดอายุหรือไม่ถูกต้อง ให้ทำการ redirect ไปหน้า login
+          console.error("Refresh token expired or invalid");
+          window.location.href = "/login"; // ไปที่หน้า login
+          return Promise.reject(refreshError);
+        }
+      }
+    }
+
     return Promise.reject(error);
   }
 );

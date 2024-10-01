@@ -1,3 +1,8 @@
+
+from django.shortcuts import render
+
+# Create your views here.
+
 # from django.shortcuts import render
 # from django.contrib.auth.models import User
 # from rest_framework import generics
@@ -49,19 +54,25 @@
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework import viewsets
 from .models import (
-    Category, Product, ProductVariation, Cart, CartItem,
+    Category, Product, Size, Cart, CartItem,
     Order, OrderItem, Payment, UserProfile, ProductImage,
     Review, Coupon
 )
 from .serializers import (
-    CategorySerializer, ProductSerializer, ProductVariationSerializer,
+    CategorySerializer, ProductSerializer, SizeSerializer,
     CartSerializer, CartItemSerializer, OrderSerializer, OrderItemSerializer,
     PaymentSerializer, UserProfileSerializer, ProductImageSerializer,
-    ReviewSerializer, CouponSerializer, UserSerializer
+    ReviewSerializer, CouponSerializer, UserSerializer,ProductImageUploadSerializer
 )
 from django.contrib.auth.models import User
+from rest_framework.parsers import MultiPartParser, FormParser
+from .permissions import IsAdminUser
+from rest_framework.decorators import api_view, permission_classes
+import json
 
 # หมวดหมู่สินค้า
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -74,6 +85,17 @@ class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
 
+# ขนาดสินค้า
+class SizeListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Size.objects.all()
+    serializer_class = SizeSerializer
+    permission_classes = [AllowAny]
+
+class SizeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Size.objects.all()
+    serializer_class = SizeSerializer
+    permission_classes = [AllowAny]
+
 # สินค้า
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -83,17 +105,6 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [AllowAny]
-
-# รูปแบบสินค้า (ขนาดและสี)
-class ProductVariationListCreateAPIView(generics.ListCreateAPIView):
-    queryset = ProductVariation.objects.all()
-    serializer_class = ProductVariationSerializer
-    permission_classes = [AllowAny]
-
-class ProductVariationDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ProductVariation.objects.all()
-    serializer_class = ProductVariationSerializer
     permission_classes = [AllowAny]
 
 # ตะกร้าสินค้า
@@ -111,22 +122,22 @@ class AddToCartAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        variation_id = request.data.get('variation_id')
+        product_id = request.data.get('product_id')
         quantity = int(request.data.get('quantity', 1))
         user = request.user
 
         try:
-            product_variation = ProductVariation.objects.get(id=variation_id)
-        except ProductVariation.DoesNotExist:
-            return Response({'error': 'Product variation not found'}, status=status.HTTP_404_NOT_FOUND)
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        if product_variation.stock < quantity:
+        if product.stock < quantity:
             return Response({'error': 'Not enough stock'}, status=status.HTTP_400_BAD_REQUEST)
 
         cart, created = Cart.objects.get_or_create(user=user)
         cart_item, created = CartItem.objects.get_or_create(
             cart=cart,
-            product_variation=product_variation,
+            product=product,
             defaults={'quantity': quantity}
         )
         if not created:
@@ -160,7 +171,11 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         user = request.user
-        cart = Cart.objects.get(user=user)
+        try:
+            cart = Cart.objects.get(user=user)
+        except Cart.DoesNotExist:
+            return Response({'error': 'Your cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+
         if not cart.items.exists():
             return Response({'error': 'Your cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -174,21 +189,21 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
 
         total_price = 0
         for cart_item in cart.items.all():
-            if cart_item.product_variation.stock < cart_item.quantity:
-                return Response({'error': f'Not enough stock for {cart_item.product_variation}'}, status=status.HTTP_400_BAD_REQUEST)
+            if cart_item.product.stock < cart_item.quantity:
+                return Response({'error': f'Not enough stock for {cart_item.product.name}'}, status=status.HTTP_400_BAD_REQUEST)
 
             OrderItem.objects.create(
                 order=order,
-                product_variation=cart_item.product_variation,
+                product=cart_item.product,
                 quantity=cart_item.quantity,
-                price=cart_item.product_variation.price
+                price=cart_item.product.price
             )
 
             # ปรับปรุงสต็อกสินค้า
-            cart_item.product_variation.stock -= cart_item.quantity
-            cart_item.product_variation.save()
+            cart_item.product.stock -= cart_item.quantity
+            cart_item.product.save()
 
-            total_price += cart_item.product_variation.price * cart_item.quantity
+            total_price += cart_item.product.price * cart_item.quantity
 
         # อัปเดตราคารวมของคำสั่งซื้อ
         order.total_price = total_price
@@ -242,5 +257,40 @@ class CouponListAPIView(generics.ListAPIView):
 # สร้างผู้ใช้ใหม่
 class CreateUserAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer  # แก้จาก UserProfileSerializer เป็น UserSerializer
+    serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+class UserProfileDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, username):
+        try:
+            profile = UserProfile.objects.get(user__username=username)
+            return Response({
+                'username': profile.user.username,
+                'role': profile.role,
+            })
+        except UserProfile.DoesNotExist:
+            return Response({"error": "UserProfile not found"}, status=404)
+
+# views.py
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+# ViewSet สำหรับหมวดหมู่
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
+
