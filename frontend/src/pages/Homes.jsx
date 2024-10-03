@@ -44,7 +44,7 @@ function Homes() {
                     <div className='main-section'>
                         <div class="gallery-container">
                             <img src="" alt="" />
-
+                                
                         </div>
                     </div>
             </body>
