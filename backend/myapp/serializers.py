@@ -40,65 +40,6 @@ class ProductImageSerializer(serializers.ModelSerializer):
 # # Serializer สำหรับสินค้า (Product)
 
 
-# class ProductSerializer(serializers.ModelSerializer):
-#     parent_category_name = serializers.CharField(source='parent_category.name', read_only=True)
-#     sub_category_name = serializers.CharField(source='sub_category.name', read_only=True)
-#     child_category_name = serializers.CharField(source='child_category.name', read_only=True)
-
-    
-#     images = ProductImageSerializer(many=True, read_only=True)
-#     images_upload = serializers.ListField(
-#         child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
-#         write_only=True,
-#         required=False
-#     )
-#     # sizes = serializers.PrimaryKeyRelatedField(
-#     #     many=True,
-#     #     queryset=Size.objects.all(),
-#     #     required=False,
-#     #     allow_null=True
-#     # )
-
-#     class Meta:
-#         model = Product
-#         fields = ['id', 'name', 'description', 'materials', 'parent_category', 'parent_category_id', 'parent_category_name',
-#                   'sub_category', 'sub_category_id', 'sub_category_name', 
-#                   'child_category', 'child_category_id', 'child_category_name', 
-#                   'price', 'stock', 'created_at', 'images', 'images_upload']
-#         extra_kwargs = {
-#             'category': {'write_only': True},
-#         }
-
-#     def create(self, validated_data):
-#         images_data = validated_data.pop('images_upload', [])
-#         sizes = validated_data.pop('sizes', [])
-
-#         product = Product.objects.create(**validated_data)
-
-#         if sizes:
-#             product.sizes.set(sizes)
-
-#         for image in images_data:
-#             ProductImage.objects.create(product=product, image=image)
-
-#         return product
-
-#     def update(self, instance, validated_data):
-#         images_data = validated_data.pop('images_upload', [])
-#         sizes = validated_data.pop('sizes', [])
-
-#         for attr, value in validated_data.items():
-#             setattr(instance, attr, value)
-#         instance.save()
-
-#         if sizes:
-#             instance.sizes.set(sizes)
-
-#         for image in images_data:
-#             ProductImage.objects.create(product=instance, image=image)
-
-#         return instance
-
 
 class ProductSerializer(serializers.ModelSerializer):
     parent_category_name = serializers.CharField(source='parent_category.name', read_only=True)
