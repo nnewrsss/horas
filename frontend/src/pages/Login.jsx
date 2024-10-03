@@ -105,12 +105,15 @@ import { ACCESS_TOKEN } from '../constants';
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // เพิ่ม state สำหรับเก็บข้อความข้อผิดพลาด
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
     
-    // First, get the tokens
+    setError(""); // รีเซ็ตข้อความข้อผิดพลาดก่อน
+
+    // ขอรับโทเค็นจาก API
     api.post("/myapp/token/", {
       username: username,
       password: password,
@@ -120,12 +123,12 @@ function Login() {
         const accessToken = res.data.access;
         const refreshToken = res.data.refresh;
 
-        // Store tokens
+        // เก็บโทเค็นใน localStorage
         localStorage.setItem(ACCESS_TOKEN, accessToken);
         localStorage.setItem("refresh", refreshToken);
-        localStorage.setItem("username", username); // Store username
+        localStorage.setItem("username", username); // เก็บชื่อผู้ใช้
 
-        // Fetch user role after successful login
+        // ดึงข้อมูล role ของผู้ใช้หลังจากล็อกอินสำเร็จ
         api.get(`/myapp/userprofile/${username}/`, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -141,20 +144,17 @@ function Login() {
           } else {
             navigate('/homes');  // ถ้า role เป็น user จะไปที่หน้า homes
           }
-        
-          alert("เข้าสู่ระบบสำเร็จ!");
         })
-        
         .catch((err) => {
           console.error("Error fetching user profile", err);
-          alert("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้");
+          setError("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้"); // แสดงข้อความข้อผิดพลาด
         });
       } else {
-        alert("ไม่สามารถเข้าสู่ระบบได้!");
+        setError("ไม่สามารถเข้าสู่ระบบได้!"); // กรณีโทเค็นไม่ถูกต้อง
       }
     })
     .catch((err) => {
-      alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+      setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"); // กรณีล็อกอินไม่สำเร็จ
       console.error(err);
     });
   };
@@ -187,6 +187,7 @@ function Login() {
         <br />
         <input type="submit" value="เข้าสู่ระบบ" />
       </form>
+      {error && <p style={{ color: "red" }}>{error}</p>} {/* แสดงข้อความข้อผิดพลาด */}
     </div>
   );
 }
