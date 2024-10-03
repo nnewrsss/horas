@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api';
-import Navbar from '../components/Navbar';
+import Nav from '../components/Nav';
 import '../styles/AboutUs.css';
 
 
@@ -28,6 +28,7 @@ function AboutUs() {
 
       </head>
       <body>
+      <Nav/>
         <div class="container">
           <div class="left-container">
             <div class="image">
@@ -35,7 +36,7 @@ function AboutUs() {
             </div>
           </div>
           <div class="right-container">
-            <h1>ABOUT US.</h1>
+            <img src="src/images/logo-aboutus.png"  className="aboutus"alt="" />
             <div class="content-section">
               <div class="column">
                 <p>Horas is a classic and timeless clothing brand designed for those who seek elegance and versatility. Our pieces are carefully crafted to ensure they can be worn on any occasion, whether it's a casual day out or a special evening event. With attention to detail and a passion for quality, Horas delivers a sense of style that transcends trends, allowing you to feel confident and sophisticated at all times.</p>
