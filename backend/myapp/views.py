@@ -1,62 +1,11 @@
+#o1mini
+# views.py
 
-from django.shortcuts import render
-
-# Create your views here.
-
-# from django.shortcuts import render
-# from django.contrib.auth.models import User
-# from rest_framework import generics
-# from .serializers import UserSerializer,NoteSerializer
-# from rest_framework.permissions import IsAuthenticated, AllowAny
-# from .models import Note
-# # Create your views here.
-
-# class NoteListCreate(generics.ListCreateAPIView):
-#     serializer_class = NoteSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         user = self.request.user
-#         return Note.objects.filter(author=user)
-    
-#     def perform_create(self, serializer):
-#         if serializer.is_valid():
-#             serializer.save(author=self.request.user)
-#         else:
-#             print(serializer.errors)
-
-
-# class NoteDelete(generics.DestroyAPIView):
-#    serializer_class = NoteSerializer
-#    permission_classes = [IsAuthenticated]
-
-#    def get_queryset(self):
-#     user = self.request.user
-#     return Note.objects.filter(author=user)
-
-# class CreateUserView(generics.CreateAPIView):
-#     queryset = User.objects.all() 
-#     serializer_class = UserSerializer
-#     permission_classes =  [AllowAny]
-
-
-
-
-
-
-
-
-
-
-
-
-
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import viewsets
 from .models import (
     Category, Product, Size, Cart, CartItem,
     Order, OrderItem, Payment, UserProfile, ProductImage,
@@ -294,3 +243,142 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
 
+
+# views.py
+
+class ProductCreateAPIView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, format=None):
+        # Parse variations from JSON string
+        variations_data = json.loads(request.data.get('sizes', '[]'))  # เปลี่ยนจาก 'variations' เป็น 'sizes'
+        request.data._mutable = True
+        request.data['sizes'] = variations_data
+
+        product_serializer = ProductSerializer(data=request.data)
+
+        if product_serializer.is_valid():
+            product_serializer.save()
+            return Response({'message': 'Product created successfully'}, status=status.HTTP_201_CREATED)
+
+        # แสดงข้อผิดพลาดจาก serializer
+        return Response(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+def get_parent_categories(request):
+    parent_categories = Category.objects.filter(parent=None)
+    serializer = CategorySerializer(parent_categories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+def get_subcategories(request):
+    parent_id = request.GET.get('parent')
+    subcategories = Category.objects.filter(parent_id=parent_id)  # หมวดหมู่ที่มีพ่อ
+    serializer = CategorySerializer(subcategories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+def get_child_categories(request):
+    subcategory_id = request.GET.get('subcategory')
+    child_categories = Category.objects.filter(parent_id=subcategory_id)  # หมวดหมู่ที่มีแม่
+    serializer = CategorySerializer(child_categories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def create_product(request):
+    # แสดงข้อมูลที่ถูกส่งมาจาก React
+    print(request.data)  # พิมพ์ข้อมูลทั้งหมดที่ถูกส่งมาใน backend logs
+
+    name = request.data.get('name')
+    description = request.data.get('description')
+    parent_category_id = request.data.get('parent_category')
+    sub_category_id = request.data.get('sub_category')
+    child_category_id = request.data.get('child_category')
+    materials = request.data.get('materials')
+    price = request.data.get('price')
+    stock = request.data.get('stock')
+
+    # ตรวจสอบว่ามีการส่งข้อมูลถูกต้องหรือไม่
+    print(f"Name: {name}, Description: {description}, Parent: {parent_category_id}, Sub: {sub_category_id}, Child: {child_category_id}, Materials: {materials}, Price: {price}, Stock: {stock}")
+
+    # ดึงหมวดหมู่จากฐานข้อมูล
+    parent_category = get_object_or_404(Category, id=parent_category_id)
+    sub_category = get_object_or_404(Category, id=sub_category_id)
+    child_category = get_object_or_404(Category, id=child_category_id)
+
+    # สร้างสินค้า
+    product = Product.objects.create(
+        name=name,
+        description=description,
+        parent_category=parent_category,
+        sub_category=sub_category,
+        child_category=child_category,
+        materials=materials,
+        price=price,
+        stock=stock
+    )
+
+    return Response({'message': 'Product created successfully', 'product': product.id})
+
+
+@api_view(['GET'])
+def get_products(request):
+    products = Product.objects.all()  # Fetch all products
+    serializer = ProductSerializer(products, many=True)  # Ensure 'many=True' for array serialization
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def delete_product(request, product_id):
+    try:
+        product = Product.objects.get(id=product_id)
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except Product.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def category_list(request):
+    categories = Category.objects.all()  # Fetch all categories
+    serializer = CategorySerializer(categories, many=True)
+    return Response(serializer.data)
+
+
+
+
+
+# View สำหรับการอัปเดตรูปภาพสินค้า
+class ProductImageUpdateView(APIView):
+    def put(self, request, image_id):
+        try:
+            product_image = ProductImage.objects.get(id=image_id)
+        except ProductImage.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ProductImageSerializer(product_image, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# View สำหรับการอัปโหลดรูปภาพสินค้า
+class ProductImageUploadView(APIView):
+    def post(self, request, format=None):
+        serializer = ProductImageUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+# View สำหรับลบรูปภาพสินค้า
+class ProductImageDeleteView(generics.DestroyAPIView):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
+    permission_classes = [IsAdminUser]  # ปรับตามความต้องการของคุณ
