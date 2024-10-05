@@ -69,7 +69,8 @@ import ProductDetailForm from './pages/ProductDetailForm';
 import ProductList from './pages/ProductList';
 import ProductEdit from "./pages/ProductEdit";
 import PrivateRoute from './components/PrivateRoute'; // นำเข้า PrivateRoute
-
+import Female from './pages/female'
+import Men from './pages/Men'
 function Logout() {
   localStorage.clear(); // เคลียร์ข้อมูลใน localStorage เมื่อผู้ใช้ล็อกเอาท์
   return <Navigate to="/login" />; // เปลี่ยนเส้นทางไปที่หน้า login
@@ -108,6 +109,8 @@ function App() {
         <Route path="/admin/product-list" element={<ProductList />} />
         <Route path="/admin/product-edit/:productId" element={<ProductEdit />} />
         <Route path="*" element={<NotFound />} /> {/* เส้นทางอื่นๆ จะนำไปที่หน้า NotFound */}
+        <Route path="/female" element={<Female/>} />
+        <Route path="/men" element={<Men/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView
+from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products
 from . import views
 
 
@@ -40,8 +40,8 @@ urlpatterns = [
 
 
 
-    
-
+path('products/male/', male_products, name='male-products'),
+path('products/female/', female_products, name='female-products'),
 path('upload-product-image/', ProductImageUploadView.as_view(), name='upload_product_image'),
 path('api/productimages/<int:pk>/', ProductImageDeleteView.as_view(), name='delete-product-image'),  # เพิ่ม URL สำหรับลบรูปภาพ
      path('parentcategories/', get_parent_categories, name='parent-categories'),
@@ -49,6 +49,8 @@ path('api/productimages/<int:pk>/', ProductImageDeleteView.as_view(), name='dele
     path('childcategories/', get_child_categories, name='child-categories'),
     # ใช้ router สำหรับจัดการ categories
     path('', include(router.urls)),
+
+      
 
 
 

@@ -20,8 +20,9 @@ from .serializers import (
 from django.contrib.auth.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
 from .permissions import IsAdminUser
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes,action
 import json
+from django.shortcuts import get_object_or_404
 
 # หมวดหมู่สินค้า
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -237,7 +238,10 @@ class ProductViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-# ViewSet สำหรับหมวดหมู่
+
+   
+
+# ViewSet 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -382,3 +386,24 @@ class ProductImageDeleteView(generics.DestroyAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [IsAdminUser]  # ปรับตามความต้องการของคุณ
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def female_products(request):
+    # กรองสินค้าที่มี parent_category_id เป็น 3
+    female_products = Product.objects.filter(parent_category_id=3)
+    serializer = ProductSerializer(female_products, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def male_products(request):
+    # กรองสินค้าที่มี parent_category_id เป็น 3
+    male_products = Product.objects.filter(parent_category_id=2)
+    serializer = ProductSerializer(male_products, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

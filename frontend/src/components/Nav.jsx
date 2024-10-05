@@ -304,7 +304,7 @@ function Nav({ username }) {
     <>
       <nav className={`nav ${isHovered ? 'hovered' : ''}`}>
         <div className='hr'>
-          <Link to="/">
+          <Link to="/homes">
             <img src="src/images/navbar/logo-white_hr.png" alt="Logo" className="hr-lo" />
           </Link>
         </div>
