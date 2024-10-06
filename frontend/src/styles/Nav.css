@@ -185,6 +185,7 @@ a:hover {
     border-bottom: 1px solid white; /* เพิ่มเส้นขีดใต้ */
     padding-bottom: 5px; /* เพิ่มระยะห่างระหว่างข้อความกับเส้นขีดใต้ */
     font-weight: 400    ;
+    color: white;
 }
 
 .column ul {

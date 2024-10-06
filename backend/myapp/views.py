@@ -407,3 +407,64 @@ def male_products(request):
     male_products = Product.objects.filter(parent_category_id=2)
     serializer = ProductSerializer(male_products, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# # ViewSet 
+# class CategoryViewSet(viewsets.ModelViewSet):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#     permission_classes = [AllowAny]
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+def maletop_subcategories(request):
+    
+    mensubcategories = Category.objects.filter(id=15)  # หมวดหมู่ที่มีพ่อ
+    serializer = CategorySerializer(mensubcategories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+def malebottom_subcategories(request):
+    
+    menbottomsubcategories = Category.objects.filter(id=16)  # หมวดหมู่ที่มีพ่อ
+    serializer = CategorySerializer(menbottomsubcategories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+def malebags_subcategories(request):
+    
+    menbagssubcategories = Category.objects.filter(id=47)  # หมวดหมู่ที่มีพ่อ
+    serializer = CategorySerializer(menbagssubcategories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def femaletop_subcategories(request):
+
+    femaletopsubcategories = Category.objects.filter(id=17)
+    serializer = CategorySerializer(femaletopsubcategories,many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def femalebottom_subcategories(request):
+
+    femalebottomsubcategories = Category.objects.filter(id=18)
+    serializer = CategorySerializer(femalebottomsubcategories,many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def femalebags_subcategories(request):
+
+    femalebagssubcategories = Category.objects.filter(id=48)
+    serializer = CategorySerializer(femalebagssubcategories,many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

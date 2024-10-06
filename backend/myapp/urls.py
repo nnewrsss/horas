@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products
+from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products,maletop_subcategories,malebottom_subcategories,malebags_subcategories,femaletop_subcategories,femalebottom_subcategories,femalebags_subcategories
 from . import views
 
 
@@ -47,6 +47,19 @@ path('api/productimages/<int:pk>/', ProductImageDeleteView.as_view(), name='dele
      path('parentcategories/', get_parent_categories, name='parent-categories'),
     path('subcategories/', get_subcategories, name='sub-categories'),
     path('childcategories/', get_child_categories, name='child-categories'),
+
+
+
+    path('malesubcategories/',maletop_subcategories,name='male-subcategories'),
+     path('malebottomsubcategories/',malebottom_subcategories,name='malebottom-subcategories'),
+     path('malebagssubcategories/',malebags_subcategories,name='malebags-subcategories'),
+
+
+
+    path('femaletopsubcategories/',femaletop_subcategories,name='femaletop-subcategories'),
+    path('femalebottomsubcategories/',femalebottom_subcategories,name='femalebottom_subcategories'),
+    path('femalebagsubcategories/',femalebags_subcategories,name='femalebags_subcategories'),
+
     # ใช้ router สำหรับจัดการ categories
     path('', include(router.urls)),
 
