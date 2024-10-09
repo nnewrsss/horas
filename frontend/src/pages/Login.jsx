@@ -45,14 +45,14 @@ function Login() {
         })
         .catch((err) => {
           console.error("Error fetching user profile", err);
-          setError("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้");
-        });
+          setError("Username or Password Incorrect");
+        }); 
       } else {
-        setError("ไม่สามารถเข้าสู่ระบบได้!");
+        setError("Cant Sign in!");
       }
     })
     .catch((err) => {
-      setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+      setError("Username or Password Incorrect");
       console.error(err);
     });
   };
@@ -68,7 +68,7 @@ function Login() {
       <div className="login-content2">
         <img src="src/images/logo-white_horas.png" alt="" className="logo_login"/>
         <form onSubmit={handleLogin} className="form">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             id="username"
@@ -79,7 +79,7 @@ function Login() {
             className="username"
           />
           <br />
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -89,7 +89,7 @@ function Login() {
             value={password} 
             className="password"
           />
-
+          <br />
           <div className="options">
             <button type="button" className="register-btn" onClick={() => navigate('/register')}>Register</button>
             <button type="button" className="forgot-password-btn" onClick={() => navigate('/forgot-password')}>Forgot Password</button>

@@ -332,7 +332,7 @@ function Nav({ username }) {
                 <FaUser size={20} />
                 <div className="user-text">
                   <span className="hello-text">Hello</span>
-                  <span className="username">{username}</span>
+                  <span className="usernames">{username}</span>
                 </div>
               </div>
               {userMenuOpen && (
