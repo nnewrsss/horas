@@ -14,6 +14,7 @@ import ProductList from './pages/ProductList';
 import ProductEdit from "./pages/ProductEdit";
 import PrivateRoute from './components/PrivateRoute'; // นำเข้า PrivateRoute
 import Men from "./pages/Men";
+import Female from "./pages/Female"
 
 function Logout() {
   localStorage.clear(); // เคลียร์ข้อมูลใน localStorage เมื่อผู้ใช้ล็อกเอาท์
@@ -54,6 +55,7 @@ function App() {
         <Route path="/admin/product-edit/:productId" element={<ProductEdit />} />
         <Route path="*" element={<NotFound />} /> {/* เส้นทางอื่นๆ จะนำไปที่หน้า NotFound */}
         <Route path="/men" element={<Men />} /> {/* เส้นทางอื่นๆ จะนำไปที่หน้า NotFound */}
+        <Route path="/female" element={<Female/>} />
       </Routes>
     </BrowserRouter>
   );

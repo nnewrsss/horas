@@ -35,11 +35,7 @@ function Men() {
     return (
         
         <div>
-            {/* Hero Section */}
-        
             <Nav username={username} />
-            
-            
             <div className='hero-section_men'>
                 <div className='heroshadow'></div>
                 <img src="/src/images/men/shopmain.png" alt="Shop Main" className='hero-imgs' />
@@ -51,35 +47,30 @@ function Men() {
                 <div className="product-grid">
                     {/* Product item */}
                     <div className="product-item">
-                        <img src="/src/images/men/product1.png" alt="Product 1" />
-                        <h3>Cashmere Crewneck Sweater</h3>
+                        <img src="/src/images/men/top.png" alt="Product 1" />
+
                     </div>
 
                     <div className="product-item">
-                        <img src="/src/images/men/product2.png" alt="Product 2" />
-                        <h3>Cashmere Crewneck Sweater</h3>
+                        <img src="/src/images/men/buttoms.png" alt="Product 2" />
+
                     </div>
 
                     <div className="product-item">
-                        <img src="/src/images/men/product3.png" alt="Product 3" />
-                        <h3>Cashmere Crewneck Sweater</h3>
-                    </div>
-
-                    <div className="product-item">
-                        <img src="/src/images/men/product4.png" alt="Product 4" />
-                        <h3>Cashmere Crewneck Sweater</h3>
+                        <img src="/src/images/men/bags.png" alt="Product 3" />
                     </div>
                 </div>
+
                 {/* Highlight Section */}
-                <div className='highlight-section'>
+                {/*<div className='highlight-section'>
                     <h2>Highlight</h2>
                     
                     <div className="highlight-item">
                         {/* ใช้ index เพื่อแสดงรูปภาพ */}
-                        <img src={highlightImages[currentImageIndex]} alt="Highlight" />
+                        {/* <img src={highlightImages[currentImageIndex]} alt="Highlight" /> */}
                         
-                    </div>
-                    <div className="dots-container">
+                    {/* </div> */}
+                    {/* <div className="dots-container">
                         {highlightImages.map((_, index) => (
                             <span
                                 key={index}
@@ -87,8 +78,8 @@ function Men() {
                             ></span>
                         ))}
                     </div>
-                    
-                </div>
+                </div> */}
+
             </div>
         </div>
     );

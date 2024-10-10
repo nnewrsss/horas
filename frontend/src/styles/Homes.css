@@ -8,7 +8,7 @@
     box-sizing: border-box; /* เพื่อให้ padding และ border ถูกรวมกับขนาดขององค์ประกอบ */
 }
 
-.body
+body
 {
     background-color: #E9E7E0;
 }
