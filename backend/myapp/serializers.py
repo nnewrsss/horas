@@ -1,3 +1,4 @@
+
 #o1mini
 # serializers.py
 
@@ -92,6 +93,10 @@ class ProductSerializer(serializers.ModelSerializer):
             ProductImage.objects.create(product=instance, image=image)
 
         return instance
+
+
+
+
 
 
 # Serializer สำหรับรายการสินค้าในตะกร้า (CartItem)

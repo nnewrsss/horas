@@ -1,55 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import Nav from '../components/Nav.jsx';
-// import axios from 'axios';   // Axios สำหรับดึงข้อมูลจาก backend
-// import '../styles/female.css';
-
-// const Female = () => {
-//   const [products, setProducts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const username = localStorage.getItem('username'); 
-
-//   // ฟังก์ชันสำหรับดึงข้อมูลสินค้าจาก backend
-//   const fetchFemaleProducts = async () => {
-//     try {
-//       const response = await axios.get('http://127.0.0.1:8000/myapp/products/female/'); // ปรับ URL ตามการตั้งค่า backend
-//       console.log(response.data); // ตรวจสอบข้อมูล
-//       const fetchedProducts = Array.isArray(response.data) ? response.data : response.data.results;
-//       setProducts(fetchedProducts); 
-//       setLoading(false);
-//     } catch (err) {
-//       setError('Error fetching products.');
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchFemaleProducts();
-//   }, []);
-
-//   return (
-//     <div>
-//        <Nav username={username} />
-
-//        <div className='hero-section'>
-//                 <div className='heroshadow'></div>
-//                 <img src="/src/images/women/shopmain.jpg" alt="Shop Main" className='hero-img' />
-//             </div>
-
-
-//             <div className='main-section'>
-//             <h2>CATEGORIES</h2>
-//             </div>
-     
-//     </div>
-//   );
-// };
-
-// export default Female;
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import { ACCESS_TOKEN } from '../constants.js';
 import Nav from '../components/Nav.jsx';
@@ -178,3 +126,5 @@ function Men() {
 }
 
 export default Men;
+
+

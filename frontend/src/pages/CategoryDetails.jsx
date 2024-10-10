@@ -1,56 +1,62 @@
-// CategoryDetails.jsx
-
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Nav from '../components/Nav.jsx'; // เพิ่มการนำเข้า Nav
-import { ACCESS_TOKEN } from '../constants.js'; // เพิ่มการนำเข้าค่า token
-import { useNavigate } from 'react-router-dom'; // นำเข้า useNavigate สำหรับการเปลี่ยนหน้า
+import Nav from '../components/Nav.jsx';
+import { ACCESS_TOKEN } from '../constants.js';
 
 function CategoryDetails() {
-    const { subcategoryType } = useParams(); // รับประเภทของหมวดหมู่ย่อยจาก URL
-    const [products, setProducts] = useState([]); // เก็บข้อมูลสินค้าที่ดึงจาก API
-    const [loading, setLoading] = useState(true); // สถานะการโหลดข้อมูล
-    const [error, setError] = useState(null); // ข้อผิดพลาดถ้ามี
-    const username = localStorage.getItem('username'); // ดึงข้อมูล username จาก localStorage
-    const navigate = useNavigate(); // ใช้ useNavigate สำหรับการเปลี่ยนหน้า
+    const { subcategoryType } = useParams(); // Get category type from URL
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const username = localStorage.getItem('username');
+    const navigate = useNavigate(); // Navigate to the category product page
 
-    // ตรวจสอบ token และเปลี่ยนหน้าไปยังหน้า login ถ้าไม่มี token
     useEffect(() => {
         const token = localStorage.getItem(ACCESS_TOKEN);
         if (!token) {
-            window.location.href = '/'; // ถ้าไม่มี token ให้เปลี่ยนเส้นทางไปหน้า login
+            window.location.href = '/'; // Redirect to login if no token
         }
     }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/myapp/${subcategoryType}/`);
-                setProducts(response.data); // ตั้งค่าข้อมูลสินค้าที่ดึงมา
-                setLoading(false); // หยุดสถานะการโหลด
+                const url = `http://127.0.0.1:8000/myapp/${subcategoryType}/`;
+                console.log("Request URL:", url); // Log the request URL
+                const response = await axios.get(url);
+                console.log("Response Data:", response.data); // Log the response data
+                setProducts(response.data);
+                setLoading(false);
             } catch (err) {
-                setError('Error fetching products.'); // แสดงข้อความข้อผิดพลาด
-                setLoading(false); // หยุดสถานะการโหลด
+                console.log("Error:", err); // Log the error if there is one
+                setError('Error fetching products.');
+                setLoading(false);
             }
         };
+    
+        fetchProducts();
+    }, [subcategoryType]);
+    
+    
 
-        fetchProducts(); // เรียกใช้ฟังก์ชันดึงข้อมูลเมื่อ component mount
-    }, [subcategoryType]); // ทำงานใหม่ทุกครั้งเมื่อ subcategoryType เปลี่ยน
-
+    const handleProductClick = (productId) => {
+        console.log("Product ID:", productId);  // แสดง productId ในคอนโซล
+        navigate(`/categoryproduct/${productId}`);  // ส่ง id ของ product ไปที่ route
+    };
+    
+    
     if (loading) {
-        return <p>Loading...</p>; // แสดงข้อความ Loading ขณะที่ข้อมูลกำลังถูกโหลด
+        return <p>Loading...</p>;
     }
 
     if (error) {
-        return <p>{error}</p>; // แสดงข้อความข้อผิดพลาดถ้ามี
+        return <p>{error}</p>;
     }
 
     return (
         <div>
-            {/* แสดง Nav พร้อมกับ username */}
-            <Nav username={username} /> 
-
+            <Nav username={username} />
             <div className='product-details-container'>
                 <h1>Products in {subcategoryType}</h1>
                 <div className='products-grid'>
@@ -58,7 +64,7 @@ function CategoryDetails() {
                         <div key={product.id} className='product-card'>
                             {product.images && product.images.length > 0 && (
                                 <img
-                                    src={`http://127.0.0.1:8000${product.images[0].image}`} 
+                                    src={`http://127.0.0.1:8000${product.images[0].image}`}
                                     alt={product.name}
                                     className='product-image'
                                 />
@@ -67,9 +73,17 @@ function CategoryDetails() {
                                 <h2>{product.name}</h2>
                                 <p>{product.description}</p>
                                 <p>Price: ${product.price}</p>
-                                <button onClick={() => alert(`Adding ${product.name} to cart!`)} className='add-to-cart-button'>
-                                    Add to Cart
-                                </button>
+                                <button
+    onClick={() => {
+        console.log("Product ID:", product.id);  // แสดง productId ในคอนโซลเมื่อกดปุ่ม
+        handleProductClick(product.id);
+    }}
+    className='view-product-button'
+>
+    View Products
+</button>
+
+
                             </div>
                         </div>
                     ))}
@@ -80,3 +94,64 @@ function CategoryDetails() {
 }
 
 export default CategoryDetails;
+
+
+// import React, { useEffect, useState } from 'react';
+// import { useParams, useNavigate } from 'react-router-dom';
+// import axios from 'axios';
+
+// function CategoryDetails() {
+//     const { subcategoryType } = useParams();  // Get subcategory type from URL params
+//     const [subcategories, setSubcategories] = useState([]);
+//     const [loading, setLoading] = useState(true);
+//     const [error, setError] = useState(null);
+//     const navigate = useNavigate();  // ใช้ navigate สำหรับการเปลี่ยนหน้า
+
+//     useEffect(() => {
+//         const fetchSubcategories = async () => {
+//             try {
+//                 // เรียก API เพื่อดึง subcategories ตาม subcategoryType
+//                 const response = await axios.get(`http://127.0.0.1:8000/myapp/${subcategoryType}/`);
+//                 console.log("Request URL:", url);
+//                 setSubcategories(response.data);  // ตั้งค่าข้อมูล subcategories ที่ดึงมา
+//                 setLoading(false);
+//             } catch (err) {
+//                 setError('Error fetching subcategories.');
+//                 setLoading(false);
+//             }
+//         };
+
+//         fetchSubcategories();
+//     }, [subcategoryType]);
+
+//     // ฟังก์ชันที่จะเรียกเมื่อคลิกเลือก subcategory
+//     const handleSubcategoryClick = (childCategoryId) => {
+//         // เมื่อกด subcategory จะเปลี่ยนไปที่หน้าแสดงสินค้าตาม child_category_id
+//         navigate(`/myapp/products/childcategory/${childCategoryId}/`);
+//     };
+
+//     if (loading) {
+//         return <p>Loading...</p>;
+//     }
+
+//     if (error) {
+//         return <p>{error}</p>;
+//     }
+
+//     return (
+//         <div>
+//             <h1>Subcategories in {subcategoryType}</h1>
+//             <ul>
+//                 {subcategories.map(subcategory => (
+//                     <li key={subcategory.id}>
+//                         <button onClick={() => handleSubcategoryClick(subcategory.id)}>
+//                             {subcategory.name}
+//                         </button>
+//                     </li>
+//                 ))}
+//             </ul>
+//         </div>
+//     );
+// }
+
+// export default CategoryDetails;

@@ -141,3 +141,30 @@ const handleCategoryClick = (subcategoryType) => {
 
 export default Men;
 
+
+
+// // Men.jsx
+
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+
+// function Men() {
+//   // ... other code
+
+//   return (
+//     <div>
+//       <h1>Men's Categories</h1>
+//       <ul>
+//         <li>
+//           <Link to="/categorydetails/maleshirt">Male Shirt</Link>
+//         </li>
+//         <li>
+//           <Link to="/categorydetails/malepolo">Male Polo</Link>
+//         </li>
+//         {/* Add more categories as needed */}
+//       </ul>
+//     </div>
+//   );
+// }
+
+// export default Men;
