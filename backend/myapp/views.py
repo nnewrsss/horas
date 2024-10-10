@@ -416,31 +416,66 @@ def male_products(request):
 #     permission_classes = [AllowAny]
 
 
+
+
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
-def maletop_subcategories(request):
+def male_subcategories(request):
     
-    mensubcategories = Category.objects.filter(id=15)  # หมวดหมู่ที่มีพ่อ
+    mensubcategories = Category.objects.filter(id=2)  # หมวดหมู่ที่มีพ่อ
     serializer = CategorySerializer(mensubcategories, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def maletop_subcategories(request):
+    try:
+        category = Category.objects.get(id=15)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
-@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+@permission_classes([AllowAny])
 def malebottom_subcategories(request):
-    
-    menbottomsubcategories = Category.objects.filter(id=16)  # หมวดหมู่ที่มีพ่อ
-    serializer = CategorySerializer(menbottomsubcategories, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    try:
+        category = Category.objects.get(id=16)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def malebags_subcategories(request):
+    try:
+        category = Category.objects.get(id=47)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
-def malebags_subcategories(request):
-    
-    menbagssubcategories = Category.objects.filter(id=47)  # หมวดหมู่ที่มีพ่อ
-    serializer = CategorySerializer(menbagssubcategories, many=True)
+@permission_classes([AllowAny])
+def female_subcategories(request):
+
+    femaletopsubcategories = Category.objects.filter(id=3)
+    serializer = CategorySerializer(femaletopsubcategories,many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
 @api_view(['GET'])
@@ -468,3 +503,15 @@ def femalebags_subcategories(request):
     femalebagssubcategories = Category.objects.filter(id=48)
     serializer = CategorySerializer(femalebagssubcategories,many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_subcategories(request, category_id):
+    try:
+        category = Category.objects.get(id=category_id)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'ไม่พบหมวดหมู่'}, status=status.HTTP_404_NOT_FOUND)

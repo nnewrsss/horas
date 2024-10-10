@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products,maletop_subcategories,malebottom_subcategories,malebags_subcategories,femaletop_subcategories,femalebottom_subcategories,femalebags_subcategories
+from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products,male_subcategories,maletop_subcategories,malebottom_subcategories,malebags_subcategories,female_subcategories,femalebottom_subcategories,femalebags_subcategories, get_subcategories
 from . import views
 
 
@@ -50,13 +50,31 @@ path('api/productimages/<int:pk>/', ProductImageDeleteView.as_view(), name='dele
 
 
 
-    path('malesubcategories/',maletop_subcategories,name='male-subcategories'),
+    path('malesubcategories/',male_subcategories,name='male-subcategories'),
+    path('maletopsubcategories/',maletop_subcategories,name='maletop-subcategories'),
      path('malebottomsubcategories/',malebottom_subcategories,name='malebottom-subcategories'),
      path('malebagssubcategories/',malebags_subcategories,name='malebags-subcategories'),
 
+    
+    path('femalesubcategories/',female_subcategories,name='female-subcategories'),
+     path('femalebottomsubcategories/',femalebottom_subcategories,name='femalebottom-subcategories'),
+     path('femalebagssubcategories/',femalebags_subcategories,name='femalebags-subcategories'),
 
 
-    path('femaletopsubcategories/',femaletop_subcategories,name='femaletop-subcategories'),
+
+      path('categories/<int:category_id>/subcategories/', get_subcategories, name='get-subcategories'),
+
+
+
+
+
+  
+
+
+
+    
+    # path('femaletopsubcategories/',female_subcategories,name='femaletop-subcategories'),
+
     path('femalebottomsubcategories/',femalebottom_subcategories,name='femalebottom_subcategories'),
     path('femalebagsubcategories/',femalebags_subcategories,name='femalebags_subcategories'),
 

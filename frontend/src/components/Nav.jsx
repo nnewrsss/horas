@@ -207,7 +207,6 @@
 
 
 
-
 // Nav.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -332,7 +331,7 @@ function Nav({ username }) {
                 <FaUser size={20} />
                 <div className="user-text">
                   <span className="hello-text">Hello</span>
-                  <span className="username">{username}</span>
+                  <span className="usernames">{username}</span>
                 </div>
               </div>
               {userMenuOpen && (
@@ -371,4 +370,3 @@ function Nav({ username }) {
 }
 
 export default Nav;
-
