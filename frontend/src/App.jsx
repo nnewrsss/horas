@@ -154,10 +154,11 @@ import ProductDetailForm from './pages/ProductDetailForm';
 import ProductList from './pages/ProductList';
 import ProductEdit from './pages/ProductEdit';
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
-import Female from './pages/Female';
+import Female from './pages/female';
 import Men from './pages/Men';
 import CategoryDetails from './pages/CategoryDetails';
 import CategoryProduct from './pages/Categoryproduct';
+import ProductDetails from './pages/productdetails';
 
 function Logout() {
   localStorage.clear(); // Clear localStorage on logout
@@ -206,10 +207,12 @@ function App() {
         <Route path="/men" element={<Men />} />
         <Route path="/categorydetails/:subcategoryType" element={<CategoryDetails />} />
         <Route path="/categoryproduct/:productId" element={<CategoryProduct />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
 
-
+        
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} /> {/* Any other routes go to NotFound */}
+        
       </Routes>
     </BrowserRouter>
   );
