@@ -9,6 +9,8 @@ function ProductDetails() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [sizes, setSizes] = useState([]);
+    const [selectedSize, setSelectedSize] = useState(null);
     const navigate = useNavigate();
     const username = localStorage.getItem('username');  // ดึงข้อมูล username จาก localStorage
 
@@ -20,6 +22,7 @@ function ProductDetails() {
         }
     }, [navigate]);
 
+    // Fetch product details
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
@@ -37,16 +40,42 @@ function ProductDetails() {
         fetchProductDetails();
     }, [productId]);
 
+    // Fetch sizes from the API
+    useEffect(() => {
+        const fetchSizes = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/myapp/sizes/');
+                console.log("Sizes:", response.data);
+                setSizes(response.data);
+            } catch (error) {
+                console.error("Error fetching sizes:", error);
+            }
+        };
+
+        fetchSizes();
+    }, []);
+
+    // Function to handle size selection
+    const handleSizeSelect = (size) => {
+        setSelectedSize(size);
+        alert(`Selected size: ${size.name}`);
+    };
+
     // ฟังก์ชันเมื่อผู้ใช้กดปุ่ม "ซื้อสินค้า"
     const handleBuyNow = () => {
-        alert('คุณได้ทำการซื้อสินค้าเรียบร้อยแล้ว!');
+        alert(`คุณได้ทำการซื้อสินค้าไซส์: ${selectedSize ? selectedSize.name : 'ไม่มีการเลือกไซส์'} เรียบร้อยแล้ว!`);
         // คุณสามารถเพิ่มการทำงานเพิ่มเติมที่นี่ เช่น การนำไปยังหน้าชำระเงิน
     };
 
     // ฟังก์ชันเมื่อผู้ใช้กดปุ่ม "เพิ่มสินค้าเข้าตะกร้า"
     const handleAddToCart = () => {
+        if (!selectedSize) {
+            alert('กรุณาเลือกไซส์ก่อนเพิ่มสินค้าลงตะกร้า');
+            return;
+        }
         const cartItems = JSON.parse(localStorage.getItem('cart')) || [];  // ดึงสินค้าที่อยู่ในตะกร้า (ถ้ามี)
-        cartItems.push(product);  // เพิ่มสินค้าลงในตะกร้า
+        const itemWithSize = { ...product, size: selectedSize };  // เพิ่มไซส์ที่เลือกไปยังสินค้าที่จะเพิ่มในตะกร้า
+        cartItems.push(itemWithSize);  // เพิ่มสินค้าลงในตะกร้า
         localStorage.setItem('cart', JSON.stringify(cartItems));  // เก็บตะกร้าลงใน localStorage
         alert('เพิ่มสินค้าเข้าตะกร้าเรียบร้อยแล้ว!');
     };
@@ -73,12 +102,40 @@ function ProductDetails() {
 
                     {/* แสดงรูปภาพสินค้า */}
                     {product.images && product.images.length > 0 && (
-                        <img
-                            src={product.images[0].image}
-                            alt={product.name}
-                            className='product-image'
-                            style={{ width: '300px', height: 'auto' }}  // ปรับขนาดรูปถ้าจำเป็น
-                        />
+                        <div>
+                            {product.images.map((image, index) => (
+                                <img
+                                    key={index}
+                                    src={image.image}
+                                    alt={`${product.name} ${index + 1}`}  // Use a unique alt text for each image
+                                    className='product-image'
+                                    style={{ width: '300px', height: 'auto', marginRight: '10px' }}  // Add some margin for spacing between images
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Size Selection */}
+                    <h2>Select a Size</h2>
+                    <div>
+                        {sizes.map((size) => (
+                            <button
+                                key={size.id}
+                                onClick={() => handleSizeSelect(size)}
+                                style={{
+                                    padding: '10px',
+                                    margin: '5px',
+                                    backgroundColor: selectedSize?.id === size.id ? 'green' : 'lightgray',
+                                    color: 'white'
+                                }}
+                            >
+                                {size.name}
+                            </button>
+                        ))}
+                    </div>
+
+                    {selectedSize && (
+                        <p>You selected: {selectedSize.name}</p>
                     )}
 
                     {/* ปุ่มซื้อสินค้า */}
