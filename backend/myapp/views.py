@@ -482,28 +482,40 @@ def female_subcategories(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def femaletop_subcategories(request):
+    try:
+        category = Category.objects.get(id=17)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-    femaletopsubcategories = Category.objects.filter(id=17)
-    serializer = CategorySerializer(femaletopsubcategories,many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def femalebottom_subcategories(request):
+    try:
+        category = Category.objects.get(id=18)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-    femalebottomsubcategories = Category.objects.filter(id=18)
-    serializer = CategorySerializer(femalebottomsubcategories,many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def femalebags_subcategories(request):
+    try:
+        category = Category.objects.get(id=48)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-    femalebagssubcategories = Category.objects.filter(id=48)
-    serializer = CategorySerializer(femalebagssubcategories,many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

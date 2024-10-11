@@ -3,20 +3,22 @@ import { ACCESS_TOKEN } from '../constants.js';
 import Nav from '../components/Nav.jsx';
 import axios from 'axios';  
 import '../styles/menstyle.css';
+import { useNavigate } from 'react-router-dom'; // นำเข้า useNavigate สำหรับการเปลี่ยนหน้า
 
-function Men() {
+function Female() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0); 
-    const [maleCategories, setMaleCategories] = useState([]); 
-    const [maleBottomCategories, setMaleBottomCategories] = useState([]); 
-    const [maleBagsCategories, setMaleBagsCategories] = useState([]); 
+    const [femaleCategories, setFemaleCategories] = useState([]); 
+    const [maleBottomCategories, setFeMaleBottomCategories] = useState([]); 
+    const [maleBagsCategories, setFeMaleBagsCategories] = useState([]); 
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 
     const username = localStorage.getItem('username'); 
+    const navigate = useNavigate(); // ใช้ useNavigate สำหรับการเปลี่ยนหน้า
     const highlightImages = [
-        "/src/images/men/product4.png",
-        "/src/images/men/product1.png",
-        "/src/images/men/product2.png",
-        "/src/images/men/product3.png"
+        "/src/images/female/product4.png",
+        "/src/images/female/product1.png",
+        "/src/images/female/product2.png",
+        "/src/images/female/product3.png"
     ]; 
 
     useEffect(() => {
@@ -26,19 +28,17 @@ function Men() {
         }
     }, []);
 
-    // ฟังก์ชันสำหรับดึงข้อมูลจากหลาย API path
-    const fetchMenCategories = async () => {
+    const fetchFemaleCategories = async () => {
         try {
-            const [maleSubcategories, maleBottomSubcategories, maleBagsSubcategories] = await Promise.all([
+            const [femaleSubcategories, femaleBottomSubcategories, femaleBagsSubcategories] = await Promise.all([
                 axios.get('http://127.0.0.1:8000/myapp/femalesubcategories/'),
                 axios.get('http://127.0.0.1:8000/myapp/femalebottomsubcategories/'),
                 axios.get('http://127.0.0.1:8000/myapp/femalebagssubcategories/')
             ]);
 
-            // ตั้งค่าข้อมูลของแต่ละหมวดหมู่
-            setMaleCategories(maleSubcategories.data);
-            setMaleBottomCategories(maleBottomSubcategories.data);
-            setMaleBagsCategories(maleBagsSubcategories.data);
+            setFemaleCategories(femaleSubcategories.data);
+            setFeMaleBottomCategories(femaleBottomSubcategories.data);
+            setFeMaleBagsCategories(femaleBagsSubcategories.data);
             setLoading(false); 
         } catch (err) {
             console.log(err); 
@@ -48,7 +48,7 @@ function Men() {
     };
 
     useEffect(() => {
-        fetchMenCategories(); 
+        fetchFemaleCategories(); 
     }, []);
 
     useEffect(() => {
@@ -58,6 +58,14 @@ function Men() {
 
         return () => clearInterval(interval); 
     }, [highlightImages.length]);
+
+    // ฟังก์ชันเปลี่ยนหน้าและส่งข้อมูล category ID
+    const handleCategoryClick = (subcategoryType) => {
+        console.log(subcategoryType); // เพิ่มการแสดงค่า subcategoryType เพื่อตรวจสอบ
+        navigate(`/categorydetails/${subcategoryType}`);
+    };
+    
+    
 
     return (
         <div>
@@ -76,32 +84,32 @@ function Men() {
                     <p>{error}</p> 
                 ) : (
                     <>
-                       {/* หมวดหมู่ Male */}
-{/* หมวดหมู่ Male */}
-<h3>Male</h3>
-<div className="subcategory-buttons">
-    {maleCategories.map((category) => (
-        category.subcategories.map((subcategory) => (
-            <button
-                key={subcategory.id}  
-                className="subcategory-button"
-                onClick={() => alert(`Selected: ${subcategory.name}`)} 
-            >
-                {/* แสดงรูปภาพของ subcategory ถ้ามี */}
-                {subcategory.images && subcategory.images.length > 0 && (
-                    <img 
-                        src={`http://127.0.0.1:8000${subcategory.images[0].image}`} 
-                        alt={subcategory.name} 
-                        className="subcategory-image"
-                    />
-                )}
-                {subcategory.name} {/* แสดงชื่อของ subcategory */}
-            </button>
-        ))
-    ))}
-</div>
+                       {/* หมวดหมู่ Female */}
+                       <h3>Female</h3>
 
-
+                       <div className="subcategory-buttons">
+                           <button
+                               className="subcategory-button"
+                               onClick={() => handleCategoryClick('femaletopsubcategories')}
+                           >
+                               Female Tops
+                               <img src="src/images/female/product1.png" alt="Shop main"/>
+                           </button>
+                           <button
+                               className="subcategory-button"
+                               onClick={() => handleCategoryClick('femalebottomsubcategories')}
+                           >
+                               Female Bottoms
+                               <img src="src/images/female/product2.png" alt="Shop main"/>
+                           </button>
+                           <button
+                               className="subcategory-button"
+                               onClick={() => handleCategoryClick('femalebagssubcategories')}
+                           >
+                               Female Bags
+                               <img src="src/images/female/product3.png" alt="Shop main" />
+                           </button>
+                       </div>
 
                     </>
                 )}
@@ -125,6 +133,4 @@ function Men() {
     );
 }
 
-export default Men;
-
-
+export default Female;
