@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ACCESS_TOKEN } from '../constants.js';
-// import Nav from '../components/Nav.jsx';
 import Nav from '../components/Nav.jsx';
 import api from '../api.js';
-import '../styles/femalestyle.css'
+import '../styles/mentop.css'
 
 
-function Female() {
+function mentop() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0); // สร้าง state เพื่อเก็บ index ของภาพที่แสดง
     const username = localStorage.getItem('username'); 
     const highlightImages = [
@@ -33,57 +32,39 @@ function Female() {
     }, [highlightImages.length]);
 
     return (
+        
         <div>
             <Nav username={username} />
-            <div className='female_hero_section'>
-                <img src='src/images/female/heroo.png' className='female-hero-image'></img>
-            </div>
             
+            <div className='hero-section_men'>
+                <div className='heroshadow'></div>
+                <img src="/src/images/men/shopmain.png" alt="Shop Main" className='hero-imgs' />
+            </div>
+
             {/* Category Section */}
             <div className='main-section'>
                 <h2 className='cate-head'>Category</h2>
                 <div className="product-grid">
                     {/* Product item */}
                     <div className="product-item">
-                        <img src="/src/images/female/top.png" alt="Product 1" />
+                        <img src="/src/images/men/top.png" alt="Product 1" />
                         <div className="text-overlay">Top</div>
                     </div>
 
                     <div className="product-item">
-                        <img src="/src/images/female/buttom.png" alt="Product 2" />
+                        <img src="/src/images/men/buttoms.png" alt="Product 2" />
                         <div className="text-overlay">Buttom</div>
                     </div>
 
                     <div className="product-item">
-                        <img src="/src/images/female/bag.png" alt="Product 3" />
+                        <img src="/src/images/men/bags.png" alt="Product 3" />
                         <div className="text-overlay">Bag</div>
                     </div>
                 </div>
             </div>
 
-            {/* Highlight */}
-            <div className='highlight'>
-                <div className='highlight-image-section'>
-                    {/* <div className='heroshadow'></div> */}
-                    <div className='title-new'>New Arrivals</div>
-                    <div className='gallery-new'>
-                        <div className='new-gallery-set'>
-    
-                        </div>
-                        <div className='new-gallery-set'>
-    
-                        </div>
-                        <div className='new-gallery-set'>
-    
-                        </div>
-                    </div>
-                    <img src="/src/images/female/highlight.png" className="highlight-image" />
-                </div>
-            </div>
-
-            
         </div>
     );
 }
 
-export default Female;
+export default mentop;

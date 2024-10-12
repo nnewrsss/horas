@@ -49,3 +49,37 @@
 {
     /* opacity: 0.3; */
 }
+
+.title-new
+{
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    font-size: 54px;
+    color: rgba(0, 0, 0, 0.822);
+}
+
+.gallery-new
+{
+    width: 100%;
+    position: absolute;
+    height: 400px;
+    z-index: 223;
+    /* background-color: white; */
+    top: 20%;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+
+
+}
+
+.new-gallery-set
+{
+    margin-top: 40px;
+    width: 320px;
+    height: 80%;
+    background-color: rgba(255, 255, 255, 0.854);
+    backdrop-filter: blur(5px);
+    margin-right: 44px;
+}
