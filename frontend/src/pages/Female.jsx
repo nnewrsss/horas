@@ -36,10 +36,30 @@ function Female() {
         <div>
             <Nav username={username} />
             <div className='female_hero_section'>
-                <img src='src/images/female/hero.png' className='female-hero-image'></img>
+                <img src='src/images/female/heroo.png' className='female-hero-image'></img>
             </div>
             
+            {/* Category Section */}
+            <div className='main-section'>
+                <h2 className='cate-head'>Category</h2>
+                <div className="product-grid">
+                    {/* Product item */}
+                    <div className="product-item">
+                        <img src="/src/images/female/top.png" alt="Product 1" />
+                        <div className="text-overlay">Top</div>
+                    </div>
 
+                    <div className="product-item">
+                        <img src="/src/images/female/buttom.png" alt="Product 2" />
+                        <div className="text-overlay">Buttom</div>
+                    </div>
+
+                    <div className="product-item">
+                        <img src="/src/images/female/bag.png" alt="Product 3" />
+                        <div className="text-overlay">Bag</div>
+                    </div>
+                </div>
+            </div>
 
             
         </div>

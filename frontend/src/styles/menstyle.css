@@ -5,6 +5,11 @@
     height: 80vh;
 }
 
+.body
+{
+    background-color: #E9E7E0;
+}
+
 .hero-imgs
 {
     height: 80vh;
@@ -12,7 +17,7 @@
 }
 .hero-section img.hero-imgs {
     width: 100%;
-    height: 80vh;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -27,37 +32,78 @@
 
 /* Main Section */
 .main-section {
-    margin: 50px 0;
+    padding: 50px 0;
     text-align: center;
+    /* background-color: #bbb; */
+    background-color: #E9E7E0;
+
+}
+
+.cate-head
+{
+    font-family: 'Cinzel', serif;
+    color: #4f3f34;
+    letter-spacing: 54px;
 }
 
 h2 {
-    font-size: 2em;
+    font-size: 3em;
     font-weight: bold;
     color: #6C584C;
-    margin-bottom: 20px;
+    padding: 40px;
+    padding-top: 80px;
 }
 
 /* Product Grid */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 10px;
-    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .product-item
 {
+    position: relative; /* ใช้ relative เพื่อให้ text overlay อยู่ในตำแหน่งเดียวกัน */
     margin-top: 80px;
-    height: 250px;
-    width: 450px;
+    height: 650px;
+    width: 550px;
     background-size: contain; 
+    overflow: hidden;
+    padding: 0 3rem;
+    transition: transform 0.3s ease; /* เพิ่ม transition เพื่อให้การขยายค่อยๆเปลี่ยน */
+
+}
+
+.product-item:hover {
+    transform: scale(1.05); /* ขยายขนาดเล็กน้อยเมื่อ hover */
 }
 
 .product-item img {
-    width: 80%;
+    width: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease; /* เพิ่ม transition เพื่อให้เอฟเฟกต์ค่อยๆเปลี่ยน */
     /* border-radius: 10px; */
-    background-size: contain; 
+}
+
+.product-item:hover img {
+    filter: brightness(0.6); /* ทำให้ภาพมืดลงเมื่อ hover */
+}
+
+.product-item .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* จัดให้อยู่กึ่งกลาง */
+    color: white;
+    font-size: 42px;
+    opacity: 0; /* เริ่มต้นซ่อนข้อความ */
+    transition: opacity 0.3s ease; /* เพิ่ม transition เพื่อให้เอฟเฟกต์ค่อยๆเปลี่ยน */
+    font-family: 'Cinzel', serif;
+
+}
+
+.product-item:hover .text-overlay {
+    opacity: 1; /* แสดงข้อความเมื่อ hover */
 }
 
 .product-item h3 {

@@ -36,6 +36,7 @@ function Men() {
         
         <div>
             <Nav username={username} />
+            
             <div className='hero-section_men'>
                 <div className='heroshadow'></div>
                 <img src="/src/images/men/shopmain.png" alt="Shop Main" className='hero-imgs' />
@@ -43,23 +44,25 @@ function Men() {
 
             {/* Category Section */}
             <div className='main-section'>
-                <h2>Category</h2>
+                <h2 className='cate-head'>Category</h2>
                 <div className="product-grid">
                     {/* Product item */}
                     <div className="product-item">
                         <img src="/src/images/men/top.png" alt="Product 1" />
-
+                        <div className="text-overlay">Top</div>
                     </div>
 
                     <div className="product-item">
                         <img src="/src/images/men/buttoms.png" alt="Product 2" />
-
+                        <div className="text-overlay">Buttom</div>
                     </div>
 
                     <div className="product-item">
                         <img src="/src/images/men/bags.png" alt="Product 3" />
+                        <div className="text-overlay">Bag</div>
                     </div>
                 </div>
+            </div>
 
                 {/* Highlight Section */}
                 {/*<div className='highlight-section'>
@@ -79,8 +82,7 @@ function Men() {
                         ))}
                     </div>
                 </div> */}
-
-            </div>
+  
         </div>
     );
 }
