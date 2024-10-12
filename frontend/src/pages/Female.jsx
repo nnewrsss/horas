@@ -61,6 +61,14 @@ function Female() {
                 </div>
             </div>
 
+            {/* Highlight */}
+            <div className='highlight'>
+                <div className='highlight-image-section'>
+                    {/* <div className='heroshadow'></div> */}
+                    <img src="/src/images/female/highlight.png" className="highlight-image" />
+                </div>
+            </div>
+
             
         </div>
     );
