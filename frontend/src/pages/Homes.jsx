@@ -64,7 +64,11 @@ function Homes() {
                 </div>
                 <div className='news-gallery'>
                     <div className='news1-gallery'>
-                        <img src=''></img>
+                    {/* <div className='news1-text'>Test</div> */}
+                    <div className='gradient-shadow'></div>
+                    <video autoPlay loop muted className='news-video'>
+                        <source src="src/videos/check.mp4" type="video/mp4"/>
+                    </video>
                     </div>
                 </div>
             </div>
