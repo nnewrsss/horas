@@ -316,7 +316,7 @@ function Nav({ username }) {
           <Link to="/female" onMouseEnter={() => handleMouseEnter('female')}>FEMALE</Link>
         </div>
         <div className='right'>
-          <Link to="/">Home</Link>
+          <Link to="/homes">Home</Link>
           <Link to="/aboutus">About Us</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/cart">

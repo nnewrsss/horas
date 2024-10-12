@@ -60,17 +60,11 @@ function Homes() {
             {/* News */}
             <div className='news-section'>
                 <div className='news-title'>
-                    NEWS
+                    NEWS 
                 </div>
                 <div className='news-gallery'>
                     <div className='news1-gallery'>
-
-                    </div>
-                    <div className='news1-gallery'>
-                        
-                    </div>
-                    <div className='news1-gallery'>
-                        
+                        <img src=''></img>
                     </div>
                 </div>
             </div>
