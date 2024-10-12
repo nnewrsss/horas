@@ -1,0 +1,51 @@
+.female_hero_section
+{
+    width: 100%;
+    height: 80vh;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+
+}
+.female-hero-image
+{
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+
+.main-section
+{
+    padding-bottom: 200px;
+}
+
+.highlight
+{
+    width: 100%;
+    height: 640px;
+    background-color: white;
+    object-fit: cover;
+    object-fit: fill;
+    position: relative;
+}
+
+.highlight-image-section
+{
+    width: 100%;
+    height: 100%;
+
+}
+
+.highlight-image
+{
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+
+
+.heroshadow
+{
+    /* opacity: 0.3; */
+}
