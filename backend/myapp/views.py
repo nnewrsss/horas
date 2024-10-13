@@ -290,9 +290,10 @@ def get_subcategories(request):
 @permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
 def get_child_categories(request):
     subcategory_id = request.GET.get('subcategory')
-    child_categories = Category.objects.filter(subcategory_id=subcategory_id)  # หมวดหมู่ที่มีแม่
+    child_categories = Category.objects.filter(parent_id=subcategory_id)  # หมวดหมู่ที่มีแม่
     serializer = CategorySerializer(child_categories, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def create_product(request):
