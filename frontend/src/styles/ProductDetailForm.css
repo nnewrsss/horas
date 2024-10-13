@@ -1,17 +1,17 @@
-/* ProductDetailForm.css */
 
-.product-detail-form {
-  max-width: 1000px; /* Adjust the width to fit the layout */
+/* .product-detail-form {
+  max-width: 1000px; 
   margin: 0 auto;
   padding: 40px;
   border: none;
   border-radius: 8px;
   background-color: #f9f7f1;
 }
-
+ */
+/* 
 .form-header {
   display: flex;
-  gap: 50px; /* Space between the image and form fields */
+  gap: 50px; 
 }
 
 .image-section {
@@ -53,16 +53,6 @@
   font-weight: bold;
   margin-bottom: 10px;
 }
-
-.form-group input[type="text"],
-.form-group textarea {
-  width: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  background-color: #f2f2f2;
-  border: none;
-}
-
 .category-buttons {
   display: flex;
   gap: 20px;
@@ -99,4 +89,4 @@
 
 .submit-button:hover {
   background-color: #218838;
-}
+} */

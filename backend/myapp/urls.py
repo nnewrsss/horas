@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView
+from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products,male_subcategories,maletop_subcategories,malebottom_subcategories,malebags_subcategories,female_subcategories,femalebottom_subcategories,femalebags_subcategories, get_subcategories
+from .views import malepolo,malet_shirt,maleshirt,products_by_subcategory,products_by_childcategory,femaletop_subcategories
 from . import views
 
 
@@ -40,15 +41,63 @@ urlpatterns = [
 
 
 
-    
-
+path('products/male/', male_products, name='male-products'),
+path('products/female/', female_products, name='female-products'),
 path('upload-product-image/', ProductImageUploadView.as_view(), name='upload_product_image'),
 path('api/productimages/<int:pk>/', ProductImageDeleteView.as_view(), name='delete-product-image'),  # เพิ่ม URL สำหรับลบรูปภาพ
      path('parentcategories/', get_parent_categories, name='parent-categories'),
     path('subcategories/', get_subcategories, name='sub-categories'),
     path('childcategories/', get_child_categories, name='child-categories'),
+
+
+
+    path('malesubcategories/',male_subcategories,name='male-subcategories'),
+    path('maletopsubcategories/',maletop_subcategories,name='maletop-subcategories'),
+     path('malebottomsubcategories/',malebottom_subcategories,name='malebottom-subcategories'),
+     path('malebagssubcategories/',malebags_subcategories,name='malebags-subcategories'),
+
+    
+    path('femalesubcategories/',female_subcategories,name='female-subcategories'),
+     path('femalebottomsubcategories/',femalebottom_subcategories,name='femalebottom-subcategories'),
+     path('femalebagssubcategories/',femalebags_subcategories,name='femalebags-subcategories'),
+
+
+
+      path('categories/<int:category_id>/subcategories/', get_subcategories, name='get-subcategories'),
+
+
+    
+
+
+    path('maleshirt',maleshirt,name='get-maleshirt'),
+      path('malepolo',malepolo,name='get-malepolo'),
+      path('maletshirt',malet_shirt,name='get-malet_shirt'),
+
+
+
+    
+    path('femaletopsubcategories/',femaletop_subcategories,name='femaletop-subcategories'),
+
+    path('femalebottomsubcategories/',femalebottom_subcategories,name='femalebottom_subcategories'),
+    path('femalebagsubcategories/',femalebags_subcategories,name='femalebags_subcategories'),
+
+
+
+
+
+
+
+
+      # Dynamic endpoint for subcategories
+    path('<str:subcategory_type>/', products_by_subcategory, name='products-by-subcategory'),
+    path('products/childcategory/<int:child_category_id>/', products_by_childcategory, name='products-by-childcategory'),
+
+
+
     # ใช้ router สำหรับจัดการ categories
     path('', include(router.urls)),
+
+      
 
 
 

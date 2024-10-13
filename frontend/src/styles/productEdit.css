@@ -1,4 +1,4 @@
-/* ProductEdit.css */
+/* 
 
 form {
     max-width: 600px;
@@ -71,7 +71,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* เพิ่ม margin ให้แต่ละฟิลด์ */
 label {
     margin-bottom: 10px;
 }
@@ -91,7 +90,6 @@ select:disabled {
 
 
 
-/* ProductEdit.css */
 
 .product-edit-form {
     max-width: 800px;
@@ -158,4 +156,4 @@ select:disabled {
 
 .save-button:hover {
     background-color: #45a049;
-}
+} */
