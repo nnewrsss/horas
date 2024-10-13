@@ -1,99 +1,132 @@
-/* ตั้งค่าสไตล์พื้นฐานสำหรับฟอร์ม */
-.form-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Home.css */
+
+body
+{
+    background-color: #E9E7E0;
 }
 
-/* หัวข้อของฟอร์ม */
-.form-container h1 {
+.section
+{
+    width: 100%;
+}
+
+.navbar
+{
+    width: 100%;
+}
+
+
+
+.hero-section
+{
+    width: auto;
+    height: 100vh;    
+}
+
+.heroimage
+{
+    width: 100%;
+    height: 100%;
+    z-index: 993;
+}
+.heroshadow
+{
+    width: 100%;
+    background-image: linear-gradient( rgba(255,0,0,0), rgba(0, 0, 0, 0.396));
+    position: absolute;
+    height: 100%;
+}
+
+.hero-text-section
+{
+   
+    width: 100%;
+    height: 100%;
+    position: absolute ;
+    z-index: 999;
+    color: rgba(255, 255, 255, 0.907);
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 24px;
+    text-justify: center;
+    align-items: center;
+    justify-content: center;
+}
+.hero-text {
+    font-size: 90px;
+    font-weight: 300;  
+    padding: 20%;
+    transition: font-size 0.3s ease; /* เพิ่ม transition เพื่อทำให้การขยายสมูธ */
+}
+
+.hero-text:hover {   
+    font-size: 100px;
+}
+
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #E9E7E0;
+}
+
+.home-container h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5em;
     color: #333;
 }
 
-/* ตั้งค่าสำหรับ input field */
-.form-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    color: #333;
-    transition: border-color 0.3s ease;
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.form-input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+.product-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+    transition: box-shadow 0.3s;
 }
 
-/* ปุ่ม */
-.form-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.product-item:hover {
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-.form-button:hover {
-    /* background-color: #0056b3; */
+.product-item h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #555;
 }
 
-.form-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-/* เพิ่มสไตล์สำหรับการแสดงข้อความขณะโหลด */
-.form-button:disabled::after {
-    content: " Please wait...";
-    font-style: italic;
-}
-
-/* สำหรับ input ที่ไม่ถูกต้อง */
-.form-input.error {
-    border-color: #e74c3c;
-}
-
-.form-input.error:focus {
-    box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
-}
-
-/* ข้อความแจ้งเตือนเมื่อมีข้อผิดพลาด */
-.form-error-message {
-    color: #e74c3c;
-    font-size: 14px;
+.product-item p {
+    font-size: 1em;
+    color: #777;
     margin-bottom: 15px;
-    text-align: center;
 }
 
-/* ขนาดหน้าจอขนาดเล็ก */
-@media (max-width: 480px) {
-    .form-container {
-        padding: 20px;
-        width: 90%;
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.product-item .price {
+    font-size: 1.2em;
+    color: #e67e22;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .product-list {
+        flex-direction: column;
+        align-items: center;
     }
 
-    .form-button {
-        font-size: 14px;
-    }
-
-    .form-input {
-        font-size: 14px;
-        padding: 10px;
+    .product-item {
+        width: 80%;
     }
 }
