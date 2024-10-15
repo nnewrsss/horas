@@ -1,9 +1,23 @@
-// export default App
+// import react from "react"
+// import {BrowserRouter,Routes,Route,Navigate} from "react-router-dom"
+// import Login from "./pages/Login"
+// import Register from "./pages/Register"
+// import Home from "./pages/Home"
+// import Homes from "./pages/Homes"
+// import NotFound from "./pages/NotFound"
+// import ProtectedRoute from "./components/ProtectedRoute"
+// import Support from "./pages/support"
+// import AboutUs from "./pages/AboutUs"
+// import AdminHome from './pages/AdminHome'
+// import ProductDetailForm from './pages/ProductDetailForm';
+// import ProductList from './pages/ProductList';
+// import ProductEdit from "./pages/productEdit"
+// import PrivateRoute from './components/PrivateRoute'; // นำเข้า PrivateRoute
 
-// import React from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-// import Register from "./pages/Register";
+import Register from "./pages/Register";
 import Homes from "./pages/Homes";
 import NotFound from "./pages/NotFound";
 import Support from "./pages/Support";
@@ -165,12 +179,21 @@ import CategoryProduct from './pages/Categoryproduct';
 import ProductDetails from './pages/productdetails';
 
 function Logout() {
+<<<<<<< HEAD
+  localStorage.clear(); // เคลียร์ข้อมูลใน localStorage เมื่อผู้ใช้ล็อกเอาท์
+  return <Navigate to="/login" />; // เปลี่ยนเส้นทางไปที่หน้า login
+}
+
+function RegisterAndLogout() {
+  localStorage.clear(); // เคลียร์ข้อมูลใน localStorage เมื่อผู้ใช้ไปที่หน้าลงทะเบียน
+=======
   localStorage.clear(); // Clear localStorage on logout
   return <Navigate to="/login" />; // Redirect to login
 }
 
 function RegisterAndLogout() {
   localStorage.clear(); // Clear localStorage when accessing register
+>>>>>>> main
   return <Navigate to="/register" />;
 }
 
@@ -178,6 +201,26 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+<<<<<<< HEAD
+        {/* เส้นทาง "/" เปลี่ยนเส้นทางไปยัง "/homes" */}
+        {/* <Route path="/" element={<Navigate to="/homes" />} /> */}
+        
+        {/* เส้นทาง "/homes" จะถูกป้องกันโดย PrivateRoute */}
+        <Route path="/homes" element={
+          <PrivateRoute>
+            <Homes />
+          </PrivateRoute>
+        } />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/adminhome" element={
+          <PrivateRoute>
+            <AdminHome />
+          </PrivateRoute>
+        } />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/register" element={<RegisterAndLogout />} />
+=======
         {/* Protected Routes */}
         <Route
           path="/homes"
@@ -200,11 +243,20 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/logout" element={<Logout />} />
+>>>>>>> main
         <Route path="/support" element={<Support />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/admin/product-detail" element={<ProductDetailForm />} />
         <Route path="/admin/product-list" element={<ProductList />} />
         <Route path="/admin/product-edit/:productId" element={<ProductEdit />} />
+<<<<<<< HEAD
+        <Route path="*" element={<NotFound />} /> {/* เส้นทางอื่นๆ จะนำไปที่หน้า NotFound */}
+        <Route path="/men" element={<Men />} /> {/* เส้นทางอื่นๆ จะนำไปที่หน้า NotFound */}
+        <Route path="/female" element={<Female/>} />
+        <Route path="/contact" element={<contact/>} />
+        <Route path="/mentop" element={<mentop/>} />
+        <Route path="/cart" element={<Cart/>}/>
+=======
 
         {/* Category Routes */}
         <Route path="/female" element={<Female />} />
@@ -217,6 +269,7 @@ function App() {
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} /> {/* Any other routes go to NotFound */}
         
+>>>>>>> main
       </Routes>
     </BrowserRouter>
   );
