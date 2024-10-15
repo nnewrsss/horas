@@ -154,7 +154,7 @@ import ProductDetailForm from './pages/ProductDetailForm';
 import ProductList from './pages/ProductList';
 import ProductEdit from './pages/ProductEdit';
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
-import Female from './pages/female';
+// import Female from './pages/female';
 import Men from './pages/Men';
 import CategoryDetails from './pages/CategoryDetails';
 import CategoryProduct from './pages/Categoryproduct';
