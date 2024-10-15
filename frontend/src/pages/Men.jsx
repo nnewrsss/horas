@@ -215,11 +215,11 @@ function Men() {
         <div>
             <Nav username={username} />
 
-            {/* Hero Section */}
-            <div className='hero-section'>
+            <div className='hero-section_men'>
                 <div className='heroshadow'></div>
                 <img src="/src/images/men/shopmain.png" alt="Shop Main" className='hero-imgs' />
             </div>
+            
 
             {/* Category Section */}
             <div className='main-section'>

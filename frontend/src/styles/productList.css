@@ -1,4 +1,5 @@
-/* 
+
+/* Container for the product list */
 .product-list-container {
     width: 90%;
     margin: 20px auto;
@@ -9,6 +10,7 @@
 }
 
 
+/* Table styles */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -35,13 +37,16 @@ table td img {
     border-radius: 5px;
 }
 
+/* Responsive image */
 table td img {
     max-width: 100px;
     height: auto;
 }
+
+/* No products message */
 .no-products-message {
     color: #888;
     text-align: center;
     margin-top: 20px;
     font-size: 18px;
-} */
+}

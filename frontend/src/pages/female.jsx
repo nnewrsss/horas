@@ -274,8 +274,8 @@ function Female() {
             <Nav username={username} />
 
             {/* Hero Section */}
-            <div className='hero-section'>
-                <img src="/src/images/women/heroo.png" alt="Hero" className='female-hero-image' />
+            <div className='female_hero_section'>
+                <img src='src/images/female/heroo.png' className='female-hero-image'></img>
             </div>
 
             {/* Category Section */}
@@ -288,17 +288,17 @@ function Female() {
                 ) : (
                     <div className="product-grid">
                         <div className="product-item" onClick={() => handleCategoryClick('femaletopsubcategories')}>
-                            <img src="/src/images/women/top.png" alt="Top" />
+                            <img src="/src/images/female/top.png" alt="Top" />
                             <div className="text-overlay">Top</div>
                         </div>
 
                         <div className="product-item" onClick={() => handleCategoryClick('femalebottomsubcategories')}>
-                            <img src="/src/images/women/buttom.png" alt="Bottom" />
+                            <img src="/src/images/female/buttom.png" alt="Bottom" />
                             <div className="text-overlay">Bottom</div>
                         </div>
 
                         <div className="product-item" onClick={() => handleCategoryClick('femalebagssubcategories')}>
-                            <img src="/src/images/women/bag.png" alt="Bag" />
+                            <img src="/src/images/female/bag.png" alt="Bag" />
                             <div className="text-overlay">Bag</div>
                         </div>
                     </div>
@@ -309,7 +309,19 @@ function Female() {
            <div className='highlight'>
                 <div className='highlight-image-section'>
                     {/* <div className='heroshadow'></div> */}
-                    <img src="/src/images/women/highlight.png" className="highlight-image" />
+                    <div className='title-new'>New Arrivals</div>
+                    <div className='gallery-new'>
+                        <div className='new-gallery-set'>
+    
+                        </div>
+                        <div className='new-gallery-set'>
+    
+                        </div>
+                        <div className='new-gallery-set'>
+    
+                        </div>
+                    </div>
+                    <img src="/src/images/female/highlight.png" className="highlight-image" />
                 </div>
             </div>
         </div>
