@@ -1,6 +1,6 @@
 /* ProductEdit.css */
 
-form {
+forms {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -20,7 +20,7 @@ h1 {
 label {
     display: block;
     margin-bottom: 15px;
-    color: #555;
+    /* color: #555; */
 }
 
 label img {
@@ -30,7 +30,7 @@ label img {
     border-radius: 8px;
 }
 
-input[type="text"],
+/* input[type="text"], */
 input[type="number"],
 textarea,
 select {
@@ -68,7 +68,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    /* background-color: #0056b3; */
 }
 
 /* เพิ่ม margin ให้แต่ละฟิลด์ */
@@ -77,11 +77,11 @@ label {
 }
 
 input[type="submit"] {
-    background-color: #28a745;
+    /* background-color: #28a745; */
 }
 
 input[type="submit"]:hover {
-    background-color: #218838;
+    /* background-color: #218838; */
 }
 
 select:disabled {

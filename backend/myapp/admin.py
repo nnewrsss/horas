@@ -25,12 +25,16 @@ from django.contrib import admin
 from .models import (
     Category, Product, Size, Cart, CartItem,
     Order, OrderItem, Payment, UserProfile, ProductImage,
-    Review, Coupon
+    Review, Coupon,CategoryPic
 )
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'parent']
+
+@admin.register(CategoryPic)
+class CategoryImageAdmin(admin.ModelAdmin):
+    list_display = ['category', 'image']
 
 @admin.register(Size)
 class SizeAdmin(admin.ModelAdmin):
@@ -77,3 +81,4 @@ class ReviewAdmin(admin.ModelAdmin):
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
     list_display = ['code', 'discount_percentage', 'valid_from', 'valid_to', 'active']
+

@@ -1,3 +1,4 @@
+
 #o1mini
 # serializers.py
 
@@ -6,7 +7,7 @@ from rest_framework import serializers
 from .models import (
     Category, Product, Size, Cart, CartItem,
     Order, OrderItem, Payment, UserProfile, ProductImage,
-    Review, Coupon
+    Review, Coupon,CategoryPic
 )
 
 # Serializer สำหรับผู้ใช้
@@ -37,67 +38,6 @@ class ProductImageSerializer(serializers.ModelSerializer):
         model = ProductImage
         fields = ['id', 'image']
 
-# # Serializer สำหรับสินค้า (Product)
-
-
-# class ProductSerializer(serializers.ModelSerializer):
-#     parent_category_name = serializers.CharField(source='parent_category.name', read_only=True)
-#     sub_category_name = serializers.CharField(source='sub_category.name', read_only=True)
-#     child_category_name = serializers.CharField(source='child_category.name', read_only=True)
-
-    
-#     images = ProductImageSerializer(many=True, read_only=True)
-#     images_upload = serializers.ListField(
-#         child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
-#         write_only=True,
-#         required=False
-#     )
-#     # sizes = serializers.PrimaryKeyRelatedField(
-#     #     many=True,
-#     #     queryset=Size.objects.all(),
-#     #     required=False,
-#     #     allow_null=True
-#     # )
-
-#     class Meta:
-#         model = Product
-#         fields = ['id', 'name', 'description', 'materials', 'parent_category', 'parent_category_id', 'parent_category_name',
-#                   'sub_category', 'sub_category_id', 'sub_category_name', 
-#                   'child_category', 'child_category_id', 'child_category_name', 
-#                   'price', 'stock', 'created_at', 'images', 'images_upload']
-#         extra_kwargs = {
-#             'category': {'write_only': True},
-#         }
-
-#     def create(self, validated_data):
-#         images_data = validated_data.pop('images_upload', [])
-#         sizes = validated_data.pop('sizes', [])
-
-#         product = Product.objects.create(**validated_data)
-
-#         if sizes:
-#             product.sizes.set(sizes)
-
-#         for image in images_data:
-#             ProductImage.objects.create(product=product, image=image)
-
-#         return product
-
-#     def update(self, instance, validated_data):
-#         images_data = validated_data.pop('images_upload', [])
-#         sizes = validated_data.pop('sizes', [])
-
-#         for attr, value in validated_data.items():
-#             setattr(instance, attr, value)
-#         instance.save()
-
-#         if sizes:
-#             instance.sizes.set(sizes)
-
-#         for image in images_data:
-#             ProductImage.objects.create(product=instance, image=image)
-
-#         return instance
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -153,6 +93,10 @@ class ProductSerializer(serializers.ModelSerializer):
             ProductImage.objects.create(product=instance, image=image)
 
         return instance
+
+
+
+
 
 
 # Serializer สำหรับรายการสินค้าในตะกร้า (CartItem)
@@ -220,19 +164,75 @@ class CouponSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
+
+
+
+
+class CategoryImageSerialzer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoryPic
+        fields = ['id', 'image']
+
+
 class SubCategorySerializer(serializers.ModelSerializer):
+    
+    images = CategoryImageSerialzer(many=True, read_only=True)
+    images_upload = serializers.ListField(
+        child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
+        write_only=True,
+        required=False
+    )
+
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'name','images','images_upload']
+
+
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = SubCategorySerializer(many=True, read_only=True)  # แสดง subcategories
     parent_name = serializers.CharField(source='parent.name', read_only=True)  # แสดงชื่อหมวดหมู่พ่อ
 
+    images = CategoryImageSerialzer(many=True, read_only=True)
+    images_upload = serializers.ListField(
+        child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
+        write_only=True,
+        required=False
+    )
+
     class Meta:
         model = Category
-        fields = ['id', 'name', 'parent', 'parent_name', 'subcategories']
+        fields = ['id', 'name', 'parent', 'parent_name', 'subcategories','images','images_upload']
+
+    def create(self, validated_data):
+        images_data = validated_data.pop('images_upload', [])
+        category = Category.objects.create(**validated_data)
+
+        for image in images_data:
+            CategoryPic.objects.create(category=category, image=image)
+
+        return category
+
+    def update(self, instance, validated_data):
+        images_data = validated_data.pop('images_upload', [])
+        
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if images_data:
+            for image in images_data:
+                CategoryPic.objects.create(category=instance, image=image)
+
+        return instance
+
+
+
+
+
 
 
 class ProductImageUploadSerializer(serializers.ModelSerializer):

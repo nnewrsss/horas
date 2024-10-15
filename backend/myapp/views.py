@@ -1,3 +1,4 @@
+
 #o1mini
 # views.py
 
@@ -20,8 +21,9 @@ from .serializers import (
 from django.contrib.auth.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
 from .permissions import IsAdminUser
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes,action
 import json
+from django.shortcuts import get_object_or_404
 
 # หมวดหมู่สินค้า
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -237,7 +239,10 @@ class ProductViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-# ViewSet สำหรับหมวดหมู่
+
+   
+
+# ViewSet 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -288,6 +293,7 @@ def get_child_categories(request):
     child_categories = Category.objects.filter(parent_id=subcategory_id)  # หมวดหมู่ที่มีแม่
     serializer = CategorySerializer(child_categories, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def create_product(request):
@@ -382,3 +388,250 @@ class ProductImageDeleteView(generics.DestroyAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [IsAdminUser]  # ปรับตามความต้องการของคุณ
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def female_products(request):
+    # กรองสินค้าที่มี parent_category_id เป็น 3
+    female_products = Product.objects.filter(parent_category_id=3)
+    serializer = ProductSerializer(female_products, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def male_products(request):
+    # กรองสินค้าที่มี parent_category_id เป็น 3
+    male_products = Product.objects.filter(parent_category_id=2)
+    serializer = ProductSerializer(male_products, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# # ViewSet 
+# class CategoryViewSet(viewsets.ModelViewSet):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#     permission_classes = [AllowAny]
+
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # กำหนดให้ทุกคนเข้าถึงได้
+def male_subcategories(request):
+    
+    mensubcategories = Category.objects.filter(id=2)  # หมวดหมู่ที่มีพ่อ
+    serializer = CategorySerializer(mensubcategories, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def maletop_subcategories(request):
+    try:
+        category = Category.objects.get(id=15)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def malebottom_subcategories(request):
+    try:
+        category = Category.objects.get(id=16)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def malebags_subcategories(request):
+    try:
+        category = Category.objects.get(id=47)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def female_subcategories(request):
+
+    femaletopsubcategories = Category.objects.filter(id=3)
+    serializer = CategorySerializer(femaletopsubcategories,many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def femaletop_subcategories(request):
+    try:
+        category = Category.objects.get(id=17)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def femalebottom_subcategories(request):
+    try:
+        category = Category.objects.get(id=18)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def femalebags_subcategories(request):
+    try:
+        category = Category.objects.get(id=48)
+        subcategories = category.subcategories.all()
+        serializer = CategorySerializer(subcategories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Category not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+
+
+
+
+
+
+
+
+## สินค้า
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def maleshirt(request):
+    try:
+        # ดึงสินค้าที่มี child_category_id = 19
+        products = Product.objects.filter(child_category_id=19)
+        print(f"Number of products fetched: {products.count()}")  # Debug: จำนวนสินค้า
+        print(f"Products: {products}")  # Debug: แสดงข้อมูลสินค้าที่ถูกดึงมา
+
+        if not products.exists():
+            return Response({'error': 'No products found for this child category.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # ใช้ ProductSerializer เพื่อ serialize ข้อมูลสินค้า
+        serializer = ProductSerializer(products, many=True)
+        print(f"Serialized data: {serializer.data}")  # Debug: ข้อมูลที่ serialize
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debug: ข้อผิดพลาด
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def malepolo(request):
+    try:
+        # ดึงสินค้าที่มี child_category_id = 19
+        products = Product.objects.filter(child_category_id=20)
+        print(f"Number of products fetched: {products.count()}")  # Debug: จำนวนสินค้า
+        print(f"Products: {products}")  # Debug: แสดงข้อมูลสินค้าที่ถูกดึงมา
+
+        if not products.exists():
+            return Response({'error': 'No products found for this child category.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # ใช้ ProductSerializer เพื่อ serialize ข้อมูลสินค้า
+        serializer = ProductSerializer(products, many=True)
+        print(f"Serialized data: {serializer.data}")  # Debug: ข้อมูลที่ serialize
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debug: ข้อผิดพลาด
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def malet_shirt(request):
+    try:
+        # ดึงสินค้าที่มี child_category_id = 19
+        products = Product.objects.filter(child_category_id=21)
+        print(f"Number of products fetched: {products.count()}")  # Debug: จำนวนสินค้า
+        print(f"Products: {products}")  # Debug: แสดงข้อมูลสินค้าที่ถูกดึงมา
+
+        if not products.exists():
+            return Response({'error': 'No products found for this child category.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # ใช้ ProductSerializer เพื่อ serialize ข้อมูลสินค้า
+        serializer = ProductSerializer(products, many=True)
+        print(f"Serialized data: {serializer.data}")  # Debug: ข้อมูลที่ serialize
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debug: ข้อผิดพลาด
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def products_by_subcategory(request, subcategory_type):
+    try:
+        # Assuming 'name' field is unique for each subcategory
+        category = Category.objects.get(name=subcategory_type)
+        products = Product.objects.filter(child_category=category)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Category.DoesNotExist:
+        return Response({'error': 'Subcategory not found.'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def products_by_childcategory(request, child_category_id):
+    try:
+        # ดึงข้อมูลสินค้าจาก child_category_id ที่ระบุ
+        products = Product.objects.filter(child_category_id=child_category_id)
+        
+        # ตรวจสอบว่ามีสินค้าที่ตรงกันหรือไม่
+        if not products.exists():
+            return Response({'error': 'No products found for this child category.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # ใช้ ProductSerializer เพื่อ serialize ข้อมูลสินค้า
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debug: ข้อผิดพลาด
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
