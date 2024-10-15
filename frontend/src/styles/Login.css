@@ -1,0 +1,144 @@
+/* แก้ไขการตั้งค่าทั่วไป */
+body {
+  color: white;
+  font-family: 'Roboto', sans-serif; /* ใช้ฟอนต์ที่โมเดิร์น */
+}
+
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1; /* ทำให้วิดีโออยู่ด้านหลัง */
+}
+
+.video-background video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  /* filter: blur(3px); เพิ่มความเบลอให้วิดีโอ */
+  transition: filter 0.5s ease-in-out;
+}
+
+.video-background video:hover {
+  filter: blur(1px); /* ลดความเบลอเมื่อผู้ใช้โฮเวอร์ */
+}
+
+.login-content1 {
+  width: 50%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.307); /* ให้สีดำโปร่งแสง */
+}
+
+.login-content2 {
+  display: flex;
+  flex-direction: column; /* จัดให้องค์ประกอบภายในเรียงตัวในแนวตั้ง */
+  align-items: center; /* จัดให้องค์ประกอบภายในอยู่ตรงกลางในแนวนอน */
+  justify-content: center; /* จัดให้องค์ประกอบภายในอยู่ตรงกลางในแนวตั้ง */
+  position: relative;
+  z-index: 1; /* ให้ login-content อยู่บนวิดีโอ */
+  background-color: #0a0a0aba; /* ให้สีดำโปร่งแสง */
+  padding: 40px;
+  height: 100%;
+  width: 50%;
+  backdrop-filter: blur(5px);
+}
+
+.logo_login {
+  width: 80%;
+  position: relative;
+  margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่างโลโก้ */
+}
+
+.error-message {
+  color: rgb(255, 255, 255);
+  font-size: 0.9rem;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* จัดให้องค์ประกอบภายในฟอร์มอยู่ตรงกลาง */
+  padding-inline: 50px;
+  position: relative;
+}
+
+.username,
+.password {
+  height: 40px;
+  width: 95%; /* ปรับจาก 100% เป็น 95% */
+  margin-bottom: 15px;
+  background-color: rgba(255, 255, 255, 0.234);
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
+  transition: background-color 0.3s ease, width 0.3s ease; /* เพิ่ม transition สำหรับความกว้าง */
+  margin: 0 auto; /* จัดกึ่งกลางช่องกรอกข้อมูล */
+}
+
+.username:focus,
+.password:focus {
+  background-color: rgba(255, 255, 255, 0.4); /* เปลี่ยนสีพื้นหลังเมื่อ focus */
+  width: 100%; /* ขยายความกว้างเป็น 100% เมื่อ focus */
+}
+
+.username::placeholder,
+.password::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.submit {
+  margin-top: 20px; /* เพิ่มระยะห่างจากอินพุตด้านบน */
+  width: 50%; /* กำหนดความกว้างของปุ่มให้เป็น 50% ของ container */
+  height: 50px; /* กำหนดความสูงของปุ่ม */
+  background-color: rgb(18, 18, 18); /* สีพื้นหลังของปุ่ม */
+  color: rgb(197, 197, 197); /* สีของข้อความบนปุ่ม */
+  font-size: 22px; /* ขนาดตัวอักษรของปุ่ม */
+  border-radius: 10px; /* มุมโค้งของปุ่ม */
+  border: none; /* ลบขอบของปุ่ม */
+  cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อโฮเวอร์ */
+  transition: background-color 0.3s, transform 0.3s ease; /* ทำให้สีของปุ่มและขนาดเปลี่ยนอย่างราบรื่น */
+}
+
+.submit:hover {
+  background-color: #333;
+  transform: scale(1.05); /* ขยายปุ่มเล็กน้อยเมื่อโฮเวอร์ */
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px; /* ระยะห่างด้านล่างของปุ่ม */
+}
+
+.register-btn,
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s, transform 0.3s ease;
+}
+
+.register-btn:hover,
+.forgot-password-btn:hover {
+  color: #ccc; /* เปลี่ยนสีเมื่อโฮเวอร์ */
+  transform: scale(1.1); /* ขยายปุ่มเล็กน้อยเมื่อโฮเวอร์ */
+}

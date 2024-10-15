@@ -1,0 +1,178 @@
+/* src/styles/Navbar.css */
+
+.navbar {
+    /* width: 100%; */
+    align-items: center;
+    justify-content: space-between;
+    background-color: #000000ca; /* พื้นหลังสีดำ */
+    padding: 10px 20px;
+    color: #fff; /* ตัวอักษรสีขาว */
+    position: fixed;
+    backdrop-filter: blur(25px);
+    display: inline-flex;
+    padding-inline: 50px;
+  }
+  
+  
+  .navbar-logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .navbar-center {
+    flex-grow: 1;
+    justify-content: center;
+  }
+  
+  .navbar-right
+  {
+      display: inline-flex;
+  }
+
+  .navbar-link {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1em;
+    position: relative;
+  }
+  
+  .navbar-link:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar-icon {
+    color: #fff;
+    margin-left: 15px;
+    font-size: 1.2em;
+  }
+  
+  .navbar-user {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+  }
+  
+  .navbar-user span {
+    margin-left: 5px;
+    font-size: 0.9em;
+  }
+  
+  .navbar-user button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .navbar-user button:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Dropdown Styles */
+  .dropdown {
+    position: relative;
+  }
+  
+/* Navbar.css */
+
+/* ซ่อนเมนูย่อยโดยค่าเริ่มต้น */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%; /* วางเมนูย่อยใต้เมนูหลัก */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #111;
+    padding: 20px;
+    min-width: 800px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    color: #fff;
+    display: none;
+  }
+  
+  /* แสดงเมนูย่อยเมื่อ hover บนเมนูหลักหรือเมนูย่อย */
+  .dropdown:hover .dropdown-content,
+  .dropdown-content:hover {
+    display: flex;
+  }
+  
+  /* ปรับปรุงสไตล์อื่น ๆ ตามที่จำเป็น */
+  
+  
+  .dropdown-column {
+    margin-right: 20px;
+  }
+  
+  .dropdown-column h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .dropdown-column ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .dropdown-column li {
+    margin-bottom: 8px;
+  }
+  
+  .dropdown-column li a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .dropdown-column li a:hover {
+    text-decoration: underline;
+  }
+  
+  .dropdown-image {
+    flex-shrink: 0;
+  }
+  
+  .dropdown-image img {
+    max-width: 200px;
+    border-radius: 8px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-wrap: wrap;
+    }
+  
+    .navbar-center,
+    .navbar-right {
+      justify-content: center;
+      margin-top: 10px;
+    }
+  
+    .navbar-link {
+      margin: 5px;
+    }
+  
+    .dropdown-content {
+        display: none;
+      }
+      
+      /* แสดงเมนูย่อยเมื่อ hover บนเมนูหลักหรือเมนูย่อย */
+      .dropdown:hover .dropdown-content,
+      .dropdown-content:hover {
+        display: flex;
+      }
+    .dropdown-column {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  
+    .dropdown-image {
+      display: none;
+    }
+  }
+  
