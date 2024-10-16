@@ -1,0 +1,174 @@
+.admin-section {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    color: rgb(255, 255, 255);
+    background-color: white;
+}
+
+.menubar {
+    height: 100vh;
+    width: 130px;
+    background-color: white;
+}
+
+.menu-logo {
+    width: 100%;
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    position: relative;
+    padding-top: 50px;
+    margin-bottom: 300px;
+}
+
+.menu-black-logo-img {
+    width: 50%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 70px; /* ระยะห่างระหว่างไอคอน */
+}
+
+.menu-link-icon {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease; /* เพิ่ม transition เพื่อความลื่นไหล */
+}
+
+.menu-link-icon:hover {
+    transform: scale(1.2);
+}
+
+.admin-dashboard-section {
+    width: calc(100% - 100px);
+    padding: 23px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+    height: 100%;
+}
+
+.today-sale {
+    background-color: rgb(224, 224, 224);
+    border-radius: 40px;
+    padding: 36px;
+    background-image: url('/images/admin/today-sale.png');
+    background-color: rgba(0, 0, 0, 0.25);
+    position: relative;
+    background-size: cover; /* ทำให้รูปภาพครอบคลุมพื้นที่ */
+    background-position: center;
+}
+
+.today-sale::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.383); /* สี overlay มืด */
+    z-index: 1; /* ให้ overlay อยู่ด้านบนของพื้นหลัง */
+    backdrop-filter: blur(7px); /* ทำให้พื้นหลังเบลอ */
+    border-radius: 40px; /* ให้ขอบโค้งตาม parent */
+}
+
+.today-sale > * {
+    position: relative;
+    z-index: 2; /* ทำให้ข้อความอยู่ด้านบน overlay */
+}
+
+
+.grid-item {
+    background-color: rgb(224, 224, 224);
+    border-radius: 40px;
+    padding: 36px;
+}
+
+
+.big-title {
+    position: relative;
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: url('/images/admin/big-text-bg.png'); /* ใส่รูปภาพพื้นหลัง */
+    background-size: cover; /* ทำให้รูปภาพครอบคลุมพื้นที่ */
+    background-position: center; /* จัดตำแหน่งให้รูปภาพอยู่กึ่งกลาง */
+    color: white;
+    overflow: hidden; /* ป้องกันการล้นของ pseudo-element */
+}
+
+.big-title::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25); /* สี overlay มืด */
+    z-index: 1; /* ให้ overlay อยู่ด้านบนของพื้นหลัง */
+    backdrop-filter: blur(5px); /* ทำให้พื้นหลังเบลอ */
+    border-radius: 40px; /* ให้ขอบโค้งตาม parent */
+}
+
+.big-title > * {
+    position: relative;
+    z-index: 2; /* ทำให้ข้อความอยู่ด้านบน overlay */
+}
+
+.admin-time {
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.hello-title {
+    font-size: 2rem;
+    font-weight: 200;
+    letter-spacing: 10px;
+    color: rgba(255, 255, 255, 0.718);
+
+}
+
+.admin-username {
+    font-size: 6rem;
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+}
+
+.visit-count h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.visit-count span {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.buttom-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttom-1 h3 {
+    margin-bottom: 10px;
+}
+
+.buttom-1 span {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
