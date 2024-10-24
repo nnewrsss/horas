@@ -306,9 +306,9 @@ function Female() {
             </div>
 
            {/* Highlight */}
-           <div className='highlight'>
+           {/* <div className='highlight'>
                 <div className='highlight-image-section'>
-                    {/* <div className='heroshadow'></div> */}
+                    <div className='heroshadow'></div>
                     <div className='title-new'>New Arrivals</div>
                     <div className='gallery-new'>
                         <div className='new-gallery-set'>
@@ -323,7 +323,7 @@ function Female() {
                     </div>
                     <img src="/src/images/female/highlight.png" className="highlight-image" />
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
