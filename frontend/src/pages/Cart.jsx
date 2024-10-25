@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
-import '../styles/Cart.css'// นำเข้าไฟล์ CSS
+import '../styles/Cart.css'; // นำเข้าไฟล์ CSS
 
 function Cart() {
     const [cartItems, setCartItems] = useState([]);
     const navigate = useNavigate();
-    const username = localStorage.getItem('username');  // ดึงข้อมูล username จาก localStorage
+    const username = localStorage.getItem('username'); // ดึงข้อมูล username จาก localStorage
 
     // ดึงข้อมูลจาก localStorage มาตั้งเป็น cartItems
     useEffect(() => {
@@ -17,10 +17,9 @@ function Cart() {
     // ฟังก์ชันสำหรับลบสินค้าออกจากตะกร้า
     const handleRemoveItem = (index) => {
         const updatedCartItems = [...cartItems];
-        updatedCartItems.splice(index, 1);  // ลบสินค้าจากรายการ
+        updatedCartItems.splice(index, 1); // ลบสินค้าจากรายการ
         setCartItems(updatedCartItems);
-        localStorage.setItem('cart', JSON.stringify(updatedCartItems));  // อัปเดตข้อมูลใน localStorage
-        //alert('ลบสินค้าออกจากตะกร้าเรียบร้อยแล้ว!');
+        localStorage.setItem('cart', JSON.stringify(updatedCartItems)); // อัปเดตข้อมูลใน localStorage
     };
 
     // ฟังก์ชันเมื่อผู้ใช้กดปุ่ม "สั่งซื้อสินค้า"
@@ -46,6 +45,7 @@ function Cart() {
                                 <p>{item.description}</p>
                                 <p>ไซส์: {item.size ? item.size.name : 'ไม่ได้เลือกไซส์'}</p>
                                 <p>ราคา: ${item.price}</p>
+                                <p>จำนวน: {item.quantity}</p> {/* แสดงจำนวนสินค้าที่เลือก */}
                             </div>
                             <div className="cart-item-actions">
                                 <button onClick={() => handleRemoveItem(index)} className="remove-btn">
