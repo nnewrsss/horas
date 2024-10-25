@@ -205,9 +205,8 @@
 
 
 
-
-
 // Nav.jsx
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
@@ -304,18 +303,19 @@ function Nav({ username }) {
       <nav className={`nav ${isHovered ? 'hovered' : ''}`}>
         <div className='hr'>
           <Link to="/homes">
-            <img src="src/images/navbar/logo-white_hr.png" alt="Logo" className="hr-lo" />
+          <img src="/images/navbar/logo-white_hr.png" alt="Logo" className="hr-lo" />
+
           </Link>
         </div>
         <div
           className='left'
           onMouseLeave={handleMouseLeave} // จัดการเมื่อเมาส์ออกจากเมนูหลัก
         >
-          <Link to="/men" onMouseEnter={() => handleMouseEnter('men')}>MEN</Link>
+          <Link to="/men" onMouseEnter={() => handleMouseEnter('men')}>MALE</Link>
           <Link to="/female" onMouseEnter={() => handleMouseEnter('female')}>FEMALE</Link>
         </div>
         <div className='right'>
-          <Link to="/">Home</Link>
+          <Link to="/homes">Home</Link>
           <Link to="/aboutus">About Us</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/cart">

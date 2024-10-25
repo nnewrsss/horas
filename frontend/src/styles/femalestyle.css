@@ -1,27 +1,24 @@
-.female_hero_section
-{
+.female_hero_section {
+    position: relative;
     width: 100%;
     height: 80vh;
-    justify-items: center;
-    align-items: center;
-    justify-content: center;
     align-content: center;
+    justify-content: center;
+    display: flex;
 
 }
-.female-hero-image
-{
+
+.female-hero-image {
     width: 100%;
     object-fit: cover;
     height: 100%;
 }
 
-.main-section
-{
+.main-section {
     padding-bottom: 200px;
 }
 
-.highlight
-{
+.highlight {
     width: 100%;
     height: 640px;
     background-color: white;
@@ -30,28 +27,24 @@
     position: relative;
 }
 
-.highlight-image-section
-{
+.highlight-image-section {
     width: 100%;
     height: 100%;
 
 }
 
-.highlight-image
-{
+.highlight-image {
     width: 100%;
     object-fit: cover;
     height: 100%;
 }
 
 
-.heroshadow
-{
-    /* opacity: 0.3; */
+.heroshadow {
+    opacity: 0.3;
 }
 
-.title-new
-{
+.title-new {
     position: absolute;
     top: 50px;
     left: 50px;
@@ -59,8 +52,7 @@
     color: rgba(68, 68, 68, 0.801);
 }
 
-.gallery-new
-{
+.gallery-new {
     width: 100%;
     position: absolute;
     height: 400px;
@@ -74,12 +66,44 @@
 
 }
 
-.new-gallery-set
-{
+.new-gallery-set {
     margin-top: 40px;
     width: 320px;
     height: 80%;
     background-color: rgba(255, 255, 255, 0.854);
     backdrop-filter: blur(5px);
     margin-right: 44px;
+}
+
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    /* ทำให้วิดีโออยู่ด้านหลัง */
+}
+
+.video-background video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: blur(3px);
+    /* transition: filter 0.5s ease-in-out; */
+}
+
+.video-background video:hover {
+    filter: blur(4px);
+    /* ลดความเบลอเมื่อผู้ใช้โฮเวอร์ */
+}
+
+.video-heroshadow {
+    background-color: rgba(27, 14, 2, 0.459);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 909;
+    top: 0;
 }
