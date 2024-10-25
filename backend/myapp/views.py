@@ -605,7 +605,7 @@ def malet_shirt(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def products_by_subcategory(request, subcategory_type):
+def products_by_subcategory2(request, subcategory_type):
     try:
         # Assuming 'name' field is unique for each subcategory
         category = Category.objects.get(name=subcategory_type)
@@ -615,6 +615,29 @@ def products_by_subcategory(request, subcategory_type):
     except Category.DoesNotExist:
         return Response({'error': 'Subcategory not found.'}, status=status.HTTP_404_NOT_FOUND)
     
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def products_by_subcategory(request, subcategory_type):
+    try:
+        # ค้นหา Category ที่ชื่อ subcategory_type
+        category = Category.objects.get(name=subcategory_type)
+
+        # ดึงสินค้าทั้งหมดที่มี subcategory เป็นหมวดหมู่นั้น
+        products = Product.objects.filter(sub_category=category)
+
+        # แปลงข้อมูลสินค้าเป็น JSON ด้วย Serializer
+        serializer = ProductSerializer(products, many=True)
+
+        # ส่งข้อมูลกลับพร้อมสถานะ HTTP 200 OK
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    except Category.DoesNotExist:
+        # กรณีไม่พบหมวดหมู่ย่อย ส่งกลับ 404
+        return Response(
+            {'error': f'Subcategory "{subcategory_type}" not found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 
 @api_view(['GET'])
