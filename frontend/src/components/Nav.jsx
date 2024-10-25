@@ -104,7 +104,7 @@ function Nav({ username }) {
           className='left'
           onMouseLeave={handleMouseLeave} // จัดการเมื่อเมาส์ออกจากเมนูหลัก
         >
-          <Link to="/men" onMouseEnter={() => handleMouseEnter('men')}>MEN</Link>
+          <Link to="/men" onMouseEnter={() => handleMouseEnter('men')}>MALE</Link>
           <Link to="/female" onMouseEnter={() => handleMouseEnter('female')}>FEMALE</Link>
         </div>
         <div className='right'>

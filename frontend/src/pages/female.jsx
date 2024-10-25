@@ -64,13 +64,13 @@
 //         console.log(subcategoryType); // เพิ่มการแสดงค่า subcategoryType เพื่อตรวจสอบ
 //         navigate(`/categorydetails/${subcategoryType}`);
 //     };
-    
-    
+
+
 
 //     return (
 //         <div>
 //             <Nav username={username} />
-            
+
 //             <div className='hero-section'>
 //                 <div className='heroshadow'></div>
 //                 <img src="/src/images/women/shopmain.jpg" alt="Shop Main" className='hero-img' />
@@ -200,7 +200,7 @@
 import React, { useEffect, useState } from 'react';
 import { ACCESS_TOKEN } from '../constants.js';
 import Nav from '../components/Nav.jsx';
-import axios from 'axios';  
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Use for page navigation
 import '../styles/femalestyle.css';
 
@@ -213,13 +213,13 @@ function Female() {
     const [error, setError] = useState(null);
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
-    
+
     const highlightImages = [
         "/src/images/female/product4.png",
         "/src/images/female/product1.png",
         "/src/images/female/product2.png",
         "/src/images/female/product3.png"
-    ]; 
+    ];
 
     // Check if the user is logged in
     useEffect(() => {
@@ -275,7 +275,13 @@ function Female() {
 
             {/* Hero Section */}
             <div className='female_hero_section'>
-                <img src='src/images/female/heroo.png' className='female-hero-image'></img>
+                <div className='men-title'>FEMALE</div>
+                <div className='video-heroshadow'></div>
+                <div className="video-background">
+                    <video autoPlay loop muted>
+                        <source src="src/videos/female.mp4" type="video/mp4" />
+                    </video>
+                </div>
             </div>
 
             {/* Category Section */}
@@ -305,10 +311,10 @@ function Female() {
                 )}
             </div>
 
-           {/* Highlight */}
-           <div className='highlight'>
+            {/* Highlight */}
+            {/* <div className='highlight'>
                 <div className='highlight-image-section'>
-                    {/* <div className='heroshadow'></div> */}
+                    <div className='heroshadow'></div>
                     <div className='title-new'>New Arrivals</div>
                     <div className='gallery-new'>
                         <div className='new-gallery-set'>
@@ -323,7 +329,7 @@ function Female() {
                     </div>
                     <img src="/src/images/female/highlight.png" className="highlight-image" />
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
