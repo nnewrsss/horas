@@ -29,6 +29,15 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+# รูปภาพหมวดหมู่
+class CategoryPic(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='categories/')
+
+    def __str__(self):
+        return f"Image for {self.category.name}"
+
+
 # สินค้า
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -77,6 +86,7 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} ({self.quantity})"
+    
 
 # คำสั่งซื้อ
 class Order(models.Model):
@@ -175,10 +185,3 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
 
-# รูปภาพหมวดหมู่
-class CategoryPic(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='categories/')
-
-    def __str__(self):
-        return f"Image for {self.category.name}"
