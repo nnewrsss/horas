@@ -53,7 +53,6 @@ function ProductDetails() {
 
     const handleSizeSelect = (size) => {
         setSelectedSize(size);
-        alert(`Selected size: ${size.name}`);
     };
 
     const incrementQuantity = () => {
@@ -69,19 +68,36 @@ function ProductDetails() {
     };
 
     const handleBuyNow = () => {
-        alert(`คุณได้ทำการซื้อสินค้า ${quantity} ชิ้น ไซส์: ${selectedSize ? selectedSize.name : 'ไม่ได้เลือก'} เรียบร้อยแล้ว!`);
+        if (product.stock <= 0) {
+            alert('สินค้าหมด');
+            return;
+        }
+
+        if (!selectedSize) {
+            alert('กรุณาเลือกไซส์ก่อนทำการซื้อ');
+            return;
+        }
+
+        const purchasedItem = { ...product, size: selectedSize, quantity };
+        console.log('Sending purchased item:', purchasedItem);
+        navigate('/payment', { state: { item: purchasedItem } });
     };
 
     const handleAddToCart = () => {
+        if (product.stock <= 0) {
+            alert('สินค้าหมด');
+            return;
+        }
+
         if (!selectedSize) {
             alert('กรุณาเลือกไซส์ก่อนเพิ่มสินค้าลงตะกร้า');
             return;
         }
+
         const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
         const itemWithSizeAndQuantity = { ...product, size: selectedSize, quantity };
         cartItems.push(itemWithSizeAndQuantity);
         localStorage.setItem('cart', JSON.stringify(cartItems));
-        alert('เพิ่มสินค้าเข้าตะกร้าเรียบร้อยแล้ว!');
         navigate('/cart');
     };
 
@@ -102,7 +118,7 @@ function ProductDetails() {
                     <h1>{product.name}</h1>
                     <p>{product.description}</p>
                     <p>Price: ${product.price}</p>
-                    <p>Stock: {product.stock}</p>
+                    <p>จำนวนที่เหลืออยู่ใน Stock: {product.stock}</p>
 
                     {product.images && product.images.length > 0 && (
                         <div>

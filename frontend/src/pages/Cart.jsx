@@ -22,10 +22,15 @@ function Cart() {
         localStorage.setItem('cart', JSON.stringify(updatedCartItems)); // อัปเดตข้อมูลใน localStorage
     };
 
+    // คำนวณราคารวมของสินค้าทั้งหมด
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    };
+
     // ฟังก์ชันเมื่อผู้ใช้กดปุ่ม "สั่งซื้อสินค้า"
     const handleCheckout = () => {
-        alert('ดำเนินการสั่งซื้อสินค้าทั้งหมดในตะกร้า');
-        // คุณสามารถเพิ่มการทำงานเพิ่มเติม เช่น การไปยังหน้าชำระเงินได้ที่นี่
+        const total = calculateTotal(); // คำนวณราคารวม
+        navigate('/payment', { state: { cartItems, total } }); // ส่งข้อมูลไปยังหน้า Payment
     };
 
     return (
@@ -45,7 +50,7 @@ function Cart() {
                                 <p>{item.description}</p>
                                 <p>ไซส์: {item.size ? item.size.name : 'ไม่ได้เลือกไซส์'}</p>
                                 <p>ราคา: ${item.price}</p>
-                                <p>จำนวน: {item.quantity}</p> {/* แสดงจำนวนสินค้าที่เลือก */}
+                                <p>จำนวน: {item.quantity}</p>
                             </div>
                             <div className="cart-item-actions">
                                 <button onClick={() => handleRemoveItem(index)} className="remove-btn">
@@ -54,6 +59,9 @@ function Cart() {
                             </div>
                         </div>
                     ))}
+                    <div className="cart-total">
+                        <h2>ราคารวม: ${calculateTotal()}</h2>
+                    </div>
                     <button onClick={handleCheckout} className="checkout-btn">
                         สั่งซื้อสินค้า
                     </button>

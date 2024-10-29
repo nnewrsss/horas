@@ -160,6 +160,7 @@ import CategoryDetails from './pages/CategoryDetails';
 import CategoryProduct from './pages/Categoryproduct';
 import ProductDetails from './pages/productdetails';
 import Cart from './pages/cart';
+import Payment from './pages/Payment';
 
 function Logout() {
   localStorage.clear(); // Clear localStorage on logout
@@ -210,6 +211,8 @@ function App() {
         <Route path="/categoryproduct/:productId" element={<CategoryProduct />} />
         <Route path="/product/:productId" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
+        <Route path="/payment" element={<Payment />} />
 
         
         {/* Fallback Route */}
