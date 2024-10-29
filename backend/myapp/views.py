@@ -24,6 +24,8 @@ from .permissions import IsAdminUser
 from rest_framework.decorators import api_view, permission_classes,action
 import json
 from django.shortcuts import get_object_or_404
+import uuid
+from django.db import transaction  # นำเข้าที่สำคัญ
 
 # หมวดหมู่สินค้า
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -68,34 +70,80 @@ class CartAPIView(generics.RetrieveAPIView):
         cart, created = Cart.objects.get_or_create(user=user)
         return cart
 
+
+
+
 # เพิ่มสินค้าลงตะกร้า
+# class AddToCartAPIView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         product_id = request.data.get('product_id')
+#         quantity = int(request.data.get('quantity', 1))
+#         user = request.user
+
+#         try:
+#             product = Product.objects.get(id=product_id)
+#         except Product.DoesNotExist:
+#             return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+
+#         if product.stock < quantity:
+#             return Response({'error': 'Not enough stock'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         cart, created = Cart.objects.get_or_create(user=user)
+#         cart_item, created = CartItem.objects.get_or_create(
+#             cart=cart,
+#             product=product,
+#             defaults={'quantity': quantity}
+#         )
+#         if not created:
+#             cart_item.quantity += quantity
+#             cart_item.save()
+
+#         return Response({'message': 'Product added to cart'}, status=status.HTTP_200_OK)
+
+
 class AddToCartAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         product_id = request.data.get('product_id')
         quantity = int(request.data.get('quantity', 1))
+        size_id = request.data.get('size_id')  
         user = request.user
+
+        if not size_id:
+            return Response({'error': 'กรุณาเลือกขนาดสินค้า'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            size = Size.objects.get(id=size_id)
+        except Size.DoesNotExist:
+            return Response({'error': 'ไม่พบขนาดที่เลือก'}, status=status.HTTP_404_NOT_FOUND)
 
         try:
             product = Product.objects.get(id=product_id)
         except Product.DoesNotExist:
-            return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'ไม่พบสินค้า'}, status=status.HTTP_404_NOT_FOUND)
 
         if product.stock < quantity:
-            return Response({'error': 'Not enough stock'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'สินค้าคงเหลือไม่เพียงพอ'}, status=status.HTTP_400_BAD_REQUEST)
 
         cart, created = Cart.objects.get_or_create(user=user)
         cart_item, created = CartItem.objects.get_or_create(
             cart=cart,
             product=product,
+            sizes=size,
             defaults={'quantity': quantity}
         )
         if not created:
             cart_item.quantity += quantity
             cart_item.save()
 
-        return Response({'message': 'Product added to cart'}, status=status.HTTP_200_OK)
+        return Response({'message': 'เพิ่มสินค้าลงตะกร้าสำเร็จ'}, status=status.HTTP_200_OK)
+
+
+
+
 
 # ลบสินค้าจากตะกร้า
 class RemoveFromCartAPIView(APIView):
@@ -658,3 +706,211 @@ def products_by_childcategory(request, child_category_id):
     except Exception as e:
         print(f"Error: {str(e)}")  # Debug: ข้อผิดพลาด
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# class ConfirmPurchaseAPIView(APIView):
+#     permission_classes = [IsAuthenticated]
+#     parser_classes = [MultiPartParser, FormParser]
+
+#     def post(self, request, format=None):
+#         user = request.user
+
+#         # ดึงโปรไฟล์ผู้ใช้
+#         try:
+#             user_profile = UserProfile.objects.get(user=user)
+#         except UserProfile.DoesNotExist:
+#             return Response({'error': 'ไม่พบโปรไฟล์ผู้ใช้'}, status=status.HTTP_404_NOT_FOUND)
+
+#         # ดึงข้อมูลตะกร้าของผู้ใช้
+#         try:
+#             cart = Cart.objects.get(user=user)
+#         except Cart.DoesNotExist:
+#             return Response({'error': 'ไม่พบตะกร้าสินค้า'}, status=status.HTTP_404_NOT_FOUND)
+
+#         if not cart.items.exists():
+#             return Response({'error': 'ตะกร้าของคุณว่างเปล่า'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         # ตรวจสอบว่าผู้ใช้อัปโหลดสลิปหรือไม่
+#         slip = request.FILES.get('slip')
+#         if not slip:
+#             return Response({'error': 'กรุณาอัปโหลดสลิปการชำระเงิน'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         # กำหนดวิธีการชำระเงิน (ค่าเริ่มต้นคือ Bank Transfer)
+#         payment_method = request.data.get('payment_method', 'Bank Transfer')
+
+#         with transaction.atomic():
+#             # สร้างคำสั่งซื้อ (Order)
+#             order = Order.objects.create(
+#                 user=user,
+#                 status='Pending',
+#                 shipping_address=user_profile.address,
+#                 phone_number=user_profile.phone_number,
+#                 total_price=0
+#             )
+
+#             total_price = 0
+#             # สร้างรายการคำสั่งซื้อ (OrderItem)
+#             for cart_item in cart.items.select_related('product').all():
+#                 product = cart_item.product
+#                 if product.stock < cart_item.quantity:
+#                     transaction.set_rollback(True)
+#                     return Response({'error': f'สินค้าคงเหลือไม่เพียงพอสำหรับ {product.name}'}, status=status.HTTP_400_BAD_REQUEST)
+
+#                 OrderItem.objects.create(
+#                     order=order,
+#                     product=product,
+#                     quantity=cart_item.quantity,
+#                     price=product.price
+#                 )
+
+#                 # อัปเดตสต็อกสินค้า
+#                 product.stock -= cart_item.quantity
+#                 product.save()
+
+#                 total_price += product.price * cart_item.quantity
+
+#             # อัปเดตราคาสุทธิของคำสั่งซื้อ
+#             order.total_price = total_price
+#             order.save()
+
+#             # สร้างข้อมูลการชำระเงิน (Payment)
+#             transaction_id = str(uuid.uuid4())  # สร้าง transaction_id แบบสุ่ม
+#             Payment.objects.create(
+#                 order=order,
+#                 amount=total_price,
+#                 payment_method=payment_method,
+#                 payment_status='Pending',
+#                 transaction_id=transaction_id,
+#                 payment_slip=slip
+#             )
+
+#             # ล้างตะกร้าหลังการสั่งซื้อเสร็จ
+#             cart.items.all().delete()
+
+#         return Response({
+#             'message': 'การยืนยันการซื้อสำเร็จ',
+#             'order_id': order.id,
+#             'total_price': order.total_price
+#         }, status=status.HTTP_201_CREATED)
+    
+# class OrderDetailAPIView(generics.RetrieveAPIView):
+#     serializer_class = OrderSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return Order.objects.filter(user=self.request.user)  # ดึงเฉพาะคำสั่งซื้อของผู้ใช้
+
+
+
+class ConfirmPurchaseAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, format=None):
+        user = request.user
+
+        # ดึงโปรไฟล์ผู้ใช้
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            return Response({'error': 'ไม่พบโปรไฟล์ผู้ใช้'}, status=status.HTTP_404_NOT_FOUND)
+
+        # ตรวจสอบว่าผู้ใช้อัปโหลดสลิปหรือไม่
+        slip = request.FILES.get('slip')
+        if not slip:
+            return Response({'error': 'กรุณาอัปโหลดสลิปการชำระเงิน'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # กำหนดวิธีการชำระเงิน
+        payment_method = request.data.get('payment_method', 'Bank Transfer')
+
+        # รับข้อมูลสินค้าที่จะซื้อ
+        items_data = request.data.get('items')
+        if items_data:
+            try:
+                items = json.loads(items_data)
+            except json.JSONDecodeError:
+                return Response({'error': 'ข้อมูลสินค้าที่ส่งมาไม่ถูกต้อง'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # ดึงข้อมูลจากตะกร้า
+            try:
+                cart = Cart.objects.get(user=user)
+            except Cart.DoesNotExist:
+                return Response({'error': 'ไม่พบตะกร้าสินค้า'}, status=status.HTTP_404_NOT_FOUND)
+
+            if not cart.items.exists():
+                return Response({'error': 'ตะกร้าของคุณว่างเปล่า'}, status=status.HTTP_400_BAD_REQUEST)
+
+            items = []
+            for cart_item in cart.items.select_related('product').all():
+                items.append({
+                    'product_id': cart_item.product.id,
+                    'quantity': cart_item.quantity,
+                    'size_id': cart_item.sizes.id if cart_item.sizes else None
+                })
+
+        with transaction.atomic():
+            # สร้างคำสั่งซื้อ
+            order = Order.objects.create(
+                user=user,
+                status='Pending',
+                shipping_address=user_profile.address,
+                phone_number=user_profile.phone_number,
+                total_price=0
+            )
+
+            total_price = 0
+            # สร้างรายการคำสั่งซื้อ
+            for item in items:
+                product_id = item.get('product_id')
+                quantity = item.get('quantity', 1)
+                size_id = item.get('size_id')
+
+                try:
+                    product = Product.objects.get(id=product_id)
+                except Product.DoesNotExist:
+                    transaction.set_rollback(True)
+                    return Response({'error': f'ไม่พบสินค้า ID {product_id}'}, status=status.HTTP_404_NOT_FOUND)
+
+                if product.stock < quantity:
+                    transaction.set_rollback(True)
+                    return Response({'error': f'สินค้าคงเหลือไม่เพียงพอสำหรับ {product.name}'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # สร้าง OrderItem และเก็บข้อมูลขนาดถ้าจำเป็น
+                order_item = OrderItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=quantity,
+                    price=product.price,
+                    sizes_id=size_id  # เพิ่มฟิลด์ sizes_id ถ้ามีในโมเดล
+                )
+
+                # อัปเดตสต็อกสินค้า
+                product.stock -= quantity
+                product.save()
+
+                total_price += product.price * quantity
+
+            # อัปเดตราคารวมของคำสั่งซื้อ
+            order.total_price = total_price
+            order.save()
+
+            # สร้างข้อมูลการชำระเงิน
+            transaction_id = str(uuid.uuid4())
+            Payment.objects.create(
+                order=order,
+                amount=total_price,
+                payment_method=payment_method,
+                payment_status='Pending',
+                transaction_id=transaction_id,
+                payment_slip=slip
+            )
+
+            # ล้างตะกร้าหลังการสั่งซื้อถ้าซื้อจากตะกร้า
+            if not items_data:
+                cart.items.all().delete()
+
+        return Response({
+            'message': 'การยืนยันการซื้อสำเร็จ',
+            'order_id': order.id,
+            'total_price': order.total_price
+        }, status=status.HTTP_201_CREATED)

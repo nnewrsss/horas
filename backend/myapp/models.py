@@ -78,15 +78,17 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart for {self.user.username}"
 
-# รายการสินค้าที่อยู่ในตะกร้า
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)  # เปลี่ยนจาก ProductVariation เป็น Product
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    sizes = models.ForeignKey(Size, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('cart', 'product', 'sizes') #เพิ่มมา
 
     def __str__(self):
-        return f"{self.product.name} ({self.quantity})"
-    
+        return f"{self.product.name} ({self.quantity}) ({self.sizes})"
 
 # คำสั่งซื้อ
 class Order(models.Model):
@@ -117,15 +119,46 @@ class Order(models.Model):
 # รายการสินค้าที่สั่งซื้อ
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_items")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)  # เปลี่ยนจาก ProductVariation เป็น Product
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    sizes = models.ForeignKey(Size, on_delete=models.CASCADE, null=True, blank=True)  # เพิ่มฟิลด์ sizes
 
     def __str__(self):
         return f"{self.product.name} ({self.quantity})"
 
-# การชำระเงิน
+
+
 class Payment(models.Model):
+    PAYMENT_STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Completed', 'Completed'),
+        ('Failed', 'Failed'),
+    ]
+    PAYMENT_METHOD_CHOICES = [
+        ('Credit Card', 'Credit Card'),
+        ('PayPal', 'PayPal'),
+        ('Bank Transfer', 'Bank Transfer'),
+    ]
+
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_date = models.DateTimeField(auto_now_add=True)
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='Pending')
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
+    transaction_id = models.CharField(max_length=100, blank=True, null=True)
+    
+    # ฟิลด์สำหรับเก็บ slip โอนเงินที่ลูกค้าอัปโหลด
+    payment_slip = models.ImageField(upload_to='payment_slips/', blank=True, null=True)
+
+    def __str__(self):
+        return f"Payment for Order {self.order.id}"
+    
+
+# # การชำระเงิน
+# class Payment(models.Model):
+
+
     PAYMENT_STATUS_CHOICES = [
         ('Pending', 'Pending'),
         ('Completed', 'Completed'),

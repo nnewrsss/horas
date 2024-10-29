@@ -11,23 +11,21 @@
 //     const [error, setError] = useState(null);
 //     const [sizes, setSizes] = useState([]);
 //     const [selectedSize, setSelectedSize] = useState(null);
+//     const [quantity, setQuantity] = useState(1); // เก็บจำนวนสินค้าที่เลือก
 //     const navigate = useNavigate();
-//     const username = localStorage.getItem('username');  // ดึงข้อมูล username จาก localStorage
+//     const username = localStorage.getItem('username');
 
-//     // ตรวจสอบว่า ACCESS_TOKEN มีใน localStorage หรือไม่ ถ้าไม่มีจะนำทางไปที่หน้า login
 //     useEffect(() => {
 //         const token = localStorage.getItem(ACCESS_TOKEN);
 //         if (!token) {
-//             navigate('/');  // ถ้าไม่มี token ให้กลับไปหน้า login
+//             navigate('/');
 //         }
 //     }, [navigate]);
 
-//     // Fetch product details
 //     useEffect(() => {
 //         const fetchProductDetails = async () => {
 //             try {
 //                 const response = await axios.get(`http://127.0.0.1:8000/myapp/products/${productId}/`);
-//                 console.log("Product Details:", response.data);
 //                 setProduct(response.data);
 //                 setLoading(false);
 //             } catch (err) {
@@ -40,12 +38,10 @@
 //         fetchProductDetails();
 //     }, [productId]);
 
-//     // Fetch sizes from the API
 //     useEffect(() => {
 //         const fetchSizes = async () => {
 //             try {
 //                 const response = await axios.get('http://127.0.0.1:8000/myapp/sizes/');
-//                 console.log("Sizes:", response.data);
 //                 setSizes(response.data);
 //             } catch (error) {
 //                 console.error("Error fetching sizes:", error);
@@ -55,30 +51,89 @@
 //         fetchSizes();
 //     }, []);
 
-//     // Function to handle size selection
 //     const handleSizeSelect = (size) => {
 //         setSelectedSize(size);
-//         alert(`Selected size: ${size.name}`);
 //     };
 
-//     // ฟังก์ชันเมื่อผู้ใช้กดปุ่ม "ซื้อสินค้า"
+//     const incrementQuantity = () => {
+//         if (quantity < product.stock) {
+//             setQuantity(quantity + 1);
+//         }
+//     };
+
+//     const decrementQuantity = () => {
+//         if (quantity > 1) {
+//             setQuantity(quantity - 1);
+//         }
+//     };
+
 //     const handleBuyNow = () => {
-//         alert(`คุณได้ทำการซื้อสินค้าไซส์: ${selectedSize ? selectedSize.name : 'ไม่มีการเลือกไซส์'} เรียบร้อยแล้ว!`);
-//         // คุณสามารถเพิ่มการทำงานเพิ่มเติมที่นี่ เช่น การนำไปยังหน้าชำระเงิน
+//         if (product.stock <= 0) {
+//             alert('สินค้าหมด');
+//             return;
+//         }
+
+//         if (!selectedSize) {
+//             alert('กรุณาเลือกไซส์ก่อนทำการซื้อ');
+//             return;
+//         }
+
+//         const purchasedItem = { ...product, size: selectedSize, quantity };
+//         console.log('Sending purchased item:', purchasedItem);
+//         navigate('/payment', { state: { item: purchasedItem } });
 //     };
 
-//     // ฟังก์ชันเมื่อผู้ใช้กดปุ่ม "เพิ่มสินค้าเข้าตะกร้า"
+//     // const handleAddToCart = () => {
+//     //     if (product.stock <= 0) {
+//     //         alert('สินค้าหมด');
+//     //         return;
+//     //     }
+
+//     //     if (!selectedSize) {
+//     //         alert('กรุณาเลือกไซส์ก่อนเพิ่มสินค้าลงตะกร้า');
+//     //         return;
+//     //     }
+
+//     //     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+//     //     const itemWithSizeAndQuantity = { ...product, size: selectedSize, quantity };
+//     //     cartItems.push(itemWithSizeAndQuantity);
+//     //     localStorage.setItem('cart', JSON.stringify(cartItems));
+//     //     navigate('/cart');
+//     // };
+
+
 //     const handleAddToCart = () => {
+//         if (product.stock <= 0) {
+//             alert('สินค้าหมด');
+//             return;
+//         }
+    
 //         if (!selectedSize) {
 //             alert('กรุณาเลือกไซส์ก่อนเพิ่มสินค้าลงตะกร้า');
 //             return;
 //         }
-//         const cartItems = JSON.parse(localStorage.getItem('cart')) || [];  // ดึงสินค้าที่อยู่ในตะกร้า (ถ้ามี)
-//         const itemWithSize = { ...product, size: selectedSize };  // เพิ่มไซส์ที่เลือกไปยังสินค้าที่จะเพิ่มในตะกร้า
-//         cartItems.push(itemWithSize);  // เพิ่มสินค้าลงในตะกร้า
-//         localStorage.setItem('cart', JSON.stringify(cartItems));  // เก็บตะกร้าลงใน localStorage
-//         alert('เพิ่มสินค้าเข้าตะกร้าเรียบร้อยแล้ว!');
+    
+//         const token = localStorage.getItem(ACCESS_TOKEN);
+//         axios.post('http://127.0.0.1:8000/myapp/cart/add/', {
+//             product_id: product.id,
+//             quantity: quantity,
+//             size_id: selectedSize.id
+//         }, {
+//             headers: {
+//                 'Authorization': `Bearer ${token}`,
+//                 'Content-Type': 'application/json',
+//             }
+//         })
+//         .then(response => {
+//             console.log('เพิ่มสินค้าลงตะกร้าสำเร็จ:', response.data);
+//             navigate('/cart');
+//         })
+//         .catch(error => {
+//             console.error('เกิดข้อผิดพลาดในการเพิ่มสินค้า:', error.response.data);
+//             alert('เกิดข้อผิดพลาด: ' + (error.response.data.error || 'ไม่ทราบข้อผิดพลาด'));
+//         });
 //     };
+    
 
 //     if (loading) {
 //         return <p>Loading...</p>;
@@ -90,32 +145,29 @@
 
 //     return (
 //         <div>
-//             {/* เพิ่ม Nav โดยส่ง username ที่ดึงจาก localStorage ไปด้วย */}
 //             <Nav username={username} />
 
 //             {product && (
 //                 <div>
-//                     <h1>{product.name}</h1>  {/* แสดงชื่อสินค้า */}
-//                     <p>{product.description}</p>  {/* แสดงรายละเอียดสินค้า */}
-//                     <p>Price: ${product.price}</p>  {/* แสดงราคาสินค้า */}
-//                     <p>Stock: {product.stock}</p>  {/* แสดงจำนวนสต็อก */}
+//                     <h1>{product.name}</h1>
+//                     <p>{product.description}</p>
+//                     <p>Price: ${product.price}</p>
+//                     <p>จำนวนที่เหลืออยู่ใน Stock: {product.stock}</p>
 
-//                     {/* แสดงรูปภาพสินค้า */}
 //                     {product.images && product.images.length > 0 && (
 //                         <div>
 //                             {product.images.map((image, index) => (
 //                                 <img
 //                                     key={index}
 //                                     src={image.image}
-//                                     alt={`${product.name} ${index + 1}`}  // Use a unique alt text for each image
+//                                     alt={`${product.name} ${index + 1}`}
 //                                     className='product-image'
-//                                     style={{ width: '300px', height: 'auto', marginRight: '10px' }}  // Add some margin for spacing between images
+//                                     style={{ width: '300px', height: 'auto', marginRight: '10px' }}
 //                                 />
 //                             ))}
 //                         </div>
 //                     )}
 
-//                     {/* Size Selection */}
 //                     <h2>Select a Size</h2>
 //                     <div>
 //                         {sizes.map((size) => (
@@ -134,11 +186,12 @@
 //                         ))}
 //                     </div>
 
-//                     {selectedSize && (
-//                         <p>You selected: {selectedSize.name}</p>
-//                     )}
+//                     <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
+//                         <button onClick={decrementQuantity} style={{ padding: '10px' }}>−</button>
+//                         <span style={{ margin: '0 10px' }}>{quantity}</span>
+//                         <button onClick={incrementQuantity} style={{ padding: '10px' }}>+</button>
+//                     </div>
 
-//                     {/* ปุ่มซื้อสินค้า */}
 //                     <button
 //                         onClick={handleBuyNow}
 //                         style={{ margin: '10px', padding: '10px', backgroundColor: 'green', color: 'white' }}
@@ -146,7 +199,6 @@
 //                         ซื้อสินค้า
 //                     </button>
 
-//                     {/* ปุ่มเพิ่มสินค้าลงในตะกร้า */}
 //                     <button
 //                         onClick={handleAddToCart}
 //                         style={{ margin: '10px', padding: '10px', backgroundColor: 'orange', color: 'white' }}
@@ -161,6 +213,9 @@
 
 // export default ProductDetails;
 
+
+
+// productdetails.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -174,7 +229,7 @@ function ProductDetails() {
     const [error, setError] = useState(null);
     const [sizes, setSizes] = useState([]);
     const [selectedSize, setSelectedSize] = useState(null);
-    const [quantity, setQuantity] = useState(1); // เก็บจำนวนสินค้าที่เลือก
+    const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate();
     const username = localStorage.getItem('username');
 
@@ -216,7 +271,6 @@ function ProductDetails() {
 
     const handleSizeSelect = (size) => {
         setSelectedSize(size);
-        alert(`Selected size: ${size.name}`);
     };
 
     const incrementQuantity = () => {
@@ -232,20 +286,55 @@ function ProductDetails() {
     };
 
     const handleBuyNow = () => {
-        alert(`คุณได้ทำการซื้อสินค้า ${quantity} ชิ้น ไซส์: ${selectedSize ? selectedSize.name : 'ไม่ได้เลือก'} เรียบร้อยแล้ว!`);
+        if (product.stock <= 0) {
+            alert('สินค้าหมด');
+            return;
+        }
+
+        if (!selectedSize) {
+            alert('กรุณาเลือกไซส์ก่อนทำการซื้อ');
+            return;
+        }
+
+        const purchasedItem = {
+            ...product,
+            size: selectedSize,
+            quantity,
+        };
+
+        navigate('/payment', { state: { item: purchasedItem } });
     };
 
     const handleAddToCart = () => {
+        if (product.stock <= 0) {
+            alert('สินค้าหมด');
+            return;
+        }
+
         if (!selectedSize) {
             alert('กรุณาเลือกไซส์ก่อนเพิ่มสินค้าลงตะกร้า');
             return;
         }
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const itemWithSizeAndQuantity = { ...product, size: selectedSize, quantity };
-        cartItems.push(itemWithSizeAndQuantity);
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        alert('เพิ่มสินค้าเข้าตะกร้าเรียบร้อยแล้ว!');
-        navigate('/cart');
+
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        axios.post('http://127.0.0.1:8000/myapp/cart/add/', {
+            product_id: product.id,
+            quantity: quantity,
+            size_id: selectedSize.id
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            console.log('เพิ่มสินค้าลงตะกร้าสำเร็จ:', response.data);
+            navigate('/cart');
+        })
+        .catch(error => {
+            console.error('เกิดข้อผิดพลาดในการเพิ่มสินค้า:', error.response.data);
+            alert('เกิดข้อผิดพลาด: ' + (error.response.data.error || 'ไม่ทราบข้อผิดพลาด'));
+        });
     };
 
     if (loading) {
@@ -264,8 +353,8 @@ function ProductDetails() {
                 <div>
                     <h1>{product.name}</h1>
                     <p>{product.description}</p>
-                    <p>Price: ${product.price}</p>
-                    <p>Stock: {product.stock}</p>
+                    <p>ราคา: ${product.price}</p>
+                    <p>จำนวนที่เหลืออยู่ใน Stock: {product.stock}</p>
 
                     {product.images && product.images.length > 0 && (
                         <div>
@@ -281,7 +370,7 @@ function ProductDetails() {
                         </div>
                     )}
 
-                    <h2>Select a Size</h2>
+                    <h2>เลือกไซส์</h2>
                     <div>
                         {sizes.map((size) => (
                             <button

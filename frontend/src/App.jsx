@@ -18,6 +18,7 @@
 // import CategoryDetails from './pages/CategoryDetails';
 // import CategoryProduct from './pages/Categoryproduct';
 // import ProductDetails from './pages/productdetails';
+// import Cart from './pages/cart';
 
 // function Logout() {
 //   localStorage.clear(); // Clear localStorage on logout
@@ -67,6 +68,7 @@
 //         <Route path="/categorydetails/:subcategoryType" element={<CategoryDetails />} />
 //         <Route path="/categoryproduct/:productId" element={<CategoryProduct />} />
 //         <Route path="/product/:productId" element={<ProductDetails />} />
+//         <Route path="/cart" element={<Cart />} />
 
         
 //         {/* Fallback Route */}
@@ -108,7 +110,10 @@ import Men from './pages/Men';
 import CategoryDetails from './pages/CategoryDetails';
 import CategoryProduct from './pages/Categoryproduct';
 import ProductDetails from './pages/productdetails';
-import Cart from './pages/cart';
+import Cart from './pages/Cart';
+import Payment from './pages/Payment';
+import DeliveryStatus from './pages/DeliveryStatus'; // Import the new page
+import Deliverystatusorderdetails from './pages/Deliverystatusorderdetails'; // Import OrderDetails
 
 function Logout() {
   localStorage.clear(); // Clear localStorage on logout
@@ -159,6 +164,10 @@ function App() {
         <Route path="/categoryproduct/:productId" element={<CategoryProduct />} />
         <Route path="/product/:productId" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/delivery-status" element={<DeliveryStatus />} />
+        <Route path="/order/:orderId" element={<Deliverystatusorderdetails />} /> {/* อัปเดตเส้นทางใหม่ */}
 
         
         {/* Fallback Route */}

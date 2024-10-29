@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products,male_subcategories,maletop_subcategories,malebottom_subcategories,malebags_subcategories,female_subcategories,femalebottom_subcategories,femalebags_subcategories, get_subcategories
-from .views import malepolo,malet_shirt,maleshirt,products_by_subcategory,products_by_childcategory,femaletop_subcategories,products_by_subcategory2
+from .views import malepolo,malet_shirt,maleshirt,products_by_subcategory,products_by_childcategory,femaletop_subcategories,products_by_subcategory2,ConfirmPurchaseAPIView,OrderDetailAPIView
 from . import views
 
 
@@ -84,17 +84,15 @@ path('api/productimages/<int:pk>/', ProductImageDeleteView.as_view(), name='dele
 
 
 
-
-
-
+ 
+     path('confirm-purchase/', ConfirmPurchaseAPIView.as_view(), name='confirm-purchase'),
+     path('orders/<int:pk>/', OrderDetailAPIView.as_view(), name='order-detail'),
 
       # Dynamic endpoint for subcategories
        path('<str:subcategory_type>/', products_by_subcategory2, name='products-by-subcategory'),
     path('categoryproducts/<str:subcategory_type>/', products_by_subcategory, name='products-by-subcategory'),
     path('products/childcategory/<int:child_category_id>/', products_by_childcategory, name='products-by-childcategory'),
-
-
-
+ 
     # ใช้ router สำหรับจัดการ categories
     path('', include(router.urls)),
 

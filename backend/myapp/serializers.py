@@ -99,16 +99,27 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 
-# Serializer สำหรับรายการสินค้าในตะกร้า (CartItem)
+# # Serializer สำหรับรายการสินค้าในตะกร้า (CartItem)
+# class CartItemSerializer(serializers.ModelSerializer):
+#     product = ProductSerializer(read_only=True)
+#     product_id = serializers.PrimaryKeyRelatedField(
+#         queryset=Product.objects.all(), source='product', write_only=True
+#     )
+
+#     class Meta:
+#         model = CartItem
+#         fields = ["id", "product", "product_id", "quantity"]
+
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
-    product_id = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(), source='product', write_only=True
-    )
+    sizes = SizeSerializer(read_only=True)
+    size_id = serializers.PrimaryKeyRelatedField(queryset=Size.objects.all(), source='sizes', write_only=True)
 
     class Meta:
         model = CartItem
-        fields = ["id", "product", "product_id", "quantity"]
+        fields = ["id", "product", "quantity", "sizes", "size_id"]
+
+
 
 # Serializer สำหรับตะกร้าสินค้า (Cart)
 class CartSerializer(serializers.ModelSerializer):
@@ -121,10 +132,11 @@ class CartSerializer(serializers.ModelSerializer):
 # Serializer สำหรับรายการสินค้าในคำสั่งซื้อ (OrderItem)
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
+    sizes = SizeSerializer(read_only=True)  # เพิ่มการแสดงผลของ sizes
 
     class Meta:
         model = OrderItem
-        fields = ["id", "product", "quantity", "price"]
+        fields = ["id", "product", "quantity", "price", "sizes"]
 
 # Serializer สำหรับคำสั่งซื้อ (Order)
 class OrderSerializer(serializers.ModelSerializer):
@@ -164,70 +176,6 @@ class CouponSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
-
-
-
-
-# class CategoryImageSerialzer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CategoryPic
-#         fields = ['id', 'image']
-
-
-# class SubCategorySerializer(serializers.ModelSerializer):
-    
-#     images = CategoryImageSerialzer(many=True, read_only=True)
-#     images_upload = serializers.ListField(
-#         child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
-#         write_only=True,
-#         required=False
-#     )
-
-#     class Meta:
-#         model = Category
-#         fields = ['id', 'name','images','images_upload']
-
-
-
-
-
-# class CategorySerializer(serializers.ModelSerializer):
-#     subcategories = SubCategorySerializer(many=True, read_only=True)  # แสดง subcategories
-#     parent_name = serializers.CharField(source='parent.name', read_only=True)  # แสดงชื่อหมวดหมู่พ่อ
-
-#     images = CategoryImageSerialzer(many=True, read_only=True)
-#     images_upload = serializers.ListField(
-#         child=serializers.ImageField(max_length=100000, allow_empty_file=False, use_url=False),
-#         write_only=True,
-#         required=False
-#     )
-
-#     class Meta:
-#         model = Category
-#         fields = ['id', 'name', 'parent', 'parent_name', 'subcategories','images','images_upload']
-
-#     def create(self, validated_data):
-#         images_data = validated_data.pop('images_upload', [])
-#         category = Category.objects.create(**validated_data)
-
-#         for image in images_data:
-#             CategoryPic.objects.create(category=category, image=image)
-
-#         return category
-
-#     def update(self, instance, validated_data):
-#         images_data = validated_data.pop('images_upload', [])
-        
-#         for attr, value in validated_data.items():
-#             setattr(instance, attr, value)
-#         instance.save()
-
-#         if images_data:
-#             for image in images_data:
-#                 CategoryPic.objects.create(category=instance, image=image)
-
-#         return instance
 
 
 # Serializer สำหรับรูปภาพหมวดหมู่ (CategoryPic)
