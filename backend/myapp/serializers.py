@@ -7,7 +7,7 @@ from rest_framework import serializers
 from .models import (
     Category, Product, Size, Cart, CartItem,
     Order, OrderItem, Payment, UserProfile, ProductImage,
-    Review, Coupon,CategoryPic
+    Review, Coupon,CategoryPic,UserProfile
 )
 
 # Serializer สำหรับผู้ใช้
@@ -263,3 +263,39 @@ class ProductImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = ['product', 'image']
+
+
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    phone_number = serializers.CharField(required=True, write_only=True)
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password', 'confirm_password', 'phone_number']
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({"password": "Passwords must match."})
+        return attrs
+
+    def create(self, validated_data):
+        phone_number = validated_data.pop('phone_number')
+        validated_data.pop('confirm_password')
+
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+
+        UserProfile.objects.create(
+            user=user,
+            phone_number=phone_number,
+            role='user',  # เซ็ต role เป็น 'user' โดยอัตโนมัติ
+            address=None   # เซ็ต address เป็น None (อนุญาตได้แล้วหลังจากแก้ไขโมเดล)
+        )
+
+        return user

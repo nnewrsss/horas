@@ -149,7 +149,7 @@ function App() {
 
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/support" element={<Support />} />
         <Route path="/aboutus" element={<AboutUs />} />

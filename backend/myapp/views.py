@@ -17,6 +17,7 @@ from .serializers import (
     CartSerializer, CartItemSerializer, OrderSerializer, OrderItemSerializer,
     PaymentSerializer, UserProfileSerializer, ProductImageSerializer,
     ReviewSerializer, CouponSerializer, UserSerializer,ProductImageUploadSerializer
+    ,RegistrationSerializer
 )
 from django.contrib.auth.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -914,3 +915,8 @@ class ConfirmPurchaseAPIView(APIView):
             'order_id': order.id,
             'total_price': order.total_price
         }, status=status.HTTP_201_CREATED)
+
+class RegisterAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegistrationSerializer
+    permission_classes = [AllowAny]
