@@ -1,135 +1,350 @@
-import React, { useState, useEffect } from 'react';
+
+// // Payment.jsx// Payment.jsx
+// import React, { useEffect, useState } from 'react';
+// import { useLocation, useNavigate } from 'react-router-dom';
+// import axios from 'axios';
+// import Nav from '../components/Nav'; // ตรวจสอบให้แน่ใจว่า path ถูกต้อง
+// import qrImage from '../images/qr.jpg';
+// import '../styles/Payment.css'; // นำเข้าไฟล์ CSS ถ้ามี
+// import { ACCESS_TOKEN } from '../constants';
+
+// function Payment() {
+//     const location = useLocation();
+//     const navigate = useNavigate();
+//     const [slip, setSlip] = useState(null);
+//     const [isSubmitting, setIsSubmitting] = useState(false);
+//     const [error, setError] = useState(null);
+//     const username = localStorage.getItem('username'); // ดึงข้อมูล username จาก localStorage
+
+//     // ตรวจสอบและตั้งค่าข้อมูลสินค้าที่จะซื้อ
+//     const [cartItems, setCartItems] = useState([]);
+//     const [total, setTotal] = useState(0);
+
+//     useEffect(() => {
+//         if (location.state && location.state.cartItems && location.state.total) {
+//             setCartItems(location.state.cartItems);
+//             setTotal(location.state.total);
+//         } else {
+//             // หากไม่มีข้อมูลที่ถูกส่งมา ให้ดึงข้อมูลตะกร้าจาก API
+//             const fetchCart = async () => {
+//                 try {
+//                     const token = localStorage.getItem('access_token') || localStorage.getItem(ACCESS_TOKEN);
+//                     const response = await axios.get('http://127.0.0.1:8000/myapp/cart/', {
+//                         headers: {
+//                             'Authorization': `Bearer ${token}`,
+//                         }
+//                     });
+//                     setCartItems(response.data.items);
+//                     setTotal(response.data.items.reduce((acc, item) => acc + parseFloat(item.product.price) * item.quantity, 0).toFixed(2));
+//                 } catch (err) {
+//                     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลตะกร้า:", err);
+//                     navigate('/cart');
+//                 }
+//             };
+//             fetchCart();
+//         }
+//     }, [location.state, navigate]);
+
+//     const handleSlipChange = (e) => {
+//         if (e.target.files && e.target.files[0]) {
+//             setSlip(e.target.files[0]);
+//         }
+//     };
+
+//     const handleConfirmPurchase = async () => {
+//         if (!slip) {
+//             alert('กรุณาอัปโหลดสลิปการชำระเงินก่อนทำการยืนยัน');
+//             return;
+//         }
+
+//         setIsSubmitting(true);
+//         setError(null);
+
+//         const formData = new FormData();
+//         formData.append('slip', slip);
+//         formData.append('payment_method', 'Bank Transfer'); // คุณสามารถให้ผู้ใช้เลือกวิธีการชำระเงินได้
+
+//         try {
+//             const token = localStorage.getItem('access_token') || localStorage.getItem(ACCESS_TOKEN);
+//             const response = await axios.post('http://127.0.0.1:8000/myapp/confirm-purchase/', formData, {
+//                 headers: {
+//                     'Authorization': `Bearer ${token}`,
+                    
+//                 }
+//             });
+
+//             alert('การซื้อสินค้าเสร็จสมบูรณ์!');
+//             navigate('/homes'); // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการ
+//         } catch (err) {
+//             console.error("เกิดข้อผิดพลาดในการยืนยันการซื้อ:", err);
+//             setError('เกิดข้อผิดพลาดในการยืนยันการซื้อ กรุณาลองใหม่อีกครั้ง');
+//         } finally {
+//             setIsSubmitting(false);
+//         }
+//     };
+
+//     return (
+//         <div>
+//             <Nav username={username} /> {/* เพิ่ม Navbar */}
+//             <div className="payment-container">
+//                 <h1>การชำระเงิน</h1>
+
+//                 <div className="order-items">
+//                     <h2>รายการสินค้าที่ซื้อ</h2>
+//                     {cartItems.length === 0 ? (
+//                         <p>ไม่มีสินค้าที่จะซื้อ</p>
+//                     ) : (
+//                         <div>
+//                             {cartItems.map((item) => (
+//                                 <div key={item.id} className="cart-item">
+//                                     {item.product.images.length > 0 && (
+//                                         <img src={`http://127.0.0.1:8000${item.product.images[0].image}`} alt={item.product.name} className="cart-item-image" />
+//                                     )}
+//                                     <div className="cart-item-details">
+//                                         <h2 className="cart-item-name">{item.product.name}</h2>
+//                                         <p>{item.product.description}</p>
+//                                         <p>ไซส์: {item.sizes ? item.sizes.name : 'ไม่ได้เลือกไซส์'}</p>
+//                                         <p>ราคา: ${item.product.price}</p>
+//                                         <p>จำนวน: {item.quantity}</p>
+//                                     </div>
+//                                 </div>
+//                             ))}
+//                             <div className="cart-total">
+//                                 <h2>ราคารวม: ${total}</h2>
+//                             </div>
+//                         </div>
+//                     )}
+//                 </div>
+
+//                 <div className="qr-code-section">
+//                     <h2>สแกน QR Code เพื่อชำระเงิน</h2>
+//                     <img src={qrImage} alt="QR Code" className="qr-code-image" />
+//                 </div>
+
+//                 <div className="upload-slip-section">
+//                     <h2>อัปโหลดสลิปการชำระเงิน</h2>
+//                     <input
+//                         type="file"
+//                         accept="image/*,application/pdf"
+//                         onChange={handleSlipChange}
+//                     />
+//                     {slip && (
+//                         <div className="slip-preview">
+//                             <p>สลิปที่อัปโหลด: {slip.name}</p>
+//                             {slip.type.startsWith('image/') && (
+//                                 <img
+//                                     src={URL.createObjectURL(slip)}
+//                                     alt="Slip Preview"
+//                                     className="slip-preview-image"
+//                                 />
+//                             )}
+//                         </div>
+//                     )}
+//                 </div>
+
+//                 {error && <p className="error-message">{error}</p>}
+
+//                 <button
+//                     onClick={handleConfirmPurchase}
+//                     className="confirm-purchase-btn"
+//                     disabled={!slip || isSubmitting}
+//                 >
+//                     {isSubmitting ? 'กำลังยืนยัน...' : 'ยืนยันการซื้อ'}
+//                 </button>
+//             </div>
+//         </div>
+//     );
+// }
+
+// export default Payment;
+
+
+
+// payment.jsx
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../components/Nav';
-import qrImage from '../images/qr.jpg'; // นำเข้ารูป QR Code
-import '../styles/Payment.css'; // นำเข้า CSS สำหรับการตกแต่ง
-import { ACCESS_TOKEN } from '../constants'; // นำเข้า ACCESS_TOKEN
+import qrImage from '../images/qr.jpg';
+import '../styles/Payment.css';
+import { ACCESS_TOKEN } from '../constants';
 
 function Payment() {
     const location = useLocation();
-    const { cartItems = [], item = null, total = 0 } = location.state || {};
     const navigate = useNavigate();
+    const [slip, setSlip] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(null);
     const username = localStorage.getItem('username');
 
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [preview, setPreview] = useState(null);
-    const [loading, setLoading] = useState(false);
+    // ตรวจสอบและตั้งค่าข้อมูลสินค้าที่จะซื้อ
+    const [cartItems, setCartItems] = useState([]);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
-        // ตรวจสอบว่ามี ACCESS_TOKEN ใน localStorage หรือไม่
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-            alert('กรุณาเข้าสู่ระบบก่อนทำการชำระเงิน');
-            navigate('/'); // Redirect ไปยังหน้า login หากไม่มี token
-        }
-    }, [navigate]);
-
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            setSelectedFile(file);
-            setPreview(URL.createObjectURL(file));
+        if (location.state && location.state.cartItems && location.state.total) {
+            setCartItems(location.state.cartItems);
+            setTotal(location.state.total);
+        } else if (location.state && location.state.item) {
+            const singleItem = location.state.item;
+            setCartItems([singleItem]);
+            setTotal((parseFloat(singleItem.price) * singleItem.quantity).toFixed(2));
         } else {
-            alert('กรุณาอัปโหลดไฟล์รูปภาพเท่านั้น');
+            // หากไม่มีข้อมูลที่ถูกส่งมา ให้ดึงข้อมูลตะกร้าจาก API
+            const fetchCart = async () => {
+                try {
+                    const token = localStorage.getItem(ACCESS_TOKEN);
+                    const response = await axios.get('http://127.0.0.1:8000/myapp/cart/', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        }
+                    });
+                    setCartItems(response.data.items);
+                    setTotal(response.data.items.reduce((acc, item) => acc + parseFloat(item.product.price) * item.quantity, 0).toFixed(2));
+                } catch (err) {
+                    console.error("เกิดข้อผิดพลาดในการดึงข้อมูลตะกร้า:", err);
+                    navigate('/cart');
+                }
+            };
+            fetchCart();
+        }
+    }, [location.state, navigate]);
+
+    const handleSlipChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setSlip(e.target.files[0]);
         }
     };
 
-    const updateStock = async (productId, quantity) => {
-        try {
-            await axios.patch(`http://127.0.0.1:8000/myapp/products/${productId}/`, {
-                stock: quantity
-            });
-            console.log(`อัปเดตสต็อกของสินค้ารหัส ${productId} สำเร็จ`);
-        } catch (error) {
-            console.error('เกิดข้อผิดพลาดในการอัปเดตสต็อก:', error);
-        }
-    };
-
-    const handleConfirmPayment = async () => {
-        if (!selectedFile) {
-            alert('กรุณาอัปโหลดหลักฐานการชำระเงินก่อนทำการยืนยัน');
+    const handleConfirmPurchase = async () => {
+        if (!slip) {
+            alert('กรุณาอัปโหลดสลิปการชำระเงินก่อนทำการยืนยัน');
             return;
         }
 
-        setLoading(true);
+        setIsSubmitting(true);
+        setError(null);
 
-        if (item) {
-            await updateStock(item.id, item.stock - item.quantity);
-        } else {
-            for (const cartItem of cartItems) {
-                await updateStock(cartItem.id, cartItem.stock - cartItem.quantity);
+        const formData = new FormData();
+        formData.append('slip', slip);
+        formData.append('payment_method', 'Bank Transfer');
+
+        // เพิ่มข้อมูลสินค้าที่จะซื้อ
+        formData.append('items', JSON.stringify(cartItems.map(item => {
+            if (item.product) {
+                // กรณีมาจากตะกร้า
+                return {
+                    product_id: item.product.id,
+                    quantity: item.quantity,
+                    size_id: item.sizes ? item.sizes.id : null
+                };
+            } else {
+                // กรณีซื้อสินค้าชิ้นเดียว
+                return {
+                    product_id: item.id,
+                    quantity: item.quantity,
+                    size_id: item.size ? item.size.id : null
+                };
             }
-        }
+        })));
 
-        setTimeout(() => {
-            alert('การชำระเงินเสร็จสมบูรณ์!');
-            localStorage.removeItem('cart');
+        try {
+            const token = localStorage.getItem(ACCESS_TOKEN);
+            const response = await axios.post('http://127.0.0.1:8000/myapp/confirm-purchase/', formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+
+            alert('การซื้อสินค้าเสร็จสมบูรณ์!');
             navigate('/homes');
-        }, 2000);
+        } catch (err) {
+            console.error("เกิดข้อผิดพลาดในการยืนยันการซื้อ:", err);
+            setError('เกิดข้อผิดพลาดในการยืนยันการซื้อ กรุณาลองใหม่อีกครั้ง');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    const renderItems = () => {
-        if (item) {
-            return (
-                <div className="payment-item">
-                    <span>{item.name}</span>
-                    <span>ไซส์: {item.size ? item.size.name : 'ไม่ได้เลือกไซส์'}</span>
-                    <span>จำนวน: {item.quantity}</span>
-                    <span>ราคา: ${item.price}</span>
-                    <span>รวม: ${item.price * item.quantity}</span>
-                </div>
-            );
-        } else if (cartItems.length > 0) {
-            return cartItems.map((cartItem, index) => (
-                <div key={index} className="payment-item">
-                    <span>{cartItem.name}</span>
-                    <span>ไซส์: {cartItem.size ? cartItem.size.name : 'ไม่ได้เลือกไซส์'}</span>
-                    <span>จำนวน: {cartItem.quantity}</span>
-                    <span>ราคา: ${cartItem.price}</span>
-                    <span>รวม: ${cartItem.price * cartItem.quantity}</span>
-                </div>
-            ));
-        } else {
-            return <p>ไม่มีสินค้าในตะกร้า</p>;
-        }
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => {
+            const product = item.product || item;
+            return total + parseFloat(product.price) * item.quantity;
+        }, 0).toFixed(2);
     };
 
     return (
-        <div className="payment-container">
+        <div>
             <Nav username={username} />
-            <h1 className="payment-title">ยืนยันการชำระเงิน</h1>
+            <div className="payment-container">
+                <h1>การชำระเงิน</h1>
 
-            <div className="payment-details">
-                <h2>รายการสินค้า</h2>
-                <div className="payment-items">{renderItems()}</div>
-
-                <div className="qr-code-section">
-                    <h3>สแกน QR Code เพื่อชำระเงิน</h3>
-                    <img src={qrImage} alt="QR Code" className="qr-code-image" />
-                </div>
-
-                <div className="upload-section">
-                    <h3>อัปโหลดหลักฐานการชำระเงิน</h3>
-                    <input type="file" onChange={handleFileChange} accept="image/*" />
-                    {preview && (
-                        <div className="preview-container">
-                            <h4>ตัวอย่างหลักฐานการชำระเงิน:</h4>
-                            <img src={preview} alt="Payment Proof" className="preview-image" />
+                <div className="order-items">
+                    <h2>รายการสินค้าที่ซื้อ</h2>
+                    {cartItems.length === 0 ? (
+                        <p>ไม่มีสินค้าที่จะซื้อ</p>
+                    ) : (
+                        <div>
+                            {cartItems.map((item) => {
+                                const product = item.product || item;
+                                const size = item.sizes || item.size;
+                                return (
+                                    <div key={product.id} className="cart-item">
+                                        {product.images && product.images.length > 0 && (
+                                            <img src={product.images[0].image} alt={product.name} className="cart-item-image" />
+                                        )}
+                                        <div className="cart-item-details">
+                                            <h2 className="cart-item-name">{product.name}</h2>
+                                            <p>{product.description}</p>
+                                            <p>ไซส์: {size ? size.name : 'ไม่ได้เลือกไซส์'}</p>
+                                            <p>ราคา: ${product.price}</p>
+                                            <p>จำนวน: {item.quantity}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            <div className="cart-total">
+                                <h2>ราคารวม: ${calculateTotal()}</h2>
+                            </div>
                         </div>
                     )}
                 </div>
 
-                <div className="payment-summary">
-                    <h2>ยอดรวมทั้งหมด: ${item ? item.price * item.quantity : total}</h2>
-                    <button
-                        onClick={handleConfirmPayment}
-                        className="payment-btn"
-                        disabled={loading}
-                    >
-                        {loading ? 'กำลังดำเนินการ...' : 'ยืนยันการชำระเงิน'}
-                    </button>
+                <div className="qr-code-section">
+                    <h2>สแกน QR Code เพื่อชำระเงิน</h2>
+                    <img src={qrImage} alt="QR Code" className="qr-code-image" />
                 </div>
+
+                <div className="upload-slip-section">
+                    <h2>อัปโหลดสลิปการชำระเงิน</h2>
+                    <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        onChange={handleSlipChange}
+                    />
+                    {slip && (
+                        <div className="slip-preview">
+                            <p>สลิปที่อัปโหลด: {slip.name}</p>
+                            {slip.type.startsWith('image/') && (
+                                <img
+                                    src={URL.createObjectURL(slip)}
+                                    alt="Slip Preview"
+                                    className="slip-preview-image"
+                                />
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {error && <p className="error-message">{error}</p>}
+
+                <button
+                    onClick={handleConfirmPurchase}
+                    className="confirm-purchase-btn"
+                    disabled={!slip || isSubmitting}
+                >
+                    {isSubmitting ? 'กำลังยืนยัน...' : 'ยืนยันการซื้อ'}
+                </button>
             </div>
         </div>
     );
