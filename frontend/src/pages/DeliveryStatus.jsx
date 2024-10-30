@@ -1,0 +1,80 @@
+// DeliveryStatus.jsx
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Nav from '../components/Nav'; // Import Nav component
+
+function DeliveryStatus() {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const username = localStorage.getItem('username'); // Get the username from localStorage
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem('access');
+        if (!token) {
+          navigate('/login'); // Redirect to login if no token found
+          return;
+        }
+
+        const response = await axios.get('http://127.0.0.1:8000/myapp/orders/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setOrders(response.data);
+      } catch (err) {
+        setError('เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อ');
+        console.error('Error fetching orders:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [navigate]);
+
+  const handleOrderClick = (orderId) => {
+    navigate(`/order/${orderId}`); // Redirect to the order details page
+  };
+
+  if (loading) {
+    return <p>กำลังโหลดข้อมูล...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  return (
+    <div>
+      <Nav username={username} /> {/* Include the navigation bar */}
+      <div className="delivery-status-container">
+        <h1>สถานะการจัดส่ง</h1>
+        {orders.length === 0 ? (
+          <p>ไม่มีคำสั่งซื้อที่แสดง</p>
+        ) : (
+          <div className="order-list">
+            {orders.map((order) => (
+              <button
+                key={order.id}
+                className="order-item"
+                onClick={() => handleOrderClick(order.id)}
+              >
+                <h2>คำสั่งซื้อ #{order.id}</h2>
+                <p>สถานะ: {order.status}</p>
+                <p>ราคารวม: {order.total_price} บาท</p>
+                <p>วันที่สั่งซื้อ: {new Date(order.created_at).toLocaleDateString()}</p>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default DeliveryStatus;
