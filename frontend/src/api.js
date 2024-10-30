@@ -14,33 +14,6 @@ window.addEventListener('load', function () {
 
 
 
-// import axios from "axios";
-// import { ACCESS_TOKEN } from "./constants"; // ดึงชื่อ constant สำหรับ token
-
-// // สร้างอินสแตนซ์ของ axios ที่มี baseURL
-// const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_URL, // ดึง URL ของ API จาก environment variables
-// });
-
-// // ใช้ interceptors เพื่อตรวจสอบ token ก่อนส่ง request
-// api.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem(ACCESS_TOKEN); // ดึง token จาก LocalStorage
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`; // ถ้ามี token ให้ใส่ใน Authorization header
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     // ถ้ามีข้อผิดพลาดในการตั้งค่า request ให้ส่งข้อผิดพลาดออกไป
-//     return Promise.reject(error);
-//   }
-// );
-
-// export default api;
-
-
-
 import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants"; // ดึงโทเคนจาก constants
 

@@ -17,7 +17,7 @@ from .serializers import (
     CartSerializer, CartItemSerializer, OrderSerializer, OrderItemSerializer,
     PaymentSerializer, UserProfileSerializer, ProductImageSerializer,
     ReviewSerializer, CouponSerializer, UserSerializer,ProductImageUploadSerializer
-    ,RegistrationSerializer
+    ,RegistrationSerializer,UserSettingsSerializer
 )
 from django.contrib.auth.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -947,3 +947,10 @@ def update_order_status(request, order_id):
     except Order.DoesNotExist:
         return Response({'error': 'ไม่พบออเดอร์'}, status=status.HTTP_404_NOT_FOUND)
     
+# API View for User Settings
+class UserSettingsAPIView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserSettingsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
