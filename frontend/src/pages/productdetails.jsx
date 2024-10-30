@@ -221,6 +221,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../components/Nav';
 import { ACCESS_TOKEN } from '../constants';
+import '../styles/productdetail.css';
+
 
 function ProductDetails() {
     const { productId } = useParams();
@@ -229,7 +231,7 @@ function ProductDetails() {
     const [error, setError] = useState(null);
     const [sizes, setSizes] = useState([]);
     const [selectedSize, setSelectedSize] = useState(null);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(1); // เก็บจำนวนสินค้าที่เลือก
     const navigate = useNavigate();
     const username = localStorage.getItem('username');
 
@@ -286,23 +288,7 @@ function ProductDetails() {
     };
 
     const handleBuyNow = () => {
-        if (product.stock <= 0) {
-            alert('สินค้าหมด');
-            return;
-        }
-
-        if (!selectedSize) {
-            alert('กรุณาเลือกไซส์ก่อนทำการซื้อ');
-            return;
-        }
-
-        const purchasedItem = {
-            ...product,
-            size: selectedSize,
-            quantity,
-        };
-
-        navigate('/payment', { state: { item: purchasedItem } });
+        alert(`คุณได้ทำการซื้อสินค้า ${quantity} ชิ้น ไซส์: ${selectedSize ? selectedSize.name : 'ไม่ได้เลือก'} เรียบร้อยแล้ว!`);
     };
 
     const handleAddToCart = () => {
@@ -327,15 +313,18 @@ function ProductDetails() {
                 'Content-Type': 'application/json',
             }
         })
-        .then(response => {
-            console.log('เพิ่มสินค้าลงตะกร้าสำเร็จ:', response.data);
-            navigate('/cart');
-        })
-        .catch(error => {
-            console.error('เกิดข้อผิดพลาดในการเพิ่มสินค้า:', error.response.data);
-            alert('เกิดข้อผิดพลาด: ' + (error.response.data.error || 'ไม่ทราบข้อผิดพลาด'));
-        });
+            .then(response => {
+                console.log('เพิ่มสินค้าลงตะกร้าสำเร็จ:', response.data);
+                alert("เพิ่มสินค้าลงตะกร้าสำเร็จแล้ว");
+                fetchCartItems(); // ดึงข้อมูลตะกร้าใหม่
+
+            })
+            .catch(error => {
+                console.error('เกิดข้อผิดพลาดในการเพิ่มสินค้า:', error.response.data);
+                alert('เกิดข้อผิดพลาด: ' + (error.response.data.error || 'ไม่ทราบข้อผิดพลาด'));
+            });
     };
+
 
     if (loading) {
         return <p>Loading...</p>;
@@ -348,67 +337,77 @@ function ProductDetails() {
     return (
         <div>
             <Nav username={username} />
-
-            {product && (
-                <div>
-                    <h1>{product.name}</h1>
-                    <p>{product.description}</p>
-                    <p>ราคา: ${product.price}</p>
-                    <p>จำนวนที่เหลืออยู่ใน Stock: {product.stock}</p>
-
+            <div className='product-container'>
+                <div className='product-image-container'>
                     {product.images && product.images.length > 0 && (
-                        <div>
+                        <div className='product-images' >
                             {product.images.map((image, index) => (
                                 <img
                                     key={index}
                                     src={image.image}
                                     alt={`${product.name} ${index + 1}`}
                                     className='product-image'
-                                    style={{ width: '300px', height: 'auto', marginRight: '10px' }}
+                                    style={{ width: '100%', height: '100vh' }}
                                 />
                             ))}
                         </div>
                     )}
-
-                    <h2>เลือกไซส์</h2>
-                    <div>
-                        {sizes.map((size) => (
-                            <button
-                                key={size.id}
-                                onClick={() => handleSizeSelect(size)}
-                                style={{
-                                    padding: '10px',
-                                    margin: '5px',
-                                    backgroundColor: selectedSize?.id === size.id ? 'green' : 'lightgray',
-                                    color: 'white'
-                                }}
-                            >
-                                {size.name}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
-                        <button onClick={decrementQuantity} style={{ padding: '10px' }}>−</button>
-                        <span style={{ margin: '0 10px' }}>{quantity}</span>
-                        <button onClick={incrementQuantity} style={{ padding: '10px' }}>+</button>
-                    </div>
-
-                    <button
-                        onClick={handleBuyNow}
-                        style={{ margin: '10px', padding: '10px', backgroundColor: 'green', color: 'white' }}
-                    >
-                        ซื้อสินค้า
-                    </button>
-
-                    <button
-                        onClick={handleAddToCart}
-                        style={{ margin: '10px', padding: '10px', backgroundColor: 'orange', color: 'white' }}
-                    >
-                        เพิ่มสินค้าเข้าตะกร้า
-                    </button>
                 </div>
-            )}
+
+                <div className='product-detail-container'>
+                    <div className='product-name'>{product.name}</div>
+                    <p>{product.description}</p>
+                    <p>{product.price} BAHT</p>
+                    {/* <p>Stock: {product.stock}</p> */}
+
+                    {product && (
+                        <div>
+                            <div>
+                                <h2 >Size</h2>
+                                <div style={{ display: 'flex', overflowX: 'auto', gap: '3px' }}>
+                                    {sizes.map((size) => (
+                                        <button
+                                            key={size.id}
+                                            onClick={() => handleSizeSelect(size)}
+                                            style={{
+                                                padding: '10px',
+                                                backgroundColor: selectedSize?.id === size.id ? 'black' : 'lightgray',
+                                                color: 'white',
+                                                cursor: 'pointer',
+                                                whiteSpace: 'nowrap',
+                                                width: '40px',
+                                                height: '40px',
+                                            }}
+                                        >
+                                            {size.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
+                                <button onClick={decrementQuantity} style={{ padding: '10px' }}>−</button>
+                                <span style={{ margin: '0 10px' }}>{quantity}</span>
+                                <button onClick={incrementQuantity} style={{ padding: '10px' }}>+</button>
+                            </div>
+
+                            <button
+                                onClick={handleBuyNow}
+                                style={{ margin: '10px', padding: '10px', backgroundColor: 'green', color: 'white' }}
+                            >
+                                ซื้อสินค้า
+                            </button>
+
+                            <button
+                                onClick={handleAddToCart}
+                                style={{ margin: '10px', padding: '10px', backgroundColor: 'orange', color: 'white' }}
+                            >
+                                เพิ่มสินค้าเข้าตะกร้า
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

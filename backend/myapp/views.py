@@ -27,6 +27,8 @@ import json
 from django.shortcuts import get_object_or_404
 import uuid
 from django.db import transaction  # นำเข้าที่สำคัญ
+from rest_framework.generics import ListAPIView
+from django.utils.timezone import now, timedelta
 
 # หมวดหมู่สินค้า
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -920,3 +922,28 @@ class RegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
+
+
+# Admin view to list all orders
+class AdminOrderListAPIView(ListAPIView):
+    queryset = Order.objects.all() # จัดเรียงออเดอร์ใหม่ล่าสุดก่อน
+    serializer_class = OrderSerializer
+    permission_classes = [IsAdminUser]
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_order_status(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+        new_status = request.data.get('status')
+
+        if new_status not in ['Pending', 'Confirmed', 'Paid', 'Shipped', 'Delivered', 'Canceled']:
+            return Response({'error': 'สถานะไม่ถูกต้อง'}, status=status.HTTP_400_BAD_REQUEST)
+
+        order.status = new_status
+        order.save()
+
+        return Response({'message': 'อัปเดตสถานะสำเร็จ'}, status=status.HTTP_200_OK)
+    except Order.DoesNotExist:
+        return Response({'error': 'ไม่พบออเดอร์'}, status=status.HTTP_404_NOT_FOUND)
+    

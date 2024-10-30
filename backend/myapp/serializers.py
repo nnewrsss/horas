@@ -128,6 +128,11 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ["id", "user", "items", "created_at"]
+# Serializer สำหรับการชำระเงิน (Payment)
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = "__all__"
 
 # Serializer สำหรับรายการสินค้าในคำสั่งซื้อ (OrderItem)
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -140,18 +145,16 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 # Serializer สำหรับคำสั่งซื้อ (Order)
 class OrderSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField() 
     order_items = OrderItemSerializer(many=True, read_only=True)
     total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    payment = PaymentSerializer(read_only=True)  # เพิ่ม Payment ข้อมูลเข้าไป
 
     class Meta:
         model = Order
-        fields = ["id", "user", "order_items", "total_price", "status", "shipping_address", "phone_number", "created_at", "updated_at"]
+        fields = ["id", "user", "order_items", "total_price", "status", "shipping_address", "phone_number", "created_at", "updated_at",'payment']
 
-# Serializer สำหรับการชำระเงิน (Payment)
-class PaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = "__all__"
+
 
 # Serializer สำหรับโปรไฟล์ผู้ใช้ (UserProfile)
 class UserProfileSerializer(serializers.ModelSerializer):

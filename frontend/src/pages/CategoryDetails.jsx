@@ -257,7 +257,6 @@
 
 // export default CategoryDetails;
 
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -316,7 +315,7 @@ function CategoryDetails() {
                 setLoading(false);
             } catch (err) {
                 console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', err);
-                setError('ไม่สามารถดึงข้อมูลได้');
+                setError('Sorry Timeout please Login again');
                 setLoading(false);
             }
         };
@@ -343,14 +342,14 @@ function CategoryDetails() {
     return (
         <div>
             <Nav username={username} />
-            
+
             <div className='video-detail'>
                 {/* เพิ่มเนื้อหาตามต้องการ */}
             </div>
-            
+
             <div className='category-details-container'>
                 {/* จัดกึ่งกลาง subheader */}
-                <h2 className='subheader'>{subcategoryType}</h2> 
+                <h2 className='subheader' style={{ fontFamily: 'LeJeuneDeck-Regular,Times New Roman,Times,serif' }}>Top Category</h2>
                 <div className='categories-grid'>
                     {categories.length > 0 ? (
                         categories.map((cat) => (
@@ -383,32 +382,31 @@ function CategoryDetails() {
             </div>
 
             <div className='product-details-container'>
-                <h2 className='subheader'>Top</h2> 
+                <h2 className='subheader' style={{ fontFamily: 'LeJeuneDeck-Regular,Times New Roman,Times,serif' }}>Top</h2>
                 <div className='products-grid'>
                     {products.length > 0 ? (
                         products.map((product) => (
-                            <div
-                                key={product.id}
-                                className='product-card'
-                                onClick={() => handleProductClick(product.id)}
-                            >
-                                {product.images && product.images.length > 0 ? (
-                                    <img
-                                        src={`http://127.0.0.1:8000${product.images[0].image}`}
-                                        alt={product.name}
-                                        className='product-image'
-                                    />
-                                ) : (
-                                    <img
-                                        src='/path/to/default-product-image.jpg'
-                                        alt='Default Product'
-                                        className='product-image'
-                                    />
-                                )}
+                            <div key={product.id} className='product-card' onClick={() => handleProductClick(product.id)}>
+                                <div className='product-image-containers'>
+                                    {product.images && product.images.length > 0 ? (
+                                        <img
+                                            src={`http://127.0.0.1:8000${product.images[0].image}`}
+                                            alt={product.name}
+                                            className='product-images'
+                                        />
+                                    ) : (
+                                        <img
+                                            src='/path/to/default-product-image.jpg'
+                                            alt='Default Product'
+                                            className='product-images'
+                                        />
+                                    )}
+                                </div>
+
                                 <div className='product-info'>
-                                    <h3>{product.name}</h3>
-                                    <p>{product.description}</p>
-                                    <p>ราคา: {product.price} บาท</p>
+                                    <h3 className='product-info-name'>{product.name}</h3>
+                                    {/* <p>{product.description}</p> */}
+                                    <p>{product.price} BATH</p>
                                     {/* ลบปุ่มดูรายละเอียดสินค้าออก */}
                                 </div>
                             </div>

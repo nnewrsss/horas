@@ -114,6 +114,7 @@ import Cart from './pages/Cart';
 import Payment from './pages/Payment';
 import DeliveryStatus from './pages/DeliveryStatus'; // Import the new page
 import Deliverystatusorderdetails from './pages/Deliverystatusorderdetails'; // Import OrderDetails
+import Admincheckorder from './pages/Admincheckorder';
 
 function Logout() {
   localStorage.clear(); // Clear localStorage on logout
@@ -168,7 +169,7 @@ function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/delivery-status" element={<DeliveryStatus />} />
         <Route path="/order/:orderId" element={<Deliverystatusorderdetails />} /> {/* อัปเดตเส้นทางใหม่ */}
-
+        <Route path="/admin/orders" element={<Admincheckorder />} />
         
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} /> {/* Any other routes go to NotFound */}
