@@ -70,7 +70,10 @@ const AdminHome = () => {
                         <Link to="/admin/orders">
                             <div className='grid-item top-sale'>CHECK ORDER</div>
                         </Link>
-                        <div className='grid-item top-sale'>Top Sale</div>
+                        <Link to="/admin/top-sale">
+    <div className='grid-item top-sale'>Top Sale</div>
+</Link>
+
                     </div>
                 </div>
             </div>

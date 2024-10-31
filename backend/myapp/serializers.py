@@ -302,3 +302,23 @@ class RegistrationSerializer(serializers.ModelSerializer):
         )
 
         return user
+    
+class UserSettingsSerializer(serializers.ModelSerializer):
+    phone_number = serializers.CharField(source='userprofile.phone_number', required=False)
+    address = serializers.CharField(source='userprofile.address', required=False)
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'phone_number', 'address']
+    def update(self, instance, validated_data):
+        userprofile_data = validated_data.pop('userprofile', {})
+        
+        # Update User fields
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.save()
+        # Update UserProfile fields
+        userprofile = instance.userprofile
+        userprofile.phone_number = userprofile_data.get('phone_number', userprofile.phone_number)
+        userprofile.address = userprofile_data.get('address', userprofile.address)
+        userprofile.save()
+        return instance

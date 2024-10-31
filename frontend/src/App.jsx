@@ -115,6 +115,10 @@ import Payment from './pages/Payment';
 import DeliveryStatus from './pages/DeliveryStatus'; // Import the new page
 import Deliverystatusorderdetails from './pages/Deliverystatusorderdetails'; // Import OrderDetails
 import Admincheckorder from './pages/Admincheckorder';
+import Setting from './pages/Setting';
+import AdminTopSale from './pages/Admintopsale';
+
+
 
 function Logout() {
   localStorage.clear(); // Clear localStorage on logout
@@ -170,6 +174,11 @@ function App() {
         <Route path="/delivery-status" element={<DeliveryStatus />} />
         <Route path="/order/:orderId" element={<Deliverystatusorderdetails />} /> {/* อัปเดตเส้นทางใหม่ */}
         <Route path="/admin/orders" element={<Admincheckorder />} />
+        <Route path="/settings" element={<Setting />} />
+        <Route path="/admin/top-sale" element={<AdminTopSale />} />
+ 
+        
+
         
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} /> {/* Any other routes go to NotFound */}

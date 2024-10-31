@@ -288,7 +288,21 @@ function ProductDetails() {
     };
 
     const handleBuyNow = () => {
-        alert(`คุณได้ทำการซื้อสินค้า ${quantity} ชิ้น ไซส์: ${selectedSize ? selectedSize.name : 'ไม่ได้เลือก'} เรียบร้อยแล้ว!`);
+        if (product.stock <= 0) {
+            alert('สินค้าหมด');
+            return;
+        }
+        if (!selectedSize) {
+            alert('กรุณาเลือกไซส์ก่อนทำการซื้อ');
+            return;
+        }
+        const purchasedItem = {
+            ...product,
+            size: selectedSize,
+            quantity,
+        };
+        navigate('/payment', { state: { item: purchasedItem } });
+        //alert(`คุณได้ทำการซื้อสินค้า ${quantity} ชิ้น ไซส์: ${selectedSize ? selectedSize.name : 'ไม่ได้เลือก'} เรียบร้อยแล้ว!`);
     };
 
     const handleAddToCart = () => {

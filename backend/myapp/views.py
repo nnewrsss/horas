@@ -17,7 +17,7 @@ from .serializers import (
     CartSerializer, CartItemSerializer, OrderSerializer, OrderItemSerializer,
     PaymentSerializer, UserProfileSerializer, ProductImageSerializer,
     ReviewSerializer, CouponSerializer, UserSerializer,ProductImageUploadSerializer
-    ,RegistrationSerializer
+    ,RegistrationSerializer,UserSettingsSerializer
 )
 from django.contrib.auth.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -29,6 +29,7 @@ import uuid
 from django.db import transaction  # นำเข้าที่สำคัญ
 from rest_framework.generics import ListAPIView
 from django.utils.timezone import now, timedelta
+from django.db.models import Sum
 
 # หมวดหมู่สินค้า
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -947,3 +948,19 @@ def update_order_status(request, order_id):
     except Order.DoesNotExist:
         return Response({'error': 'ไม่พบออเดอร์'}, status=status.HTTP_404_NOT_FOUND)
     
+# API View for User Settings
+class UserSettingsAPIView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserSettingsSerializer
+    permission_classes = [IsAuthenticated]
+    def get_object(self):
+        return self.request.user
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])  # สำหรับสิทธิ์เฉพาะแอดมิน
+def top_sale_products(request):
+    top_sales = (
+        OrderItem.objects.values('product__name')  # ดึงข้อมูลสินค้าตามชื่อ
+        .annotate(total_quantity=Sum('quantity'))  # รวมจำนวนที่ถูกซื้อ
+        .order_by('-total_quantity')  # จัดเรียงตามจำนวนจากมากไปน้อย
+    )
+    return Response(top_sales, status=status.HTTP_200_OK)
