@@ -159,7 +159,6 @@
 // export default Payment;
 
 
-
 // payment.jsx
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -168,6 +167,7 @@ import Nav from '../components/Nav';
 import qrImage from '../images/qr.jpg';
 import '../styles/Payment.css';
 import { ACCESS_TOKEN } from '../constants';
+import api from '../api'; // Assuming you have a configured axios instance for your API
 
 function Payment() {
     const location = useLocation();
@@ -177,11 +177,37 @@ function Payment() {
     const [error, setError] = useState(null);
     const username = localStorage.getItem('username');
 
-    // ตรวจสอบและตั้งค่าข้อมูลสินค้าที่จะซื้อ
+    // State for user information
+    const [userData, setUserData] = useState({
+        first_name: '',
+        last_name: '',
+        address: '',
+        email: ''
+    });
+
+    // State for cart items and total
     const [cartItems, setCartItems] = useState([]);
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
+        // Fetch user information
+        const fetchUserInfo = async () => {
+            try {
+                const token = localStorage.getItem(ACCESS_TOKEN);
+                const response = await api.get('/myapp/user-info/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                console.log("User Data Fetched:", response.data); 
+                setUserData(response.data);
+            } catch (error) {
+                console.error("Error fetching user info:", error);
+            }
+        };
+        fetchUserInfo();
+
+        // Set cart data from location or API
         if (location.state && location.state.cartItems && location.state.total) {
             setCartItems(location.state.cartItems);
             setTotal(location.state.total);
@@ -190,7 +216,6 @@ function Payment() {
             setCartItems([singleItem]);
             setTotal((parseFloat(singleItem.price) * singleItem.quantity).toFixed(2));
         } else {
-            // หากไม่มีข้อมูลที่ถูกส่งมา ให้ดึงข้อมูลตะกร้าจาก API
             const fetchCart = async () => {
                 try {
                     const token = localStorage.getItem(ACCESS_TOKEN);
@@ -202,7 +227,7 @@ function Payment() {
                     setCartItems(response.data.items);
                     setTotal(response.data.items.reduce((acc, item) => acc + parseFloat(item.product.price) * item.quantity, 0).toFixed(2));
                 } catch (err) {
-                    console.error("เกิดข้อผิดพลาดในการดึงข้อมูลตะกร้า:", err);
+                    console.error("Error fetching cart:", err);
                     navigate('/cart');
                 }
             };
@@ -229,17 +254,14 @@ function Payment() {
         formData.append('slip', slip);
         formData.append('payment_method', 'Bank Transfer');
 
-        // เพิ่มข้อมูลสินค้าที่จะซื้อ
         formData.append('items', JSON.stringify(cartItems.map(item => {
             if (item.product) {
-                // กรณีมาจากตะกร้า
                 return {
                     product_id: item.product.id,
                     quantity: item.quantity,
                     size_id: item.sizes ? item.sizes.id : null
                 };
             } else {
-                // กรณีซื้อสินค้าชิ้นเดียว
                 return {
                     product_id: item.id,
                     quantity: item.quantity,
@@ -250,7 +272,7 @@ function Payment() {
 
         try {
             const token = localStorage.getItem(ACCESS_TOKEN);
-            const response = await axios.post('http://127.0.0.1:8000/myapp/confirm-purchase/', formData, {
+            await axios.post('http://127.0.0.1:8000/myapp/confirm-purchase/', formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
@@ -259,7 +281,7 @@ function Payment() {
             alert('การซื้อสินค้าเสร็จสมบูรณ์!');
             navigate('/homes');
         } catch (err) {
-            console.error("เกิดข้อผิดพลาดในการยืนยันการซื้อ:", err);
+            console.error("Error confirming purchase:", err);
             setError('เกิดข้อผิดพลาดในการยืนยันการซื้อ กรุณาลองใหม่อีกครั้ง');
         } finally {
             setIsSubmitting(false);
@@ -278,6 +300,14 @@ function Payment() {
             <Nav username={username} />
             <div className="payment-container">
                 <h1>การชำระเงิน</h1>
+
+                {/* Display User Information */}
+                <div className="user-info">
+                    <h2>ข้อมูลผู้ใช้</h2>
+                    <p><strong>ชื่อ:</strong> {userData.first_name} {userData.last_name}</p>
+                    <p><strong>อีเมล:</strong> {userData.email}</p>
+                    <p><strong>ที่อยู่:</strong> {userData.address}</p>
+                </div>
 
                 <div className="order-items">
                     <h2>รายการสินค้าที่ซื้อ</h2>
