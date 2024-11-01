@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet,ProductCreateAPIView, CategoryViewSet,SizeListCreateAPIView, SizeDetailAPIView,get_parent_categories, get_subcategories, get_child_categories,ProductImageUploadView,ProductImageDeleteView,female_products,male_products,male_subcategories,maletop_subcategories,malebottom_subcategories,malebags_subcategories,female_subcategories,femalebottom_subcategories,femalebags_subcategories, get_subcategories
-from .views import malepolo,malet_shirt,maleshirt,products_by_subcategory,products_by_childcategory,femaletop_subcategories,products_by_subcategory2,ConfirmPurchaseAPIView,OrderDetailAPIView,RegisterAPIView,AdminOrderListAPIView,update_order_status,UserSettingsAPIView,top_sale_products
+from .views import malepolo,malet_shirt,maleshirt,products_by_subcategory,products_by_childcategory,femaletop_subcategories,products_by_subcategory2,ConfirmPurchaseAPIView,OrderDetailAPIView,RegisterAPIView,AdminOrderListAPIView,update_order_status,UserSettingsAPIView,top_sale_products,total_sales_per_user,total_sales
 from . import views
 
 
@@ -83,7 +83,8 @@ path('api/productimages/<int:pk>/', ProductImageDeleteView.as_view(), name='dele
     
     # urls.py
     path('topsaleproducts/', top_sale_products, name='top-sale-products'),
-
+    path('totalsales/',total_sales_per_user, name='total-sales-per-user'),
+    path('admin/total-sales-amount/',total_sales, name='total-sales'),
 
      path('register/', RegisterAPIView.as_view(), name='register'),
      path('adminorders/', AdminOrderListAPIView.as_view(), name='admin-order-list'),

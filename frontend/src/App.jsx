@@ -117,7 +117,7 @@ import Deliverystatusorderdetails from './pages/Deliverystatusorderdetails'; // 
 import Admincheckorder from './pages/Admincheckorder';
 import Setting from './pages/Setting';
 import AdminTopSale from './pages/Admintopsale';
-
+import AdminTotalSales from './pages/AdminTotalSales';
 
 
 function Logout() {
@@ -176,7 +176,8 @@ function App() {
         <Route path="/admin/orders" element={<Admincheckorder />} />
         <Route path="/settings" element={<Setting />} />
         <Route path="/admin/top-sale" element={<AdminTopSale />} />
- 
+        <Route path="/admin/total-sales" element={<AdminTotalSales />} />
+  
         
 
         

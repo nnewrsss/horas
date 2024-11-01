@@ -1,32 +1,40 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ACCESS_TOKEN } from '../constants';  // เรียกใช้ ACCESS_TOKEN จาก constants.js
+import api from '../api';  // Import instance
+import { ACCESS_TOKEN } from '../constants';
 import '../styles/adminhome.css';
 
 const AdminHome = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
-    const [username, setUsername] = useState(''); // เก็บชื่อผู้ใช้
+    const [username, setUsername] = useState('');
+    const [totalSales, setTotalSales] = useState(0);
 
     useEffect(() => {
-        // ดึงข้อมูลจาก localStorage
         const storedUsername = localStorage.getItem('username');
-        const token = localStorage.getItem(ACCESS_TOKEN); // ใช้ตัวแปร ACCESS_TOKEN
+        const token = localStorage.getItem(ACCESS_TOKEN);
 
         if (storedUsername) {
             setUsername(storedUsername);
         }
 
-        // แสดงข้อมูลใน console เพื่อ debug
-        console.log(`ผู้ใช้ที่กำลังเข้าสู่ระบบ: ${storedUsername || 'ไม่มีผู้ใช้'}`);
-        console.log(`Token: ${token || 'ไม่มี token'}`);
+        const fetchTotalSales = async () => {
+            try {
+                const response = await api.get('/myapp/admin/total-sales-amount/', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setTotalSales(response.data.total_sales);
+            } catch (error) {
+                console.error('Error fetching total sales:', error);
+            }
+        };
 
-        // ตั้งเวลาอัพเดตทุก 1 วินาที
+        fetchTotalSales();
+
         const timer = setInterval(() => {
             setCurrentTime(new Date());
         }, 1000);
 
-        return () => clearInterval(timer); // ล้าง timer เมื่อ component ถูกทำลาย
+        return () => clearInterval(timer);
     }, []);
 
     return (
@@ -54,7 +62,7 @@ const AdminHome = () => {
                             </div>
                             <div style={{ alignSelf: 'flex-start', textAlign: 'left' }}>
                                 <div className='hello-title'>WELCOME</div>
-                                <div className='admin-username'>{username || 'Admin'}</div> {/* แสดงชื่อผู้ใช้ */}
+                                <div className='admin-username'>{username || 'Admin'}</div>
                             </div>
                         </div>
                         <div className='grid-item top-sale'>
@@ -64,16 +72,21 @@ const AdminHome = () => {
                             </div>
                         </div>
                         <div className='today-sale'>
-                            <h3 style={{ fontWeight: '200' }}>Today Sales</h3>
-                            <span style={{ fontSize: '3rem', fontWeight: '700' }}>32,000 ฿</span>
+                            <Link to="/admin/total-sales">
+                                <h3 style={{ fontWeight: '200' }}>Today Sales</h3>
+                                <span style={{ fontSize: '3rem', fontWeight: '700' }}>{totalSales || 0} ฿</span>
+                            </Link>
                         </div>
+                        <div className='grid-item top-sale'>
                         <Link to="/admin/orders">
-                            <div className='grid-item top-sale'>CHECK ORDER</div>
+                           CHECK ORDER
                         </Link>
+                        </div>
+                        <div className='grid-item top-sale'>
                         <Link to="/admin/top-sale">
-    <div className='grid-item top-sale'>Top Sale</div>
-</Link>
-
+                            Top Sale
+                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>
