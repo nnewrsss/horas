@@ -1,24 +1,32 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ACCESS_TOKEN } from '../constants';  // เรียกใช้ ACCESS_TOKEN จาก constants.js
 import '../styles/adminhome.css';
 
 const AdminHome = () => {
-
     const [currentTime, setCurrentTime] = useState(new Date());
     const [username, setUsername] = useState(''); // เก็บชื่อผู้ใช้
 
     useEffect(() => {
-        // ดึงชื่อผู้ใช้จาก LocalStorage เมื่อ component เริ่มต้นทำงาน
+        // ดึงข้อมูลจาก localStorage
         const storedUsername = localStorage.getItem('username');
+        const token = localStorage.getItem(ACCESS_TOKEN); // ใช้ตัวแปร ACCESS_TOKEN
+
         if (storedUsername) {
             setUsername(storedUsername);
         }
 
+        // แสดงข้อมูลใน console เพื่อ debug
+        console.log(`ผู้ใช้ที่กำลังเข้าสู่ระบบ: ${storedUsername || 'ไม่มีผู้ใช้'}`);
+        console.log(`Token: ${token || 'ไม่มี token'}`);
+
+        // ตั้งเวลาอัพเดตทุก 1 วินาที
         const timer = setInterval(() => {
             setCurrentTime(new Date());
-        }, 1000); // อัพเดตทุก 1 วินาที
+        }, 1000);
 
-        return () => clearInterval(timer); // ล้างการตั้งเวลาหาก component ถูกทำลาย
+        return () => clearInterval(timer); // ล้าง timer เมื่อ component ถูกทำลาย
     }, []);
 
     return (
@@ -56,10 +64,12 @@ const AdminHome = () => {
                             </div>
                         </div>
                         <div className='today-sale'>
-                            <h3 style={{fontWeight: '200'}}>Today Sales</h3>
+                            <h3 style={{ fontWeight: '200' }}>Today Sales</h3>
                             <span style={{ fontSize: '3rem', fontWeight: '700' }}>32,000 ฿</span>
                         </div>
-                        <div className='grid-item top-sale'>Top Sale</div>
+                        <Link to="/admin/orders">
+                            <div className='grid-item top-sale'>CHECK ORDER</div>
+                        </Link>
                         <div className='grid-item top-sale'>Top Sale</div>
                     </div>
                 </div>

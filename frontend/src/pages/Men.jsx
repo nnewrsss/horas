@@ -4,6 +4,8 @@ import Nav from '../components/Nav.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/menstyle.css';
+import Black from '../components/blackinfo.jsx';
+
 
 function Men() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -133,6 +135,7 @@ function Men() {
                     ))}
                 </div>
             </div>
+            <Black/>
         </div>
     );
 }

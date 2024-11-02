@@ -1,102 +1,153 @@
-import { useState } from "react";
-import api from "../api";
+// import Form from "../components/Form"
+
+// function Register() {
+//     return <Form route="/myapp/user/register/" method="register" />
+// }
+
+// export default Register
+
+
+// register.jsx
+
+import React, { useState } from 'react';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 import { ACCESS_TOKEN } from '../constants';
-import '../styles/Register.css'; // เพิ่มไฟล์ CSS สำหรับจัดการสไตล์
+import '../styles/register.css';
 
 function Register() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); 
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    
-    setError(""); 
+    setError('');
+    setSuccess('');
 
-    api.post("/myapp/token/", {
-      username: username,
-      password: password,
+    // ตรวจสอบว่ารหัสผ่านและยืนยันรหัสผ่านตรงกัน
+    if (password !== confirmPassword) {
+      setError('รหัสผ่านและยืนยันรหัสผ่านต้องตรงกัน');
+      return;
+    }
+
+    api.post('/myapp/register/', {
+      username,
+      email,
+      password,
+      confirm_password: confirmPassword,
+      phone_number: phoneNumber,
     })
-    .then((res) => {
-      if (res.status === 200) {
-        const accessToken = res.data.access;
-        const refreshToken = res.data.refresh;
-
-        localStorage.setItem(ACCESS_TOKEN, accessToken);
-        localStorage.setItem("refresh", refreshToken);
-        localStorage.setItem("username", username); 
-
-        api.get(`/myapp/userprofile/${username}/`, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
+      .then((res) => {
+        if (res.status === 201) {
+          setSuccess('ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบ');
+          // นำผู้ใช้ไปยังหน้าเข้าสู่ระบบหลังจากลงทะเบียนสำเร็จ
+          setTimeout(() => navigate('/login'), 2000);
+        }
+      })
+      .catch((err) => {
+        if (err.response && err.response.data) {
+          // แสดงข้อผิดพลาดจากเซิร์ฟเวอร์
+          const messages = [];
+          for (const key in err.response.data) {
+            if (Array.isArray(err.response.data[key])) {
+              err.response.data[key].forEach(msg => messages.push(`${key}: ${msg}`));
+            } else {
+              messages.push(`${key}: ${err.response.data[key]}`);
+            }
           }
-        })
-        .then((profileRes) => {
-          const role = profileRes.data.role;
-          console.log("User Role:", role);
-        
-          if (role === 'admin') {
-            navigate('/adminhome'); 
-          } else {
-            navigate('/homes');
-          }
-        })
-        .catch((err) => {
-          console.error("Error fetching user profile", err);
-          setError("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้");
-        });
-      } else {
-        setError("ไม่สามารถเข้าสู่ระบบได้!");
-      }
-    })
-    .catch((err) => {
-      setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
-      console.error(err);
-    });
+          setError(messages.join(' '));
+        } else {
+          setError('เกิดข้อผิดพลาดในการลงทะเบียน');
+        }
+      });
   };
 
   return (
-    <div className="login-container">
-      <div className="video-background">
-        <video autoPlay loop muted>
-          <source src="src/videos/video.mp4" type="video/mp4"/>
-        </video>
-      </div>
-      <div className="login-content1"></div>
-      <div className="login-content2">
-        <img src="src/images/logo-white_horas.png" alt="" className="logo_login"/>
-        <form onSubmit={handleLogin} className="form">
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            required
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-            className="username"
-          />
-          <br />
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            value={password} 
-            className="password"
-          />
+    <div className="register-container">
+      <div className="register-contents">
+        <div className='register-content'>  </div>
+        <div className="video-backgrounds">
+          <video autoPlay loop muted>
+            <source src="src/videos/video.mp4" type="video/mp4" />
+          </video>
+        </div>
 
-          <div className="options">
-            <button type="button" className="register-btn" onClick={() => navigate('/register')}>Register</button>
-            <button type="button" className="forgot-password-btn" onClick={() => navigate('/forgot-password')}>Forgot Password</button>
-          </div>
-          <input type="submit" value="Login" className="submit" />
-        </form>
+        <div className='register-forms'>
+          <h2>Register</h2>
+          <form onSubmit={handleRegister} className="register-form">
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+              className="register-input"
+            />
+            <br />
+
+            <label htmlFor="email">Email Address:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              className="register-input"
+            />
+            <br />
+
+            <label htmlFor="phoneNumber">Phone Number:</label>
+            <input
+              type="text"
+              id="phoneNumber"
+              name="phoneNumber"
+              required
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phoneNumber}
+              className="register-input"
+            />
+            <br />
+
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              className="register-input"
+            />
+            <br />
+
+            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              className="register-input"
+            />
+            <br />
+
+            <input type="submit" value="Register" className="register-submit" />
+          </form>
+        </div>
+
+
         {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
       </div>
     </div>
   );

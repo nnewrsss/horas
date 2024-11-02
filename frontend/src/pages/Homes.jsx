@@ -1,23 +1,21 @@
-// Homes.jsx
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 import { ACCESS_TOKEN } from '../constants';
 import Nav from '../components/Nav.jsx';
 import '../styles/Homes.css';
-import { useNavigate } from 'react-router-dom'; // ใช้ useNavigate
+import { useNavigate } from 'react-router-dom';
+import Black from '../components/blackinfo.jsx';
 
 function Homes() {
     const [products, setProducts] = useState([]);
-    const username = localStorage.getItem('username'); // ดึงชื่อผู้ใช้จาก localStorage
+    const [isVideoOpen, setIsVideoOpen] = useState(false); // State to toggle video overlay
+    const username = localStorage.getItem('username');
     const navigate = useNavigate();
-
-    // ตรวจสอบค่า username
-    console.log('Logged in user:', username); // <-- ใส่ console.log เพื่อตรวจสอบค่า username
 
     useEffect(() => {
         const token = localStorage.getItem(ACCESS_TOKEN);
         if (!token) {
-            navigate('/login'); // Redirect ไปที่หน้าล็อกอินถ้าไม่ได้ล็อกอิน
+            navigate('/login');
         } else {
             api.get('/myapp/products/')
                 .then(res => {
@@ -37,18 +35,18 @@ function Homes() {
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.style.display = 'none';
-                }, 1000); // ซ่อน overlay หลังจาก fade out
+                }, 500);
             }
-        }, 2500); // 2.5 วินาที
+        }, 500);
 
         return () => clearTimeout(timer);
     }, []);
 
     return (
         <div>
-            <Nav username={username} /> {/* ส่งค่าชื่อผู้ใช้ไปยังคอมโพเนนต์ Nav */}
+            <Nav username={username} />
             <div className="welcome-overlay" id="welcomeOverlay">
-                <div className="welcome-text">Welcome to our website</div> 
+                <div className="welcome-text">Welcome to our website</div>
             </div>
 
             <div className='hero-section'>
@@ -57,21 +55,37 @@ function Homes() {
                 <img src="/src/images/hero-section.png" alt="Hero" className='hero-img' />
             </div>
 
-            {/* News */}
             <div className='news-section'>
-                <div className='news-title'>
-                    NEWS 
-                </div>
+                <div className='news-title'>NEWS</div>
                 <div className='news-gallery'>
-                    <div className='news1-gallery'>
-                    {/* <div className='news1-text'>Test</div> */}
-                    <div className='gradient-shadow'></div>
-                    <video autoPlay loop muted className='news-video'>
-                        <source src="src/videos/check.mp4" type="video/mp4"/>
-                    </video>
+                    <div className='news1-gallery' onClick={() => setIsVideoOpen(true)}>
+                        <div className='gradient-shadow'></div>
+                        <video autoPlay loop muted className='news-video'>
+                            <source src="src/videos/horas.mp4" type="video/mp4" />
+                        </video>
                     </div>
                 </div>
             </div>
+
+            {isVideoOpen && (
+                <VideoOverlay onClose={() => setIsVideoOpen(false)} />
+            )}
+             <Black />
+        </div>
+       
+    );
+}
+
+function VideoOverlay({ onClose }) {
+    return (
+        <div className="video-overlay" onClick={onClose}>
+            <div className="video-container">
+                <video controls autoPlay className="full-video">
+                    <source src="src/videos/horas.mp4" type="video/mp4" />
+                </video>
+                
+            </div>
+
         </div>
     );
 }
