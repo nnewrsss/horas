@@ -29,6 +29,7 @@ import uuid
 from django.db import transaction  # นำเข้าที่สำคัญ
 from rest_framework.generics import ListAPIView
 from django.utils.timezone import now, timedelta
+from django.db.models import Sum
 
 # หมวดหมู่สินค้า
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -711,99 +712,6 @@ def products_by_childcategory(request, child_category_id):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-# class ConfirmPurchaseAPIView(APIView):
-#     permission_classes = [IsAuthenticated]
-#     parser_classes = [MultiPartParser, FormParser]
-
-#     def post(self, request, format=None):
-#         user = request.user
-
-#         # ดึงโปรไฟล์ผู้ใช้
-#         try:
-#             user_profile = UserProfile.objects.get(user=user)
-#         except UserProfile.DoesNotExist:
-#             return Response({'error': 'ไม่พบโปรไฟล์ผู้ใช้'}, status=status.HTTP_404_NOT_FOUND)
-
-#         # ดึงข้อมูลตะกร้าของผู้ใช้
-#         try:
-#             cart = Cart.objects.get(user=user)
-#         except Cart.DoesNotExist:
-#             return Response({'error': 'ไม่พบตะกร้าสินค้า'}, status=status.HTTP_404_NOT_FOUND)
-
-#         if not cart.items.exists():
-#             return Response({'error': 'ตะกร้าของคุณว่างเปล่า'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         # ตรวจสอบว่าผู้ใช้อัปโหลดสลิปหรือไม่
-#         slip = request.FILES.get('slip')
-#         if not slip:
-#             return Response({'error': 'กรุณาอัปโหลดสลิปการชำระเงิน'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         # กำหนดวิธีการชำระเงิน (ค่าเริ่มต้นคือ Bank Transfer)
-#         payment_method = request.data.get('payment_method', 'Bank Transfer')
-
-#         with transaction.atomic():
-#             # สร้างคำสั่งซื้อ (Order)
-#             order = Order.objects.create(
-#                 user=user,
-#                 status='Pending',
-#                 shipping_address=user_profile.address,
-#                 phone_number=user_profile.phone_number,
-#                 total_price=0
-#             )
-
-#             total_price = 0
-#             # สร้างรายการคำสั่งซื้อ (OrderItem)
-#             for cart_item in cart.items.select_related('product').all():
-#                 product = cart_item.product
-#                 if product.stock < cart_item.quantity:
-#                     transaction.set_rollback(True)
-#                     return Response({'error': f'สินค้าคงเหลือไม่เพียงพอสำหรับ {product.name}'}, status=status.HTTP_400_BAD_REQUEST)
-
-#                 OrderItem.objects.create(
-#                     order=order,
-#                     product=product,
-#                     quantity=cart_item.quantity,
-#                     price=product.price
-#                 )
-
-#                 # อัปเดตสต็อกสินค้า
-#                 product.stock -= cart_item.quantity
-#                 product.save()
-
-#                 total_price += product.price * cart_item.quantity
-
-#             # อัปเดตราคาสุทธิของคำสั่งซื้อ
-#             order.total_price = total_price
-#             order.save()
-
-#             # สร้างข้อมูลการชำระเงิน (Payment)
-#             transaction_id = str(uuid.uuid4())  # สร้าง transaction_id แบบสุ่ม
-#             Payment.objects.create(
-#                 order=order,
-#                 amount=total_price,
-#                 payment_method=payment_method,
-#                 payment_status='Pending',
-#                 transaction_id=transaction_id,
-#                 payment_slip=slip
-#             )
-
-#             # ล้างตะกร้าหลังการสั่งซื้อเสร็จ
-#             cart.items.all().delete()
-
-#         return Response({
-#             'message': 'การยืนยันการซื้อสำเร็จ',
-#             'order_id': order.id,
-#             'total_price': order.total_price
-#         }, status=status.HTTP_201_CREATED)
-    
-# class OrderDetailAPIView(generics.RetrieveAPIView):
-#     serializer_class = OrderSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         return Order.objects.filter(user=self.request.user)  # ดึงเฉพาะคำสั่งซื้อของผู้ใช้
-
-
 
 class ConfirmPurchaseAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -951,6 +859,47 @@ def update_order_status(request, order_id):
 class UserSettingsAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSettingsSerializer
     permission_classes = [IsAuthenticated]
-
     def get_object(self):
         return self.request.user
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])  # สำหรับสิทธิ์เฉพาะแอดมิน
+def top_sale_products(request):
+    top_sales = (
+        OrderItem.objects.values('product__name')  # ดึงข้อมูลสินค้าตามชื่อ
+        .annotate(total_quantity=Sum('quantity'))  # รวมจำนวนที่ถูกซื้อ
+        .order_by('-total_quantity')  # จัดเรียงตามจำนวนจากมากไปน้อย
+    )
+    return Response(top_sales, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])  # จำกัดสิทธิ์ให้เฉพาะแอดมิน
+def total_sales_per_user(request):
+    user_sales = []
+    for user in User.objects.all():
+        orders = Order.objects.filter(user=user)
+        if orders.exists():
+            order_details = [
+                {"order_id": order.id, "order_total": order.total_price}
+                for order in orders
+            ]
+            total_spent = orders.aggregate(Sum('total_price'))['total_price__sum']
+            user_sales.append({
+                "username": user.username,
+                "total_spent": total_spent,
+                "orders": order_details
+            })
+
+    total_sales = Order.objects.aggregate(total_sales=Sum('total_price'))['total_sales']
+    
+    return Response({
+        'user_sales': user_sales,
+        'total_sales': total_sales,
+    })
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def total_sales(request):
+    total_sales = Order.objects.aggregate(total=Sum('total_price'))['total']
+    return Response({'total_sales': total_sales})

@@ -6,7 +6,11 @@ p {
 }
 
 h2.subheader {
-    font-family: 'Cinzel', serif;
+    margin-top: 40px;
+    font-family: "Arapey", serif;
+    color: rgb(70, 70, 70);
+    font-weight: 500;
+
 }
 
 h3 {
@@ -15,7 +19,18 @@ h3 {
 
 .video-detail {
     width: 100%;
-    height: 200px;
+    height: 300px; /* เพิ่มความสูงเพื่อให้เห็นวิดีโอ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: lightgray; /* สำหรับการดีบัก */
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* จัดกึ่งกลาง subheader */
@@ -26,14 +41,24 @@ h3 {
 
 /* Container สำหรับหมวดหมู่ */
 .category-details-container {
-    margin: 20px;
+    padding: 20px;
     position: relative; /* ถ้าจำเป็น */
+    /* background-color: white; */
+    padding-bottom: 2;
+    background-color: #E9E7E0;
+
+}
+h3.catname
+{
+    margin-top: 15px;
+    font-family: "Founders Grotesk Mono Regular",Arial,Helvetica,sans-serif;
 }
 
 .categories-grid {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     justify-content: center;
+    
 }
 
 .category-card {
@@ -56,7 +81,9 @@ h3 {
 
 /* ปรับปรุงการแสดงผลสำหรับผลิตภัณฑ์ */
 .product-details-container {
-    margin: 20px;
+    padding: 20px;
+    background-color: #E9E7E0;
+
 }
 
 .products-grid {

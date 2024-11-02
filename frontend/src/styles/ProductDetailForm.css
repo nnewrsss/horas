@@ -70,7 +70,7 @@
   margin-bottom: 30px;
 }
 
-.category-buttons button {
+/* .category-buttons button {
   padding: 10px 20px;
   border: 1px solid #007bff;
   background-color: #fff;
@@ -78,11 +78,11 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
-}
+} */
 
 .category-buttons button.active,
 .category-buttons button:hover {
-  background-color: #007bff;
+  /* background-color: #007bff; */
   color: #fff;
 }
 

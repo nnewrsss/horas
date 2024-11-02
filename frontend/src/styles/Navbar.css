@@ -60,6 +60,11 @@
   font-size: 0.9em;
 }
 
+.cart-items-container {
+  max-height: 100vh; /* กำหนดความสูงที่ต้องการ */
+  overflow-y: auto; /* เปิดใช้งานการเลื่อนในแนวตั้ง */
+}
+
 .navbar-user button {
   margin-left: 10px;
   padding: 5px 10px;

@@ -325,6 +325,11 @@ a:hover {
     transform: translateX(0);
 }
 
+.cart-button:hover
+{
+    /* transform:scale(3px) */
+}
+
 /* Cart Sidebar */
 .cart-sidebar {
     width: 800px;
@@ -375,6 +380,11 @@ a:hover {
     z-index: 1000;
 }
 
+h2.shop-title
+{
+    margin-bottom: 30px;
+}
+
 .cart-backdrop.fade-in {
     opacity: 1;
     visibility: visible;
@@ -390,4 +400,15 @@ a:hover {
 .cart-sidebar button {
     margin-top: auto;
     align-self: flex-end;
+}
+
+.button-go-buy
+{
+    margin-top: 500px;
+    /* height: 300px; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
 }

@@ -1,14 +1,14 @@
-// DeliveryStatus.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Nav from '../components/Nav'; // Import Nav component
+import Nav from '../components/Nav';
+import '../styles/delivery.css';
 
 function DeliveryStatus() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const username = localStorage.getItem('username'); // Get the username from localStorage
+  const username = localStorage.getItem('username');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function DeliveryStatus() {
       try {
         const token = localStorage.getItem('access');
         if (!token) {
-          navigate('/login'); // Redirect to login if no token found
+          navigate('/login');
           return;
         }
 
@@ -38,7 +38,7 @@ function DeliveryStatus() {
   }, [navigate]);
 
   const handleOrderClick = (orderId) => {
-    navigate(`/order/${orderId}`); // Redirect to the order details page
+    navigate(`/order/${orderId}`);
   };
 
   if (loading) {
@@ -51,11 +51,11 @@ function DeliveryStatus() {
 
   return (
     <div>
-      <Nav username={username} /> {/* Include the navigation bar */}
+      <Nav username={username} />
       <div className="delivery-status-container">
-        <h1>สถานะการจัดส่ง</h1>
+        <h1 className="delivery-status-title">Order Status</h1>
         {orders.length === 0 ? (
-          <p>ไม่มีคำสั่งซื้อที่แสดง</p>
+          <p className="no-orders">ไม่มีคำสั่งซื้อที่แสดง</p>
         ) : (
           <div className="order-list">
             {orders.map((order) => (
@@ -64,10 +64,12 @@ function DeliveryStatus() {
                 className="order-item"
                 onClick={() => handleOrderClick(order.id)}
               >
-                <h2>คำสั่งซื้อ #{order.id}</h2>
-                <p>สถานะ: {order.status}</p>
-                <p>ราคารวม: {order.total_price} บาท</p>
-                <p>วันที่สั่งซื้อ: {new Date(order.created_at).toLocaleDateString()}</p>
+                <div className="order-title-section">
+                  <p className="order-title">Order {order.id}</p>
+                  <p className="delivery-number">Delivery Number: {order.delivery_number || 'N/A'}</p>
+                </div>
+                <p className="order-price">Price: {order.total_price} BAHT</p>
+                <p className="order-date">Date: {new Date(order.created_at).toLocaleDateString()}</p>
               </button>
             ))}
           </div>

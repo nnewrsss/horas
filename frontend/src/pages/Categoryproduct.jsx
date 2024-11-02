@@ -157,27 +157,40 @@ function CategoryProduct() {
             {/* เพิ่ม Nav และส่ง username ไปยัง Nav */}
             <Nav username={username} />
 
-            <h1>Products in Child Category {productId}</h1> {/* แสดง productId */}
-            <div className="product-list">
-                {products.map(product => (
-                    <button 
-                        key={product.id} 
-                        className="product-item"
-                        onClick={() => handleProductClick(product.id)}  // ฟังก์ชันเมื่อกดปุ่ม
-                    >
-                        {product.images && product.images.length > 0 && (
-                            <img
-                                src={`http://127.0.0.1:8000${product.images[0].image}`}
-                                alt={product.name}
-                                className='product-image'
-                            />
-                        )}
-                        <h2>{product.name}</h2>
-                        <p>{product.description}</p>
-                        <p>Price: {product.price}</p>
-                        <p>Stock: {product.stock}</p>
-                    </button>
-                ))}
+            <div className='product-details-container'>
+                <h2 className='subheader' style={{ fontFamily: 'LeJeuneDeck-Regular,Times New Roman,Times,serif' }}>Items</h2>
+                <div className='products-grid'>
+                    {products.length > 0 ? (
+                        products.map((product) => (
+                            <div key={product.id} className='product-card' onClick={() => handleProductClick(product.id)}>
+                                <div className='product-image-containers'>
+                                    {product.images && product.images.length > 0 ? (
+                                        <img
+                                            src={`http://127.0.0.1:8000${product.images[0].image}`}
+                                            alt={product.name}
+                                            className='product-images'
+                                        />
+                                    ) : (
+                                        <img
+                                            src='/path/to/default-product-image.jpg'
+                                            alt='Default Product'
+                                            className='product-images'
+                                        />
+                                    )}
+                                </div>
+
+                                <div className='product-info'>
+                                    <h3 className='product-info-name'>{product.name}</h3>
+                                    {/* <p>{product.description}</p> */}
+                                    <p>{product.price} BATH</p>
+                                    {/* ลบปุ่มดูรายละเอียดสินค้าออก */}
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>ไม่มีสินค้าที่จะแสดง</p>
+                    )}
+                </div>
             </div>
         </div>
     );
