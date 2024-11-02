@@ -1,0 +1,51 @@
+.register-container
+{
+    width: 100%;
+    height: 100vh;
+}
+
+.register-contents
+{
+    height: 100%;
+    width: 100%;
+    /* backdrop-filter: blur(23px); */
+}
+
+.register-content
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgb(4, 4, 4);
+    /* opacity: 0%; */
+}
+
+.video-backgrounds
+{
+    position: absolute;
+    opacity: 40%;
+    z-index: 30;
+    /* backdrop-filter: blur(21px); */
+    width: 100%;
+    height: 100%;
+
+}
+
+.register-form
+{
+    z-index: 999;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-self: center;
+}
+
+.register-forms
+{
+    z-index: 999;
+    align-items: center;
+    justify-content: center;    
+}

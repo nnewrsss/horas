@@ -1,0 +1,145 @@
+.nav-safe-area {
+    width: 100%;
+    height: 54px;
+}
+
+body {
+    background-color: white;
+}
+
+.payment-section {
+    width: 100%;
+    height: 100vh;
+    display: inline-flex;
+}
+
+.payment-summarys {
+    width: 50%;
+    height: 100vh;
+    background-color: rgb(228, 228, 228);
+    padding: 100px 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.billing-info {
+    margin-bottom: 30px;
+}
+
+h3.bill {
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 300;
+    margin-bottom: 20px;
+    border-bottom: 1px solid black; /* เส้นใต้สำหรับหัวข้อ */
+    padding-bottom: 10px; /* เพิ่มช่องว่างระหว่างข้อความและเส้น */
+}
+
+.cart-item
+{
+    border-bottom: 1px solid black; /* เส้นใต้สำหรับหัวข้อ */
+    padding-bottom: 30px; /* เพิ่มช่องว่างระหว่างข้อความและเส้น */
+}
+
+.payment-items {
+    width: 50%;
+    padding: 100px;
+}
+
+.qr-code-section {
+    display: flex;
+    /* justify-content: center; */
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.qr-code-image {
+    width: 160px;
+    height: 160px;
+}
+
+.cart-total {
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 38px;
+    margin-bottom: 12px;
+    color: black;
+}
+
+.cart-total-title
+{
+    color: rgb(58, 58, 58);
+    font-weight: 400;
+}
+
+.payment-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-slip-section {
+    margin-top: 20px;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+.confirm-purchase-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.confirm-purchase-btn:hover {
+    background-color: #218838;
+}
+
+.qr-code-section
+{
+    /* background-color: white; */
+    border-style: solid ;
+    border-color: rgb(187, 185, 185);
+    border-width: 2px;
+    background-color: rgba(255, 255, 255, 0.938);
+    width: 100%;
+    height: 200px;
+    /* text-align: start; */
+    justify-items: left;
+}
+
+.qr-detail
+{
+    margin-left: 30px;
+    color: black;
+    /* padding-bottom: 30px; */
+}
+
+.qr-promptPay
+{
+    color:#174292;
+    font-weight: 600;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.qr-name
+{
+    margin-bottom: 40px;
+}
+
+.confirm-purchase-btn
+{
+    background-color: #1a1a1a;
+}
