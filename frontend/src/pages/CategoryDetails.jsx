@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../components/Nav.jsx';
 import '../styles/cat.css';
-import productVideo from '../videos/productvideo.mp4'; // นำเข้าไฟล์วิดีโอ
+// import productVideo from '../videos/productvideo.mp4'; 
 import { ACCESS_TOKEN } from '../constants.js';
 import Black from '../components/blackinfo.jsx';
 
@@ -91,7 +91,7 @@ function CategoryDetails() {
             <div className='video-detail'>
                 <div className='video-heroshadow'></div>
                 <video autoPlay loop muted>
-                    <source src={productVideo} type="video/mp4" />
+                    {/* <source src={productVideo} type="video/mp4" /> */}
                 </video>
             </div>
 
