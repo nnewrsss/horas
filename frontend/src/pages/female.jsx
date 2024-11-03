@@ -13,7 +13,7 @@ function Female() {
     const [femaleBagsCategories, setFemaleBagsCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const username = localStorage.getItem('username') || 'Free User';
+    const username = localStorage.getItem('username') ;
     const navigate = useNavigate();
 
     const highlightImages = [
