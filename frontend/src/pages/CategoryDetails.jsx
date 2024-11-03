@@ -1,13 +1,11 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../components/Nav.jsx';
 import '../styles/cat.css';
-import productVideo from '../videos/productvideo.mp4'; // นำเข้าไฟล์วิดีโอ
+//import productVideo from '../videos/productvideo.mp4'; // นำเข้าไฟล์วิดีโอ
 import { ACCESS_TOKEN } from '../constants.js';
 import Black from '../components/blackinfo.jsx';
-
 
 function CategoryDetails() {
     const { subcategoryType } = useParams();
@@ -19,28 +17,11 @@ function CategoryDetails() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-            navigate('/');
-        }
-    }, [navigate]);
-
-    useEffect(() => {
         const fetchData = async () => {
             const token = localStorage.getItem(ACCESS_TOKEN);
-            if (!token) {
-                setError('ไม่มีสิทธิ์เข้าถึงข้อมูล');
-                setLoading(false);
-                return;
-            }
+            const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {}; // ใช้โทเค็นถ้ามี
 
             try {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
-
                 const categoryUrl = `http://127.0.0.1:8000/myapp/${subcategoryType}/`;
                 const productsUrl = `http://127.0.0.1:8000/myapp/categoryproducts/${subcategoryType}/`;
 
@@ -60,7 +41,7 @@ function CategoryDetails() {
                 setLoading(false);
             } catch (err) {
                 console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', err);
-                setError('Sorry Timeout please Login again');
+                setError('เกิดข้อผิดพลาดในการดึงข้อมูล');
                 setLoading(false);
             }
         };
@@ -91,12 +72,11 @@ function CategoryDetails() {
             <div className='video-detail'>
                 <div className='video-heroshadow'></div>
                 <video autoPlay loop muted>
-                    <source src={productVideo} type="video/mp4" />
+                    {/* <source src={productVideo} type="video/mp4" /> */}
                 </video>
             </div>
 
             <div className='category-details-container'>
-                {/* จัดกึ่งกลาง subheader */}
                 <h2 className='subheader' style={{ fontFamily: 'LeJeuneDeck-Regular,Times New Roman,Times,serif' }}>Category</h2>
                 <div className='categories-grid'>
                     {categories.length > 0 ? (
@@ -120,8 +100,6 @@ function CategoryDetails() {
                                     />
                                 )}
                                 <h3 className='catname'>{cat.name.replace(/^(male|men|female|women)\s*/i, "")}</h3>
-
-                                {/* ลบปุ่มดูรายละเอียดออก */}
                             </div>
                         ))
                     ) : (
@@ -154,9 +132,7 @@ function CategoryDetails() {
 
                                 <div className='product-info'>
                                     <h3 className='product-info-name'>{product.name}</h3>
-                                    {/* <p>{product.description}</p> */}
                                     <p>{product.price} BAHT</p>
-                                    {/* ลบปุ่มดูรายละเอียดสินค้าออก */}
                                 </div>
                             </div>
                         ))

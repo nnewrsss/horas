@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/menstyle.css';
 import Black from '../components/blackinfo.jsx';
 
-
 function Men() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [highlightImages, setHighlightImages] = useState([]);
@@ -18,21 +17,16 @@ function Men() {
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
 
-    // ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่
-    useEffect(() => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-            window.location.href = '/';
-        }
-    }, []);
-
-    // ดึงข้อมูลหมวดหมู่จาก API
+    // ดึงข้อมูลหมวดหมู่จาก API โดยเช็คว่ามี token หรือไม่
     const fetchMenCategories = async () => {
         try {
+            const token = localStorage.getItem(ACCESS_TOKEN);
+            const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
             const [maleSubcategories, maleBottomSubcategories, maleBagsSubcategories] = await Promise.all([
-                axios.get('http://127.0.0.1:8000/myapp/malesubcategories/'),
-                axios.get('http://127.0.0.1:8000/myapp/malebottomsubcategories/'),
-                axios.get('http://127.0.0.1:8000/myapp/malebagssubcategories/')
+                axios.get('http://127.0.0.1:8000/myapp/malesubcategories/', { headers }),
+                axios.get('http://127.0.0.1:8000/myapp/malebottomsubcategories/', { headers }),
+                axios.get('http://127.0.0.1:8000/myapp/malebagssubcategories/', { headers })
             ]);
 
             setMaleCategories(maleSubcategories.data);
@@ -82,7 +76,7 @@ function Men() {
             <Nav username={username} />
 
             <div className='hero-section_men'>
-            <div className='men-title'>MALE</div>
+                <div className='men-title'>MALE</div>
                 <div className='video-heroshadow'></div>
                 <div className="video-background">
                     <video autoPlay loop muted>

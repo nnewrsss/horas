@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'; // Use for page navigation
 import '../styles/femalestyle.css';
 import Black from '../components/blackinfo.jsx';
 
-
 function Female() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [femaleCategories, setFemaleCategories] = useState([]);
@@ -14,7 +13,7 @@ function Female() {
     const [femaleBagsCategories, setFemaleBagsCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const username = localStorage.getItem('username');
+    const username = localStorage.getItem('username') || 'Free User';
     const navigate = useNavigate();
 
     const highlightImages = [
@@ -24,21 +23,16 @@ function Female() {
         "/src/images/female/product3.png"
     ];
 
-    // Check if the user is logged in
-    useEffect(() => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-            window.location.href = '/';
-        }
-    }, []);
-
     // Fetch categories data from API
     const fetchFemaleCategories = async () => {
         try {
+            const token = localStorage.getItem(ACCESS_TOKEN);
+            const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
             const [femaleSubcategories, femaleBottomSubcategories, femaleBagsSubcategories] = await Promise.all([
-                axios.get('http://127.0.0.1:8000/myapp/femalesubcategories/'),
-                axios.get('http://127.0.0.1:8000/myapp/femalebottomsubcategories/'),
-                axios.get('http://127.0.0.1:8000/myapp/femalebagssubcategories/')
+                axios.get('http://127.0.0.1:8000/myapp/femalesubcategories/', { headers }),
+                axios.get('http://127.0.0.1:8000/myapp/femalebottomsubcategories/', { headers }),
+                axios.get('http://127.0.0.1:8000/myapp/femalebagssubcategories/', { headers })
             ]);
 
             setFemaleCategories(femaleSubcategories.data);
@@ -68,7 +62,6 @@ function Female() {
 
     // Handle navigation to specific category page
     const handleCategoryClick = (subcategoryType) => {
-        console.log(subcategoryType); // Debugging to check the subcategory type
         navigate(`/categorydetails/${subcategoryType}`);
     };
 
@@ -113,7 +106,7 @@ function Female() {
                     </div>
                 )}
             </div>
-                <Black/>
+            <Black/>
         </div>
     );
 }

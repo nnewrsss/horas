@@ -20,13 +20,6 @@ function ProductDetails() {
     const productRef = useRef(null);
 
     useEffect(() => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-            navigate('/');
-        }
-    }, [navigate]);
-
-    useEffect(() => {
         const fetchProductDetails = async () => {
             try {
                 const response = await axios.get(`http://127.0.0.1:8000/myapp/products/${productId}/`);
@@ -72,15 +65,25 @@ function ProductDetails() {
         }
     };
 
+    // ฟังก์ชัน "ซื้อทันที"
     const handleBuyNow = () => {
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        if (!token) { // ถ้าไม่มี token ให้แจ้งเตือนให้ล็อกอิน
+            alert('กรุณาล็อกอินก่อนทำการซื้อ');
+            navigate('/login');
+            return;
+        }
+
         if (product.stock <= 0) {
             alert('สินค้าหมด');
             return;
         }
+
         if (!selectedSize) {
             alert('กรุณาเลือกไซส์ก่อนทำการซื้อ');
             return;
         }
+
         const purchasedItem = {
             ...product,
             size: selectedSize,
@@ -89,7 +92,15 @@ function ProductDetails() {
         navigate('/payment', { state: { item: purchasedItem } });
     };
 
+    // ฟังก์ชัน "เพิ่มไปยังตะกร้า"
     const handleAddToCart = () => {
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        if (!token) { // ถ้าไม่มี token ให้แจ้งเตือนให้ล็อกอิน
+            alert('กรุณาล็อกอินก่อนเพิ่มสินค้าลงตะกร้า');
+            navigate('/login');
+            return;
+        }
+
         if (product.stock <= 0) {
             alert('สินค้าหมด');
             return;
@@ -100,7 +111,6 @@ function ProductDetails() {
             return;
         }
 
-        const token = localStorage.getItem(ACCESS_TOKEN);
         axios.post('http://127.0.0.1:8000/myapp/cart/add/', {
             product_id: product.id,
             quantity: quantity,

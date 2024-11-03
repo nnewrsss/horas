@@ -134,14 +134,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Protected Routes */}
-        <Route
+        {/* <Route
           path="/homes"
           element={
             <PrivateRoute>
               <Homes />
             </PrivateRoute>
           }
-        />
+        /> */}
         <Route
           path="/adminhome"
           element={
@@ -174,6 +174,8 @@ function App() {
         <Route path="/order/:orderId" element={<Deliverystatusorderdetails />} /> {/* อัปเดตเส้นทางใหม่ */}
         <Route path="/admin/orders" element={<Admincheckorder />} />
         <Route path="/settings" element={<Setting />} />
+        <Route path="/homes" element={<Homes />} />
+
 
         
 
